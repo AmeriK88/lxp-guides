@@ -6,15 +6,60 @@
 
 <p>
   <strong>Estado de verificación:</strong>
-  {{ profile.verification_status }}
-  {% if profile.verification_status == "verified" %} ✅{% endif %}
+  {% if profile.verification_status == "verified" %}
+    Guía verificado ✅
+  {% elif profile.verification_status == "pending" %}
+    Pendiente de verificación ⏳
+  {% else %}
+    Rechazado ❌
+  {% endif %}
 </p>
 
-<form method="post">
+{% if profile.verification_status != "verified" %}
+  <div style="padding:10px; background:#fff3cd; border:1px solid #ffeeba; margin-bottom:1rem;">
+    ⚠️ Para verificar tu cuenta, sube:
+    <ul>
+      <li><strong>Carnet/acreditación de guía</strong></li>
+      <li><strong>Seguro RC</strong> o <strong>alta de autónomo/empresa</strong></li>
+    </ul>
+    Nuestro equipo lo revisará y te notificará.
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Guardar</button>
 </form>
+
+<hr>
+
+<h3>Documentos subidos</h3>
+<ul>
+  <li>
+    Carnet guía:
+    {% if profile.guide_license_document %}
+      <a href="{{ profile.guide_license_document.url }}">Ver archivo</a>
+    {% else %}
+      No subido
+    {% endif %}
+  </li>
+  <li>
+    Seguro/Alta:
+    {% if profile.insurance_or_registration_document %}
+      <a href="{{ profile.insurance_or_registration_document.url }}">Ver archivo</a>
+    {% else %}
+      No subido
+    {% endif %}
+  </li>
+</ul>
+
+{% if profile.verification_status == "rejected" and profile.verification_notes %}
+  <div style="padding:10px; background:#f8d7da; border:1px solid #f5c2c7; margin-top:1rem;">
+    <strong>Motivo de rechazo:</strong>
+    <p>{{ profile.verification_notes }}</p>
+  </div>
+{% endif %}
 
 <p style="margin-top:1rem;">
   <a href="{% url 'profiles:public_guide' request.user.pk %}">Ver mi perfil público</a>

@@ -37,7 +37,7 @@ def profile_view(request):
         template = "profiles/traveler_edit.html"
 
     if request.method == "POST":
-        form = FormClass(request.POST, instance=profile)
+        form = FormClass(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Perfil actualizado correctamente.")

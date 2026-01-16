@@ -17,15 +17,43 @@ class GuideProfile(models.Model):
 
     display_name = models.CharField(max_length=120, blank=True)
     bio = models.TextField(blank=True)
-    languages = models.CharField(max_length=200, blank=True)  # ejemplo: "ES, EN, DE"
+    languages = models.CharField(max_length=200, blank=True)  # "ES, EN, DE"
     phone = models.CharField(max_length=50, blank=True)
     instagram = models.CharField(max_length=120, blank=True)
     website = models.URLField(blank=True)
+
+    # --- Verificación: documentos ---
+    guide_license_document = models.FileField(
+        upload_to="verification/guide_license/",
+        blank=True,
+        null=True,
+        help_text="Carnet/acreditación oficial de guía (PDF/JPG/PNG).",
+    )
+    insurance_or_registration_document = models.FileField(
+        upload_to="verification/insurance_or_registration/",
+        blank=True,
+        null=True,
+        help_text="Seguro RC o alta de autónomo/empresa (PDF/JPG/PNG).",
+    )
 
     verification_status = models.CharField(
         max_length=20,
         choices=VerificationStatus.choices,
         default=VerificationStatus.PENDING,
+    )
+
+    verification_notes = models.TextField(
+        blank=True,
+        help_text="Notas internas (motivo de rechazo, observaciones, etc.).",
+    )
+    verified_at = models.DateTimeField(blank=True, null=True)
+    verified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="verified_guides",
+        help_text="Admin/Staff que verificó el perfil.",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
