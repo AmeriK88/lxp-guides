@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <h1>Login</h1>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next|default:'' }}">
+
+    <p>
+      <label>Usuario</label><br />
+      <input type="text" name="username" required />
+    </p>
+    <p>
+      <label>Contraseña</label><br />
+      <input type="password" name="password" required />
+    </p>
+    <button type="submit">Entrar</button>
+  </form>
+  <p><a href="{% url 'accounts:register' %}">Crear cuenta</a></p>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %}{{ exp.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ exp.title }}</h1>
+
+<p><strong>Guía:</strong> {{ exp.guide.username }}</p>
+<p><strong>Precio:</strong> {{ exp.price }} €</p>
+<p><strong>Duración:</strong> {{ exp.duration_minutes }} min</p>
+<p><strong>Máx. personas:</strong> {{ exp.max_people }}</p>
+<p><strong>Zona:</strong> {{ exp.location }}</p>
+
+<p>{{ exp.description }}</p>
+
+{% if user.is_authenticated and user.is_guide and user == exp.guide %}
+  <p>
+    <a href="{% url 'experiences:edit' exp.pk %}">Editar</a> |
+    <a href="{% url 'experiences:delete' exp.pk %}">Eliminar</a>
+  </p>
+{% endif %}
+
+<p><a href="{% url 'experiences:list' %}">Volver</a></p>
+{% endblock %}

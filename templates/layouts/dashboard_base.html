@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div style="display:flex; min-height:80vh;">
+
+  <aside style="width:200px; border-right:1px solid #ddd; padding:1rem;">
+    <h3>Dashboard</h3>
+    <ul>
+      <li><a href="{% url 'pages:profile' %}">Mi Perfil</a></li>
+      {% if user.is_guide %}
+        <li><a href="{% url 'experiences:list' %}">Mis Experiencias</a></li>
+        <li><a href="#">Reservas</a></li>
+      {% else %}
+        <li><a href="{% url 'pages:traveler_dashboard' %}">Explorar</a></li>
+        <li><a href="#">Mis Reservas</a></li>
+      {% endif %}
+      <li><a href="{% url 'accounts:logout' %}">Salir</a></li>
+    </ul>
+  </aside>
+
+  <section style="flex:1; padding:2rem;">
+    {% block dashboard_content %}{% endblock %}
+  </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block dashboard_content %}
+<h1>Mi Perfil (Viajero)</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar</button>
+</form>
+{% endblock %}

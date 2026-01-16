@@ -1,0 +1,13 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Eliminar experiencia{% endblock %}
+
+{% block dashboard_content %}
+<h1>Eliminar experiencia</h1>
+<p>¿Seguro que quieres eliminar <strong>{{ exp.title }}</strong>?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Sí, eliminar</button>
+  <a href="{% url 'experiences:detail' exp.pk %}">Cancelar</a>
+</form>
+{% endblock %}

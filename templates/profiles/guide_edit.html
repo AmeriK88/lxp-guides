@@ -1,0 +1,22 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block dashboard_content %}
+<h1>Mi Perfil (Guía)</h1>
+
+<p>
+  <strong>Estado de verificación:</strong>
+  {{ profile.verification_status }}
+  {% if profile.verification_status == "verified" %} ✅{% endif %}
+</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar</button>
+</form>
+
+<p style="margin-top:1rem;">
+  <a href="{% url 'profiles:public_guide' request.user.pk %}">Ver mi perfil público</a>
+</p>
+{% endblock %}

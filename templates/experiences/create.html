@@ -1,0 +1,14 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Crear experiencia{% endblock %}
+
+{% block dashboard_content %}
+<h1>Crear experiencia</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar</button>
+</form>
+
+<p><a href="{% url 'experiences:list' %}">Volver al listado</a></p>
+{% endblock %}

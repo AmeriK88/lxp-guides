@@ -1,0 +1,38 @@
+{% extends "layouts/base.html" %}
+{% block title %}Guía - {{ profile.display_name|default:guide_user.username }}{% endblock %}
+
+{% block content %}
+<h1>{{ profile.display_name|default:guide_user.username }}</h1>
+
+<p>
+  <strong>Estado:</strong>
+  {% if profile.verification_status == "verified" %}
+    Guía verificado ✅
+  {% elif profile.verification_status == "pending" %}
+    Pendiente de verificación ⏳
+  {% else %}
+    No verificado ❌
+  {% endif %}
+</p>
+
+
+{% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+{% if profile.languages %}<p><strong>Idiomas:</strong> {{ profile.languages }}</p>{% endif %}
+{% if profile.website %}<p><strong>Web:</strong> <a href="{{ profile.website }}">{{ profile.website }}</a></p>{% endif %}
+
+<hr>
+
+<h2>Experiencias activas</h2>
+{% if experiences %}
+  <ul>
+    {% for e in experiences %}
+      <li>
+        <a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a>
+        — {{ e.price }}€ — {{ e.duration_minutes }} min — {{ e.location }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Este guía aún no tiene experiencias activas.</p>
+{% endif %}
+{% endblock %}
