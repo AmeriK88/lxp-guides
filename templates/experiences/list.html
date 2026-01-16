@@ -10,6 +10,76 @@
   </p>
 {% endif %}
 
+<hr>
+
+<h3>Buscar y filtrar</h3>
+<form method="get" style="margin-bottom: 1rem;">
+  <p>
+    <label>Buscar</label><br>
+    <input
+      type="text"
+      name="q"
+      value="{{ filters.q }}"
+      placeholder="Timanfaya, volcanes, senderismo..."
+    >
+  </p>
+
+  <p>
+    <label>Categoría</label><br>
+    <select name="category">
+      <option value="">Todas</option>
+      {% for c in categories %}
+        <option value="{{ c.slug }}" {% if filters.category == c.slug %}selected{% endif %}>
+          {{ c.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </p>
+
+  <p>
+    <label>Precio mínimo (€)</label><br>
+    <input type="number" step="0.01" name="min_price" value="{{ filters.min_price }}">
+  </p>
+
+  <p>
+    <label>Precio máximo (€)</label><br>
+    <input type="number" step="0.01" name="max_price" value="{{ filters.max_price }}">
+  </p>
+
+  <p>
+    <label>Duración máxima (min)</label><br>
+    <input type="number" name="max_duration" value="{{ filters.max_duration }}" placeholder="Ej: 180">
+  </p>
+
+  <p>
+    <label>Ordenar</label><br>
+    <select name="sort">
+      <option value="recent" {% if filters.sort == "recent" %}selected{% endif %}>Más recientes</option>
+      <option value="popular" {% if filters.sort == "popular" %}selected{% endif %}>Más populares</option>
+      <option value="price_asc" {% if filters.sort == "price_asc" %}selected{% endif %}>Precio: menor a mayor</option>
+      <option value="price_desc" {% if filters.sort == "price_desc" %}selected{% endif %}>Precio: mayor a menor</option>
+      <option value="duration_asc" {% if filters.sort == "duration_asc" %}selected{% endif %}>Duración: menor a mayor</option>
+      <option value="duration_desc" {% if filters.sort == "duration_desc" %}selected{% endif %}>Duración: mayor a menor</option>
+    </select>
+  </p>
+
+  <button type="submit">Aplicar</button>
+  <a href="{% url 'experiences:list' %}">Limpiar</a>
+</form>
+
+{% if filters.q or filters.category or filters.min_price or filters.max_price or filters.max_duration or filters.sort != "recent" %}
+  <p><strong>Filtros activos:</strong>
+    {% if filters.q %}<span style="margin-right:8px;">🔎 {{ filters.q }}</span>{% endif %}
+    {% if filters.category %}<span style="margin-right:8px;">🗂 {{ filters.category }}</span>{% endif %}
+    {% if filters.min_price %}<span style="margin-right:8px;">💶 min {{ filters.min_price }}</span>{% endif %}
+    {% if filters.max_price %}<span style="margin-right:8px;">💶 max {{ filters.max_price }}</span>{% endif %}
+    {% if filters.max_duration %}<span style="margin-right:8px;">⏱ ≤ {{ filters.max_duration }} min</span>{% endif %}
+    {% if filters.sort and filters.sort != "recent" %}<span style="margin-right:8px;">↕ sort: {{ filters.sort }}</span>{% endif %}
+  </p>
+{% endif %}
+
+<hr>
+
 {% if experiences %}
   <ul>
     {% for e in experiences %}
@@ -17,6 +87,10 @@
         <strong>
           <a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a>
         </strong>
+
+        {% if e.category %}
+          <span>— {{ e.category.name }}</span>
+        {% endif %}
 
         <br>
 
@@ -26,11 +100,23 @@
         Max: {{ e.max_people }} |
         Zona: {{ e.location }}
 
+        {% if filters.sort == "popular" %}
+          {% if e.bookings_count %}
+            | Reservas: {{ e.bookings_count }}
+          {% else %}
+            | Reservas: 0
+          {% endif %}
+        {% endif %}
+
         <p>{{ e.description|truncatechars:180 }}</p>
+
+        {% if e.tags %}
+          <small>Tags: {{ e.tags }}</small>
+        {% endif %}
 
         {% if user.is_authenticated and user.is_guide and user == e.guide and user.guide_profile.verification_status == "verified" %}
           <p>
-            <a href="{% url 'availability:manage' e.id %}">Disponibilidad</a>
+            <a href="{% url 'availability:manage' e.pk %}">Disponibilidad</a>
             |
             <a href="{% url 'experiences:edit' e.pk %}">Editar</a>
             |

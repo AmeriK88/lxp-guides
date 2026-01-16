@@ -13,5 +13,6 @@ class ExperienceForm(forms.ModelForm):
             "duration_minutes",
             "max_people",
             "location",
+            "tags",
             "is_active",
         ]

@@ -13,4 +13,4 @@ class CategoryAdmin(admin.ModelAdmin):
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ("title", "guide", "category", "price", "duration_minutes", "is_active")
     list_filter = ("is_active", "category")
-    search_fields = ("title", "description", "location", "guide__username")
+    search_fields = ("title", "description", "location", "tags", "guide__username")

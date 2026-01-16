@@ -1,18 +1,21 @@
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import get_object_or_404, redirect, render
 
 from core.decorators import guide_required
+from apps.bookings.models import Booking
 from .forms import ExperienceForm
 from .models import Category, Experience
 
 
 def experience_list(request):
-    # Público: cualquiera puede ver experiencias activas
+    # Público: solo experiencias activas de guías verificados
     experiences = (
-        Experience.objects.filter(is_active=True)
+        Experience.objects.filter(
+            is_active=True,
+            guide__guide_profile__verification_status="verified",
+        )
         .select_related("guide", "category")
-        .order_by("-created_at")
     )
 
     categories = Category.objects.all()
@@ -23,12 +26,14 @@ def experience_list(request):
     min_price = request.GET.get("min_price", "").strip()
     max_price = request.GET.get("max_price", "").strip()
     max_duration = request.GET.get("max_duration", "").strip()
+    sort = request.GET.get("sort", "recent").strip()
 
     if q:
         experiences = experiences.filter(
             Q(title__icontains=q)
             | Q(description__icontains=q)
             | Q(location__icontains=q)
+            | Q(tags__icontains=q)
             | Q(guide__username__icontains=q)
             | Q(category__name__icontains=q)
         )
@@ -54,6 +59,25 @@ def experience_list(request):
         except ValueError:
             pass
 
+    # Ordenación
+    if sort == "price_asc":
+        experiences = experiences.order_by("price", "-created_at")
+    elif sort == "price_desc":
+        experiences = experiences.order_by("-price", "-created_at")
+    elif sort == "duration_asc":
+        experiences = experiences.order_by("duration_minutes", "-created_at")
+    elif sort == "duration_desc":
+        experiences = experiences.order_by("-duration_minutes", "-created_at")
+    elif sort == "popular":
+        experiences = experiences.annotate(
+            bookings_count=Count(
+                "bookings",
+                filter=Q(bookings__status__in=[Booking.Status.PENDING, Booking.Status.ACCEPTED]),
+            )
+        ).order_by("-bookings_count", "-created_at")
+    else:
+        experiences = experiences.order_by("-created_at")
+
     context = {
         "experiences": experiences,
         "categories": categories,
@@ -63,6 +87,7 @@ def experience_list(request):
             "min_price": min_price,
             "max_price": max_price,
             "max_duration": max_duration,
+            "sort": sort,
         },
     }
     return render(request, "experiences/list.html", context)

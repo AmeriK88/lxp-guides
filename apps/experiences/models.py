@@ -36,6 +36,13 @@ class Experience(models.Model):
     max_people = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=255)
 
+    # NUEVO: keywords/tags para búsquedas
+    tags = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Palabras clave separadas por comas. Ej: timanfaya, volcanes, lava",
+    )
+
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
