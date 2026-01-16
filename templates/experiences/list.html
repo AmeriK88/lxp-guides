@@ -4,7 +4,7 @@
 {% block content %}
 <h1>Experiencias en Lanzarote</h1>
 
-{% if user.is_authenticated and user.is_guide %}
+{% if user.is_authenticated and user.is_guide and user.guide_profile.verification_status == "verified" %}
   <p><a href="{% url 'experiences:create' %}">+ Crear experiencia</a></p>
 {% endif %}
 

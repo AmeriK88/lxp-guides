@@ -2,7 +2,13 @@
 {% block title %}Guía - {{ profile.display_name|default:guide_user.username }}{% endblock %}
 
 {% block content %}
-<h1>{{ profile.display_name|default:guide_user.username }}</h1>
+<h1>
+  {{ profile.display_name|default:guide_user.username }}
+  {% if profile.verification_status == "verified" %}
+    <span style="color:green;">✔ Verificado</span>
+  {% endif %}
+</h1>
+
 
 <p>
   <strong>Estado:</strong>
