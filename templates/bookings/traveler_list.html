@@ -5,9 +5,17 @@
 <ul>
   {% for b in bookings %}
     <li>
-      {{ b.experience.title }} - {{ b.date }} - {{ b.people }} personas
-      ({{ b.status }})
+      <strong>
+        <a href="{% url 'experiences:detail' b.experience.pk %}">
+          {{ b.experience.title }}
+        </a>
+      </strong>
+      <br>
+      Fecha: {{ b.date }} |
+      Personas: {{ b.people }} |
+      Estado: {{ b.status }}
     </li>
+    <hr>
   {% empty %}
     <p>No tienes reservas aún.</p>
   {% endfor %}

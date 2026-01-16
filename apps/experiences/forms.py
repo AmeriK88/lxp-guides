@@ -6,6 +6,7 @@ class ExperienceForm(forms.ModelForm):
     class Meta:
         model = Experience
         fields = [
+            "category",
             "title",
             "description",
             "price",
