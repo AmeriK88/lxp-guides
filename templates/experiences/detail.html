@@ -12,6 +12,13 @@
 
 <p>{{ exp.description }}</p>
 
+{% if user.is_authenticated and user.is_traveler %}
+  <p>
+    <a href="{% url 'bookings:create' exp.pk %}">Reservar esta experiencia</a>
+  </p>
+{% endif %}
+
+
 {% if user.is_authenticated and user.is_guide and user == exp.guide %}
   <p>
     <a href="{% url 'experiences:edit' exp.pk %}">Editar</a> |

@@ -3,18 +3,32 @@
 {% block content %}
 <div style="display:flex; min-height:80vh;">
 
-  <aside style="width:200px; border-right:1px solid #ddd; padding:1rem;">
+  <aside style="width:220px; border-right:1px solid #ddd; padding:1rem;">
     <h3>Dashboard</h3>
-    <ul>
-      <li><a href="{% url 'pages:profile' %}">Mi Perfil</a></li>
+    <ul style="list-style:none; padding-left:0;">
+      <li>
+        <a href="{% url 'pages:profile' %}">Mi Perfil</a>
+      </li>
+
       {% if user.is_guide %}
-        <li><a href="{% url 'experiences:list' %}">Mis Experiencias</a></li>
-        <li><a href="#">Reservas</a></li>
+        <li>
+          <a href="{% url 'experiences:list' %}">Mis Experiencias</a>
+        </li>
+        <li>
+          <a href="{% url 'bookings:guide_list' %}">Reservas Recibidas</a>
+        </li>
       {% else %}
-        <li><a href="{% url 'pages:traveler_dashboard' %}">Explorar</a></li>
-        <li><a href="#">Mis Reservas</a></li>
+        <li>
+          <a href="{% url 'pages:traveler_dashboard' %}">Explorar</a>
+        </li>
+        <li>
+          <a href="{% url 'bookings:traveler_list' %}">Mis Reservas</a>
+        </li>
       {% endif %}
-      <li><a href="{% url 'accounts:logout' %}">Salir</a></li>
+
+      <li style="margin-top:1rem;">
+        <a href="{% url 'accounts:logout' %}">Salir</a>
+      </li>
     </ul>
   </aside>
 

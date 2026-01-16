@@ -1,0 +1,15 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block dashboard_content %}
+<h1>Mis Reservas</h1>
+
+<ul>
+  {% for b in bookings %}
+    <li>
+      {{ b.experience.title }} - {{ b.date }} - {{ b.people }} personas
+      ({{ b.status }})
+    </li>
+  {% empty %}
+    <p>No tienes reservas aún.</p>
+  {% endfor %}
+</ul>
+{% endblock %}

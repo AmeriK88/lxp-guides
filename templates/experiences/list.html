@@ -5,21 +5,38 @@
 <h1>Experiencias en Lanzarote</h1>
 
 {% if user.is_authenticated and user.is_guide and user.guide_profile.verification_status == "verified" %}
-  <p><a href="{% url 'experiences:create' %}">+ Crear experiencia</a></p>
+  <p>
+    <a href="{% url 'experiences:create' %}">+ Crear experiencia</a>
+  </p>
 {% endif %}
 
 {% if experiences %}
   <ul>
     {% for e in experiences %}
       <li>
-        <strong><a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a></strong>
+        <strong>
+          <a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a>
+        </strong>
+
         <br>
+
         Guía: {{ e.guide.username }} |
         Precio: {{ e.price }}€ |
         Duración: {{ e.duration_minutes }} min |
         Max: {{ e.max_people }} |
         Zona: {{ e.location }}
+
         <p>{{ e.description|truncatechars:180 }}</p>
+
+        {% if user.is_authenticated and user.is_guide and user == e.guide and user.guide_profile.verification_status == "verified" %}
+          <p>
+            <a href="{% url 'availability:manage' e.id %}">Disponibilidad</a>
+            |
+            <a href="{% url 'experiences:edit' e.pk %}">Editar</a>
+            |
+            <a href="{% url 'experiences:delete' e.pk %}">Eliminar</a>
+          </p>
+        {% endif %}
       </li>
       <hr>
     {% endfor %}

@@ -1,0 +1,39 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Disponibilidad{% endblock %}
+
+{% block dashboard_content %}
+<h1>Disponibilidad</h1>
+<p><strong>Experiencia:</strong> {{ experience.title }}</p>
+
+<hr>
+
+<h2>Reglas</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar reglas</button>
+</form>
+
+<hr>
+
+<h2>Bloqueos por fecha</h2>
+<form method="post" action="{% url 'availability:add_block' experience.id %}">
+  {% csrf_token %}
+  {{ block_form.as_p }}
+  <button type="submit">Bloquear fecha</button>
+</form>
+
+{% if blocks %}
+  <ul>
+    {% for b in blocks %}
+      <li>
+        {{ b.date }} {% if b.reason %}- {{ b.reason }}{% endif %}
+        <a href="{% url 'availability:delete_block' b.id %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No hay fechas bloqueadas.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block dashboard_content %}
+<h1>Reservas Recibidas</h1>
+
+<ul>
+  {% for b in bookings %}
+    <li>
+      {{ b.experience.title }} | {{ b.traveler.username }} | {{ b.date }} | {{ b.people }} personas
+      ({{ b.status }})
+      {% if b.status == "pending" %}
+        <a href="{% url 'bookings:accept' b.pk %}">Aceptar</a>
+        <a href="{% url 'bookings:reject' b.pk %}">Rechazar</a>
+      {% endif %}
+    </li>
+  {% empty %}
+    <p>No tienes reservas todavía.</p>
+  {% endfor %}
+</ul>
+{% endblock %}
