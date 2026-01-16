@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from apps.profiles.forms import GuideProfileForm, TravelerProfileForm
+from django.db.models import Count, Q
+
+from apps.experiences.models import Experience, Category
+from apps.bookings.models import Booking
 
 
 def home_view(request):
@@ -23,7 +27,33 @@ def guide_dashboard(request):
 
 @login_required
 def traveler_dashboard(request):
-    return render(request, "pages/traveler_dashboard.html")
+    # Solo traveler
+    if request.user.is_guide():
+        return redirect("pages:dashboard")
+
+    categories = Category.objects.all()
+
+    # Top experiencias (por reservas pending+accepted). Si no hay reservas, se ordena por created_at.
+    top_experiences = (
+        Experience.objects.filter(is_active=True)
+        .select_related("guide", "category")
+        .annotate(
+            bookings_count=Count(
+                "bookings",
+                filter=Q(bookings__status__in=[Booking.Status.PENDING, Booking.Status.ACCEPTED]),
+            )
+        )
+        .order_by("-bookings_count", "-created_at")[:6]
+    )
+
+    return render(
+        request,
+        "pages/traveler_dashboard.html",
+        {
+            "categories": categories,
+            "top_experiences": top_experiences,
+        },
+    )
 
 @login_required
 def profile_view(request):

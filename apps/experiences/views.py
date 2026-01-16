@@ -30,6 +30,7 @@ def experience_list(request):
             | Q(description__icontains=q)
             | Q(location__icontains=q)
             | Q(guide__username__icontains=q)
+            | Q(category__name__icontains=q)
         )
 
     if category_slug:

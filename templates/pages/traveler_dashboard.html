@@ -1,6 +1,58 @@
 {% extends "layouts/dashboard_base.html" %}
+{% block title %}Explorar{% endblock %}
 
 {% block dashboard_content %}
-<h1>Panel del Viajero</h1>
-<p>Aquí descubrirás experiencias y gestionarás tus reservas.</p>
+<h1>Explorar Lanzarote</h1>
+
+<!-- Buscador -->
+<form method="get" action="{% url 'experiences:list' %}" style="margin-bottom: 1rem;">
+  <input type="text" name="q" placeholder="Buscar volcanes, playa, senderismo..." style="width: 320px;">
+  <button type="submit">Buscar</button>
+</form>
+
+<hr>
+
+<!-- Categorías -->
+<h2>Categorías</h2>
+{% if categories %}
+  <ul>
+    {% for c in categories %}
+      <li>
+        <a href="{% url 'experiences:list' %}?category={{ c.slug }}">{{ c.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Aún no hay categorías creadas.</p>
+{% endif %}
+
+<hr>
+
+<!-- Top experiencias -->
+<h2>Top experiencias</h2>
+
+{% if top_experiences %}
+  <ul>
+    {% for e in top_experiences %}
+      <li>
+        <strong><a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a></strong>
+        {% if e.category %} — {{ e.category.name }}{% endif %}
+        <br>
+        {{ e.location }} | {{ e.duration_minutes }} min | {{ e.price }}€
+        <br>
+        Guía: {{ e.guide.username }}
+        {% if e.bookings_count %}
+          | Reservas: {{ e.bookings_count }}
+        {% endif %}
+      </li>
+      <hr>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No hay experiencias activas todavía.</p>
+{% endif %}
+
+<p>
+  <a href="{% url 'experiences:list' %}">Ver todas las experiencias →</a>
+</p>
 {% endblock %}
