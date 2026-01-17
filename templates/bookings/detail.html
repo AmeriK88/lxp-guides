@@ -2,41 +2,145 @@
 {% block title %}Detalle de reserva{% endblock %}
 
 {% block dashboard_content %}
-<div class="card">
-  <div class="card-body">
-    <h1 class="text-2xl font-semibold">Detalle de reserva</h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight">Detalle de reserva</h1>
+          <p class="mt-1 text-sm text-slate-600">
+            Aquí tienes todos los datos de tu solicitud y la respuesta del guía.
+          </p>
+        </div>
 
-    <p class="mt-2">
-      <strong>Experiencia:</strong>
-      <a href="{% url 'experiences:detail' booking.experience.pk %}" class="hover:underline">
-        {{ booking.experience.title }}
-      </a>
-    </p>
+        <div class="flex items-center gap-2">
+          {% with s=booking.status|lower %}
+            {% if s == "accepted" %}
+              <span class="badge badge-amber">Aceptada</span>
+            {% elif s == "pending" %}
+              <span class="badge">Pendiente</span>
+            {% elif s == "rejected" %}
+              <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                Rechazada
+              </span>
+            {% elif s == "canceled" %}
+              <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                Cancelada
+              </span>
+            {% else %}
+              <span class="badge">{{ booking.status }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
 
-    <div class="mt-3 flex flex-wrap gap-2">
-      <span class="badge">📅 {{ booking.date }}</span>
-      <span class="badge">👥 {{ booking.people }} personas</span>
-      <span class="badge">💶 {{ booking.total_price }}€</span>
-      <span class="badge">Estado: {{ booking.status }}</span>
+      <!-- Experiencia -->
+      <div class="mt-5">
+        <p class="text-sm text-slate-600">Experiencia</p>
+        <p class="text-base font-semibold">
+          <a href="{% url 'experiences:detail' booking.experience.pk %}" class="hover:underline">
+            {{ booking.experience.title }}
+          </a>
+        </p>
+
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="badge">📅 {{ booking.date }}</span>
+
+          {% if booking.total_price %}
+            <span class="badge">💶 {{ booking.total_price }}€</span>
+          {% endif %}
+
+          {% if booking.experience.location %}
+            <span class="badge">📍 {{ booking.experience.location }}</span>
+          {% endif %}
+
+          {% if booking.experience.duration_minutes %}
+            <span class="badge">⏱ {{ booking.experience.duration_minutes }} min</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Guía -->
+      <div class="mt-5 border-t border-slate-200 pt-5">
+        <h2 class="text-sm font-semibold text-slate-900">Guía</h2>
+        <p class="mt-2 text-sm text-slate-700">
+          <a href="{% url 'profiles:public_guide' booking.experience.guide.pk %}" class="font-medium hover:underline">
+            Ver perfil público de {{ booking.experience.guide.username }}
+          </a>
+        </p>
+      </div>
+
+      <!-- Personas + Transporte -->
+      <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <h2 class="text-sm font-semibold text-slate-900">Participantes y logística</h2>
+
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="badge">👤 {{ booking.adults }} adultos</span>
+          <span class="badge">🧒 {{ booking.children }} niños</span>
+          <span class="badge">👶 {{ booking.infants }} bebés</span>
+
+          {% if booking.transport_mode %}
+            <span class="badge">
+              🚐
+              {% if booking.get_transport_mode_display %}
+                {{ booking.get_transport_mode_display }}
+              {% else %}
+                {{ booking.transport_mode }}
+              {% endif %}
+            </span>
+          {% endif %}
+
+          {% if booking.pickup_notes %}
+            <span class="badge">📍 {{ booking.pickup_notes }}</span>
+          {% endif %}
+        </div>
+
+        <div class="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
+          {% if booking.unit_price %}
+            <p>
+              <span class="text-slate-500">Precio adulto:</span>
+              <span class="font-medium text-slate-900">{{ booking.unit_price }}€</span>
+            </p>
+          {% endif %}
+
+          <p>
+            <span class="text-slate-500">Niño:</span>
+            <span class="font-medium text-slate-900">50%</span>
+          </p>
+
+          <p>
+            <span class="text-slate-500">Bebé:</span>
+            <span class="font-medium text-slate-900">Gratis</span>
+          </p>
+
+          {% if booking.total_price %}
+            <p>
+              <span class="text-slate-500">Total:</span>
+              <span class="font-semibold text-slate-900">{{ booking.total_price }}€</span>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Mensajes -->
+      {% if booking.notes %}
+        <div class="mt-5 border-t border-slate-200 pt-5">
+          <h2 class="text-sm font-semibold text-slate-900">Tu mensaje al guía</h2>
+          <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.notes }}</p>
+        </div>
+      {% endif %}
+
+      {% if booking.guide_response %}
+        <div class="mt-5 border-t border-slate-200 pt-5">
+          <h2 class="text-sm font-semibold text-slate-900">Respuesta del guía</h2>
+          <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.guide_response }}</p>
+        </div>
+      {% endif %}
+
+      <div class="mt-6">
+        <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
+          ← Volver a mis reservas
+        </a>
+      </div>
     </div>
-
-    <hr class="my-4">
-
-    <p><strong>Precio por persona:</strong> {{ booking.unit_price }}€</p>
-    <p><strong>Zona:</strong> {{ booking.experience.location }}</p>
-    <p><strong>Duración:</strong> {{ booking.experience.duration_minutes }} min</p>
-
-    {% if booking.notes %}
-      <hr class="my-4">
-      <p><strong>Tu mensaje al guía:</strong></p>
-      <p>{{ booking.notes }}</p>
-    {% endif %}
-
-    {% if booking.guide_response %}
-      <hr class="my-4">
-      <p><strong>Respuesta del guía:</strong></p>
-      <p>{{ booking.guide_response }}</p>
-    {% endif %}
   </div>
-</div>
 {% endblock %}

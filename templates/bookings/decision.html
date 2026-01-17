@@ -1,36 +1,100 @@
 {% extends "layouts/dashboard_base.html" %}
+{% load form_tags %}
+
 {% block title %}Gestionar reserva{% endblock %}
 
 {% block dashboard_content %}
-<div class="card">
-  <div class="card-body">
-    <h1 class="text-2xl font-semibold">
-      {% if action == "accept" %}Aceptar reserva{% else %}Rechazar reserva{% endif %}
-    </h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h1 class="text-2xl font-semibold tracking-tight">
+          {% if action == "accept" %}Aceptar reserva{% else %}Rechazar reserva{% endif %}
+        </h1>
 
-    <p class="mt-2">
-      <strong>Experiencia:</strong> {{ booking.experience.title }} <br>
-      <strong>Viajero:</strong> {{ booking.traveler.username }} <br>
-      <strong>Fecha:</strong> {{ booking.date }} <br>
-      <strong>Personas:</strong> {{ booking.people }} <br>
-      <strong>Total:</strong> {{ booking.total_price }}€
-    </p>
+        <span class="badge">
+          {{ booking.get_status_display }}
+        </span>
+      </div>
 
-    {% if booking.notes %}
-      <hr class="my-4">
-      <p><strong>Mensaje del viajero:</strong></p>
-      <p>{{ booking.notes }}</p>
-    {% endif %}
+      <p class="mt-2 text-sm text-slate-600">
+        Revisa los datos de la solicitud antes de confirmar.
+      </p>
 
-    <hr class="my-4">
+      <!-- Resumen -->
+      <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div>
+            <p class="text-xs text-slate-500">Experiencia</p>
+            <p class="font-medium text-slate-900">{{ booking.experience.title }}</p>
+          </div>
 
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">
-        {% if action == "accept" %}Confirmar aceptación{% else %}Confirmar rechazo{% endif %}
-      </button>
-    </form>
+          <div>
+            <p class="text-xs text-slate-500">Viajero</p>
+            <p class="font-medium text-slate-900">{{ booking.traveler.username }}</p>
+          </div>
+
+          <div>
+            <p class="text-xs text-slate-500">Fecha</p>
+            <p class="font-medium text-slate-900">{{ booking.date }}</p>
+          </div>
+
+          <div>
+            <p class="text-xs text-slate-500">Total</p>
+            <p class="font-medium text-slate-900">{{ booking.total_price }}€</p>
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="badge">👤 {{ booking.adults }} adultos</span>
+          <span class="badge">🧒 {{ booking.children }} niños</span>
+          <span class="badge">👶 {{ booking.infants }} bebés</span>
+          <span class="badge">🚐 {{ booking.get_transport_mode_display }}</span>
+          {% if booking.pickup_notes %}
+            <span class="badge">📍 {{ booking.pickup_notes }}</span>
+          {% endif %}
+        </div>
+
+        {% if booking.notes %}
+          <div class="mt-4 border-t border-slate-200 pt-4">
+            <p class="text-xs font-semibold text-slate-700">Mensaje del viajero</p>
+            <p class="mt-1 text-sm text-slate-700 leading-relaxed">{{ booking.notes }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Form -->
+      <form method="post" class="mt-6 space-y-4">
+        {% csrf_token %}
+
+        {% for field in form %}
+          <div>
+            <label class="label">{{ field.label }}</label>
+            {{ field|add_class:"input" }}
+
+            {% if field.errors %}
+              <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <button type="submit" class="btn btn-primary">
+            {% if action == "accept" %}Confirmar aceptación{% else %}Confirmar rechazo{% endif %}
+          </button>
+
+          <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost text-center">
+            Volver
+          </a>
+        </div>
+
+        <p class="text-xs text-slate-500">
+          {% if action == "accept" %}
+            Al aceptar, se notificará al viajero por email con el resumen de la reserva.
+          {% else %}
+            Al rechazar, se notificará al viajero por email con tu mensaje.
+          {% endif %}
+        </p>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}

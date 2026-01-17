@@ -18,7 +18,7 @@
             <div class="card-body">
               <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <!-- Left -->
-                <div>
+                <div class="min-w-0">
                   <h2 class="text-base font-semibold">
                     <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
                       {{ b.experience.title }}
@@ -28,15 +28,31 @@
                   <div class="mt-2 flex flex-wrap gap-2">
                     <span class="badge">👤 {{ b.traveler.username }}</span>
                     <span class="badge">📅 {{ b.date }}</span>
-                    <span class="badge">👥 {{ b.people }} personas</span>
+
+                    <span class="badge">👤 {{ b.adults }} adultos</span>
+                    <span class="badge">🧒 {{ b.children }} niños</span>
+                    <span class="badge">👶 {{ b.infants }} bebés</span>
+
+                    <span class="badge">🚐 {{ b.get_transport_mode_display }}</span>
+
+                    {% if b.pickup_notes %}
+                      <span class="badge">📍 {{ b.pickup_notes }}</span>
+                    {% endif %}
+
                     {% if b.total_price %}
                       <span class="badge">💶 {{ b.total_price }}€</span>
                     {% endif %}
                   </div>
 
+                  {% if b.notes %}
+                    <p class="mt-2 text-sm text-slate-600">
+                      📝 {{ b.notes|truncatechars:120 }}
+                    </p>
+                  {% endif %}
+
                   {% if b.guide_response %}
                     <p class="mt-2 text-sm text-slate-600">
-                      💬 {{ b.guide_response|truncatechars:80 }}
+                      💬 {{ b.guide_response|truncatechars:120 }}
                     </p>
                   {% endif %}
                 </div>
@@ -62,7 +78,9 @@
                   {% endwith %}
 
                   <div class="flex flex-wrap gap-2">
-                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">Ver reserva</a>
+                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
+                      Ver reserva
+                    </a>
 
                     {% if b.status == "pending" %}
                       <a href="{% url 'bookings:accept' b.pk %}" class="btn btn-primary">
@@ -77,6 +95,9 @@
                   </div>
                 </div>
               </div>
+
+              {# Extra: mini footer si quieres #}
+              {# <div class="mt-3 text-xs text-slate-500">ID reserva: {{ b.id }} · Creada: {{ b.created_at }}</div> #}
             </div>
           </div>
         {% endfor %}

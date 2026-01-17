@@ -62,7 +62,7 @@
             {% for field in block_form %}
               <div>
                 <label class="label">{{ field.label }}</label>
-                {{ field }}
+                {{ field|add_class:"input" }}
 
                 {% if field.help_text %}
                   <p class="help">{{ field.help_text|safe }}</p>

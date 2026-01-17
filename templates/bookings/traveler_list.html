@@ -17,7 +17,8 @@
           <div class="card">
             <div class="card-body">
               <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div>
+                <!-- Left -->
+                <div class="min-w-0">
                   <h2 class="text-base font-semibold">
                     <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
                       {{ b.experience.title }}
@@ -26,14 +27,37 @@
 
                   <div class="mt-2 flex flex-wrap gap-2">
                     <span class="badge">📅 {{ b.date }}</span>
-                    <span class="badge">👥 {{ b.people }} personas</span>
+
+                    <!-- Si mantienes people en el modelo -->
+                    {% if b.people %}
+                      <span class="badge">👥 {{ b.people }} personas</span>
+                    {% else %}
+                      <span class="badge">👥 {{ b.adults|default:0|add:b.children|default:0|add:b.infants|default:0 }} personas</span>
+                    {% endif %}
+
                     {% if b.total_price %}
                       <span class="badge">💶 {{ b.total_price }}€</span>
                     {% endif %}
                   </div>
+
+                  {# NUEVO: desglose + transporte #}
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <span class="badge">👤 {{ b.adults }} adultos</span>
+                    <span class="badge">🧒 {{ b.children }} niños</span>
+                    <span class="badge">👶 {{ b.infants }} bebés</span>
+
+                    {% if b.transport_mode %}
+                      <span class="badge">🚐 {{ b.get_transport_mode_display }}</span>
+                    {% endif %}
+
+                    {% if b.pickup_notes %}
+                      <span class="badge">📍 {{ b.pickup_notes }}</span>
+                    {% endif %}
+                  </div>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <!-- Right -->
+                <div class="flex flex-col items-start gap-2 sm:items-end">
                   {% with s=b.status|lower %}
                     {% if s == "accepted" %}
                       <span class="badge badge-amber">Aceptada</span>
@@ -52,7 +76,15 @@
                     {% endif %}
                   {% endwith %}
 
-                  <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">Ver reserva</a>
+                  <div class="flex flex-wrap gap-2">
+                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
+                      Ver reserva
+                    </a>
+                  </div>
+
+                  {% if not b.seen_by_traveler %}
+                    <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>
+                  {% endif %}
                 </div>
               </div>
             </div>

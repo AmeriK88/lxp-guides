@@ -14,34 +14,99 @@
           {{ experience.title }}
         </p>
 
-        <form method="post" class="mt-6 space-y-4">
+        <form method="post" class="mt-6 space-y-6">
           {% csrf_token %}
 
-          {% for field in form %}
-            <div>
-              <label class="label">{{ field.label }}</label>
-              {{ field|add_class:"input" }}
+          <!-- Fecha -->
+          <div>
+            <h2 class="text-sm font-semibold text-slate-900">1) Fecha</h2>
+            <p class="mt-1 text-sm text-slate-600">Elige el día en que quieres hacer la experiencia.</p>
 
-              {% if field.help_text %}
-                <p class="help">{{ field.help_text|safe }}</p>
-              {% endif %}
-
-              {% if field.errors %}
-                <p class="mt-1 text-xs text-red-600">
-                  {{ field.errors|striptags }}
-                </p>
-              {% endif %}
+            <div class="mt-4">
+              <label class="label">{{ form.date.label }}</label>
+              {{ form.date|add_class:"input" }}
+              {% if form.date.help_text %}<p class="help">{{ form.date.help_text|safe }}</p>{% endif %}
+              {% if form.date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.date.errors|striptags }}</p>{% endif %}
             </div>
-          {% endfor %}
+          </div>
+
+          <!-- Personas -->
+          <div class="border-t border-slate-200 pt-5">
+            <h2 class="text-sm font-semibold text-slate-900">2) Personas</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Adultos (precio completo), niños (50%) y bebés (gratis).
+            </p>
+
+            <div class="mt-4 grid gap-4 sm:grid-cols-3">
+              <div>
+                <label class="label">{{ form.adults.label }}</label>
+                {{ form.adults|add_class:"input" }}
+                {% if form.adults.errors %}<p class="mt-1 text-xs text-red-600">{{ form.adults.errors|striptags }}</p>{% endif %}
+              </div>
+
+              <div>
+                <label class="label">{{ form.children.label }}</label>
+                {{ form.children|add_class:"input" }}
+                {% if form.children.errors %}<p class="mt-1 text-xs text-red-600">{{ form.children.errors|striptags }}</p>{% endif %}
+              </div>
+
+              <div>
+                <label class="label">{{ form.infants.label }}</label>
+                {{ form.infants|add_class:"input" }}
+                {% if form.infants.errors %}<p class="mt-1 text-xs text-red-600">{{ form.infants.errors|striptags }}</p>{% endif %}
+              </div>
+            </div>
+
+            {% if form.non_field_errors %}
+              <p class="mt-2 text-xs text-red-600">{{ form.non_field_errors|striptags }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Transporte -->
+          <div class="border-t border-slate-200 pt-5">
+            <h2 class="text-sm font-semibold text-slate-900">3) Transporte</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Indica si necesitas minibus o si vas por tu cuenta.
+            </p>
+
+            <div class="mt-4">
+              <label class="label">{{ form.transport_mode.label }}</label>
+              {{ form.transport_mode|add_class:"input" }}
+              {% if form.transport_mode.errors %}<p class="mt-1 text-xs text-red-600">{{ form.transport_mode.errors|striptags }}</p>{% endif %}
+            </div>
+
+            <div class="mt-4">
+              <label class="label">{{ form.pickup_notes.label }}</label>
+              {{ form.pickup_notes|add_class:"input" }}
+              <p class="mt-1 text-xs text-slate-500">
+                Opcional. Ej: “Hotel en Costa Teguise”, “Arrecife centro”, “Punto X”.
+              </p>
+              {% if form.pickup_notes.errors %}<p class="mt-1 text-xs text-red-600">{{ form.pickup_notes.errors|striptags }}</p>{% endif %}
+            </div>
+          </div>
+
+          <!-- Notas -->
+          <div class="border-t border-slate-200 pt-5">
+            <h2 class="text-sm font-semibold text-slate-900">4) Comentarios</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Cuenta cualquier detalle importante (idioma, ritmo, restricciones, etc.).
+            </p>
+
+            <div class="mt-4">
+              <label class="label">{{ form.notes.label }}</label>
+              {{ form.notes|add_class:"input" }}
+              {% if form.notes.errors %}<p class="mt-1 text-xs text-red-600">{{ form.notes.errors|striptags }}</p>{% endif %}
+            </div>
+          </div>
 
           <button type="submit" class="btn btn-primary w-full">
             Enviar reserva
           </button>
-        </form>
 
-        <div class="mt-4 text-sm text-slate-500">
-          Al enviar la solicitud aceptas las condiciones de la experiencia y las políticas de cancelación.
-        </div>
+          <div class="text-sm text-slate-500">
+            Al enviar la solicitud aceptas las condiciones de la experiencia y las políticas de cancelación.
+          </div>
+        </form>
       </div>
     </div>
   </div>
