@@ -27,15 +27,27 @@ class Booking(models.Model):
     date = models.DateField()
     people = models.PositiveIntegerField(default=1)
 
+    # Snapshot económico (para que el precio no cambie si editas la experience)
+    unit_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
         default=Status.PENDING,
     )
 
-    notes = models.TextField(blank=True)  # opcional: mensaje del viajero al guía
+    # Tracking de notificaciones “no vistas”
+    seen_by_traveler = models.BooleanField(default=True)
+    seen_by_guide = models.BooleanField(default=True)
+
+    # Mensajes
+    notes = models.TextField(blank=True)  # mensaje del viajero al guía
+    guide_response = models.TextField(blank=True)  # respuesta del guía al aceptar/rechazar
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created_at"]

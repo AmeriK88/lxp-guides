@@ -10,3 +10,12 @@ class BookingForm(forms.ModelForm):
             "date": forms.DateInput(attrs={"type": "date"}),
             "notes": forms.Textarea(attrs={"rows": 3}),
         }
+
+
+class BookingDecisionForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ["guide_response"]
+        widgets = {
+            "guide_response": forms.Textarea(attrs={"rows": 3}),
+        }

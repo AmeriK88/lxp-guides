@@ -29,21 +29,30 @@
                     <span class="badge">👤 {{ b.traveler.username }}</span>
                     <span class="badge">📅 {{ b.date }}</span>
                     <span class="badge">👥 {{ b.people }} personas</span>
+                    {% if b.total_price %}
+                      <span class="badge">💶 {{ b.total_price }}€</span>
+                    {% endif %}
                   </div>
+
+                  {% if b.guide_response %}
+                    <p class="mt-2 text-sm text-slate-600">
+                      💬 {{ b.guide_response|truncatechars:80 }}
+                    </p>
+                  {% endif %}
                 </div>
 
                 <!-- Right -->
                 <div class="flex flex-col items-start gap-2 sm:items-end">
                   {% with s=b.status|lower %}
-                    {% if s == "confirmed" or s == "confirmada" %}
-                      <span class="badge badge-amber">Confirmada</span>
-                    {% elif s == "pending" or s == "pendiente" %}
+                    {% if s == "accepted" %}
+                      <span class="badge badge-amber">Aceptada</span>
+                    {% elif s == "pending" %}
                       <span class="badge">Pendiente</span>
-                    {% elif s == "rejected" or s == "rechazada" %}
+                    {% elif s == "rejected" %}
                       <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
                         Rechazada
                       </span>
-                    {% elif s == "cancelled" or s == "cancelada" %}
+                    {% elif s == "canceled" %}
                       <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
                         Cancelada
                       </span>
@@ -53,17 +62,16 @@
                   {% endwith %}
 
                   <div class="flex flex-wrap gap-2">
-                    <a href="{% url 'experiences:detail' b.experience.pk %}" class="btn btn-ghost">
-                      Ver
-                    </a>
+                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">Ver reserva</a>
 
                     {% if b.status == "pending" %}
                       <a href="{% url 'bookings:accept' b.pk %}" class="btn btn-primary">
-                        Aceptar
+                        Aceptar con mensaje
                       </a>
-                      <a href="{% url 'bookings:reject' b.pk %}" class="btn btn-ghost"
-                         style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                        Rechazar
+                      <a href="{% url 'bookings:reject' b.pk %}"
+                        class="btn btn-ghost"
+                        style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                        Rechazar con motivo
                       </a>
                     {% endif %}
                   </div>

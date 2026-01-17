@@ -7,7 +7,7 @@
     <div>
       <h1 class="text-2xl font-semibold tracking-tight">Mis Reservas</h1>
       <p class="mt-1 text-sm text-slate-600">
-        Revisa el estado de tus reservas y accede a los detalles de cada experiencia.
+        Revisa el estado de tus reservas y accede a los detalles de cada reserva.
       </p>
     </div>
 
@@ -27,17 +27,23 @@
                   <div class="mt-2 flex flex-wrap gap-2">
                     <span class="badge">📅 {{ b.date }}</span>
                     <span class="badge">👥 {{ b.people }} personas</span>
+                    {% if b.total_price %}
+                      <span class="badge">💶 {{ b.total_price }}€</span>
+                    {% endif %}
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2">
-                  {# Badge por estado (no revienta si status cambia) #}
                   {% with s=b.status|lower %}
-                    {% if s == "confirmed" or s == "confirmada" %}
-                      <span class="badge badge-amber">Confirmada</span>
-                    {% elif s == "pending" or s == "pendiente" %}
+                    {% if s == "accepted" %}
+                      <span class="badge badge-amber">Aceptada</span>
+                    {% elif s == "pending" %}
                       <span class="badge">Pendiente</span>
-                    {% elif s == "cancelled" or s == "cancelada" %}
+                    {% elif s == "rejected" %}
+                      <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                        Rechazada
+                      </span>
+                    {% elif s == "canceled" %}
                       <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
                         Cancelada
                       </span>
@@ -46,9 +52,7 @@
                     {% endif %}
                   {% endwith %}
 
-                  <a href="{% url 'experiences:detail' b.experience.pk %}" class="btn btn-ghost">
-                    Ver
-                  </a>
+                  <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">Ver reserva</a>
                 </div>
               </div>
             </div>
