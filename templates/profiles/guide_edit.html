@@ -1,67 +1,147 @@
 {% extends "layouts/dashboard_base.html" %}
+{% load form_tags %}
 {% block title %}Mi Perfil{% endblock %}
 
 {% block dashboard_content %}
-<h1>Mi Perfil (Guía)</h1>
+  <div class="flex flex-col gap-6">
+    <!-- Header -->
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight">Mi Perfil (Guía)</h1>
 
-<p>
-  <strong>Estado de verificación:</strong>
-  {% if profile.verification_status == "verified" %}
-    Guía verificado ✅
-  {% elif profile.verification_status == "pending" %}
-    Pendiente de verificación ⏳
-  {% else %}
-    Rechazado ❌
-  {% endif %}
-</p>
+        <div class="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          <span class="text-slate-600">Estado de verificación:</span>
 
-{% if profile.verification_status != "verified" %}
-  <div style="padding:10px; background:#fff3cd; border:1px solid #ffeeba; margin-bottom:1rem;">
-    ⚠️ Para verificar tu cuenta, sube:
-    <ul>
-      <li><strong>Carnet/acreditación de guía</strong></li>
-      <li><strong>Seguro RC</strong> o <strong>alta de autónomo/empresa</strong></li>
-    </ul>
-    Nuestro equipo lo revisará y te notificará.
-  </div>
-{% endif %}
+          {% if profile.verification_status == "verified" %}
+            <span class="badge border-emerald-200 bg-emerald-50 text-emerald-800">✅ Verificado</span>
+          {% elif profile.verification_status == "pending" %}
+            <span class="badge border-amber-200 bg-amber-50 text-amber-800">⏳ Pendiente</span>
+          {% elif profile.verification_status == "rejected" %}
+            <span class="badge border-red-200 bg-red-50 text-red-800">❌ Rechazado</span>
+          {% else %}
+            <span class="badge">No verificado</span>
+          {% endif %}
+        </div>
 
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
-</form>
+        <p class="mt-1 text-sm text-slate-600">
+          Mantén tus datos al día y sube los documentos para verificación.
+        </p>
+      </div>
 
-<hr>
+      <a href="{% url 'profiles:public_guide' request.user.pk %}" class="btn btn-ghost">
+        Ver mi perfil público
+      </a>
+    </div>
 
-<h3>Documentos subidos</h3>
-<ul>
-  <li>
-    Carnet guía:
-    {% if profile.guide_license_document %}
-      <a href="{{ profile.guide_license_document.url }}">Ver archivo</a>
-    {% else %}
-      No subido
+    <!-- Guidance box (si no está verificado) -->
+    {% if profile.verification_status != "verified" %}
+      <div class="card border-amber-200 bg-amber-50">
+        <div class="card-body">
+          <h2 class="text-base font-semibold text-amber-900">⚠️ Verificación requerida</h2>
+          <p class="mt-1 text-sm text-amber-900/80">
+            Para verificar tu cuenta, sube estos documentos. Nuestro equipo lo revisará y te notificará.
+          </p>
+          <ul class="mt-3 list-disc pl-5 text-sm text-amber-900/90 space-y-1">
+            <li><strong>Carnet / acreditación de guía</strong></li>
+            <li><strong>Seguro RC</strong> o <strong>alta de autónomo/empresa</strong></li>
+          </ul>
+        </div>
+      </div>
     {% endif %}
-  </li>
-  <li>
-    Seguro/Alta:
-    {% if profile.insurance_or_registration_document %}
-      <a href="{{ profile.insurance_or_registration_document.url }}">Ver archivo</a>
-    {% else %}
-      No subido
-    {% endif %}
-  </li>
-</ul>
 
-{% if profile.verification_status == "rejected" and profile.verification_notes %}
-  <div style="padding:10px; background:#f8d7da; border:1px solid #f5c2c7; margin-top:1rem;">
-    <strong>Motivo de rechazo:</strong>
-    <p>{{ profile.verification_notes }}</p>
+    <!-- Form -->
+    <div class="card">
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {% for field in form %}
+              <div class="{% if field.field.widget.input_type == 'textarea' %}sm:col-span-2{% endif %}">
+                <label class="label">{{ field.label }}</label>
+
+                {% if field.field.widget.input_type == "textarea" %}
+                  {{ field|add_class:"input min-h-[120px]" }}
+                {% else %}
+                  {{ field|add_class:"input" }}
+                {% endif %}
+
+                {% if field.help_text %}
+                  <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+
+                {% if field.errors %}
+                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <a href="{% url 'pages:dashboard' %}" class="btn btn-ghost">
+              Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Uploaded docs -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-base font-semibold">Documentos subidos</h2>
+        <p class="mt-1 text-sm text-slate-600">Revisa lo que has adjuntado.</p>
+
+        <div class="mt-4 space-y-3 text-sm">
+          <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+            <div>
+              <p class="font-medium text-slate-900">Carnet guía</p>
+              <p class="text-slate-500">Acreditación oficial</p>
+            </div>
+            <div>
+              {% if profile.guide_license_document %}
+                <a class="btn btn-ghost" href="{{ profile.guide_license_document.url }}" target="_blank" rel="noopener">
+                  Ver archivo
+                </a>
+              {% else %}
+                <span class="badge">No subido</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+            <div>
+              <p class="font-medium text-slate-900">Seguro / Alta</p>
+              <p class="text-slate-500">Seguro RC o alta autónomo/empresa</p>
+            </div>
+            <div>
+              {% if profile.insurance_or_registration_document %}
+                <a class="btn btn-ghost" href="{{ profile.insurance_or_registration_document.url }}" target="_blank" rel="noopener">
+                  Ver archivo
+                </a>
+              {% else %}
+                <span class="badge">No subido</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {% if profile.verification_status == "rejected" and profile.verification_notes %}
+          <div class="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3">
+            <p class="text-sm font-semibold text-red-900">Motivo de rechazo</p>
+            <p class="mt-1 text-sm text-red-900/80">{{ profile.verification_notes }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
-{% endif %}
-
-<p style="margin-top:1rem;">
-  <a href="{% url 'profiles:public_guide' request.user.pk %}">Ver mi perfil público</a>
-</p>
 {% endblock %}

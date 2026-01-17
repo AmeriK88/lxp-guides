@@ -1,12 +1,45 @@
 {% extends "layouts/base.html" %}
+{% load form_tags %}
+
 {% block title %}Registro{% endblock %}
 
 {% block content %}
-  <h1>Registro</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Crear cuenta</button>
-  </form>
-  <p><a href="{% url 'accounts:login' %}">Ya tengo cuenta</a></p>
+  <div class="mx-auto max-w-md">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="text-2xl font-semibold tracking-tight">Crear cuenta</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Regístrate para explorar experiencias o convertirte en guía.
+        </p>
+
+        <form method="post" class="mt-6 space-y-4">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div>
+              <label class="label">{{ field.label }}</label>
+              {{ field|add_class:"input" }}
+
+              {% if field.errors %}
+                <p class="mt-1 text-xs text-red-600">
+                  {{ field.errors|striptags }}
+                </p>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-primary w-full">
+            Crear cuenta
+          </button>
+        </form>
+
+        <div class="mt-4 text-center text-sm">
+          <span class="text-slate-600">¿Ya tienes cuenta?</span>
+          <a href="{% url 'accounts:login' %}" class="ml-1 font-medium text-blue-600 hover:text-blue-700">
+            Iniciar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

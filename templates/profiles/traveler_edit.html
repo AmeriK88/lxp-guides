@@ -1,12 +1,60 @@
 {% extends "layouts/dashboard_base.html" %}
+{% load form_tags %}
 {% block title %}Mi Perfil{% endblock %}
 
 {% block dashboard_content %}
-<h1>Mi Perfil (Viajero)</h1>
+  <div class="flex flex-col gap-6">
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight">Mi Perfil</h1>
+      <p class="mt-1 text-sm text-slate-600">
+        Actualiza tus datos. Estos se usarán para tus reservas y comunicaciones.
+      </p>
+    </div>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
-</form>
+    <div class="card">
+      <div class="card-body">
+        <form method="post" class="space-y-6">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {% for field in form %}
+              <div class="{% if field.field.widget.input_type == 'textarea' %}sm:col-span-2{% endif %}">
+                <label class="label">{{ field.label }}</label>
+
+                {% if field.field.widget.input_type == "textarea" %}
+                  {{ field|add_class:"input min-h-[120px]" }}
+                {% else %}
+                  {{ field|add_class:"input" }}
+                {% endif %}
+
+                {% if field.help_text %}
+                  <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+
+                {% if field.errors %}
+                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <a href="{% url 'pages:dashboard' %}" class="btn btn-ghost">
+              Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}

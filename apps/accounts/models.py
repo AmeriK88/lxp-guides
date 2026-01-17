@@ -6,7 +6,6 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         TRAVELER = "traveler", "Traveler"
         GUIDE = "guide", "Guide"
-        ADMIN = "admin", "Admin"
 
     role = models.CharField(
         max_length=20,

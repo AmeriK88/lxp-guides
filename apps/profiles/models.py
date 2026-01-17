@@ -15,6 +15,13 @@ class GuideProfile(models.Model):
         limit_choices_to={"role": "guide"},
     )
 
+    avatar = models.ImageField(
+        upload_to="guides/avatars/",
+        blank=True,
+        null=True,
+        help_text="Foto de perfil (JPG/PNG)."
+    )
+    
     display_name = models.CharField(max_length=120, blank=True)
     bio = models.TextField(blank=True)
     languages = models.CharField(max_length=200, blank=True)  # "ES, EN, DE"

@@ -1,0 +1,38 @@
+<div class="card overflow-hidden">
+  {% if experience.image %}
+    <img
+      src="{{ experience.image.url }}"
+      alt="{{ experience.title }}"
+      class="h-48 w-full object-cover"
+    />
+  {% else %}
+    <div class="flex h-48 w-full items-center justify-center bg-slate-100 text-slate-400 text-sm">
+      Sin imagen
+    </div>
+  {% endif %}
+
+  <div class="card-body">
+    <h3 class="text-lg font-semibold leading-tight">
+      {{ experience.title }}
+    </h3>
+
+    <div class="mt-1 flex flex-wrap gap-2 text-sm">
+      {% if experience.location %}
+        <span class="badge">📍 {{ experience.location }}</span>
+      {% endif %}
+      {% if experience.duration_minutes %}
+        <span class="badge">⏱ {{ experience.duration_minutes }} min</span>
+      {% endif %}
+    </div>
+
+    <div class="mt-4 flex items-center justify-between">
+      <span class="text-lg font-bold text-slate-900">
+        {{ experience.price }} €
+      </span>
+
+      <a href="{% url 'experiences:detail' experience.pk %}" class="btn btn-primary">
+        Ver experiencia
+      </a>
+    </div>
+  </div>
+</div>

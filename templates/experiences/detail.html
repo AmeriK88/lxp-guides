@@ -2,29 +2,118 @@
 {% block title %}{{ exp.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ exp.title }}</h1>
+  <div class="grid gap-8 lg:grid-cols-[2fr_1fr]">
+    <!-- Left: Info -->
+    <div class="space-y-6">
+      {% if exp.image %}
+        <div class="relative overflow-hidden rounded-2xl h-40">
+          <img src="{{ exp.image.url }}" alt="{{ exp.title }}"
+     class="w-full h-40 object-cover rounded-2xl">
 
-<p><strong>Guía:</strong> {{ exp.guide.username }}</p>
-<p><strong>Precio:</strong> {{ exp.price }} €</p>
-<p><strong>Duración:</strong> {{ exp.duration_minutes }} min</p>
-<p><strong>Máx. personas:</strong> {{ exp.max_people }}</p>
-<p><strong>Zona:</strong> {{ exp.location }}</p>
+        </div>
+      {% endif %}
 
-<p>{{ exp.description }}</p>
+      <div>
+        <h1 class="text-3xl font-semibold tracking-tight">{{ exp.title }}</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          📍 {{ exp.location }} · ⏱ {{ exp.duration_minutes }} min · 👥 máx. {{ exp.max_people }}
+        </p>
+      </div>
 
-{% if user.is_authenticated and user.is_traveler %}
-  <p>
-    <a href="{% url 'bookings:create' exp.pk %}">Reservar esta experiencia</a>
-  </p>
-{% endif %}
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">Descripción</h2>
+          <p class="mt-2 text-slate-700 leading-relaxed">{{ exp.description }}</p>
+        </div>
+      </div>
+
+<div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+  {% with gp=exp.guide.guide_profile %}
+    <div class="flex items-center gap-4">
+      <a href="{% url 'profiles:public_guide' exp.guide.pk %}" class="shrink-0">
+        {% if gp.avatar %}
+          <img
+            src="{{ gp.avatar.url }}"
+            alt="{{ gp.display_name|default:exp.guide.username }}"
+            width="60"
+            height="56"
+            class="h-14 w-14 rounded-full object-cover border border-slate-200 hover:ring-2 hover:ring-blue-500 transition"
+          />
+        {% else %}
+          <div class="h-14 w-14 shrink-0 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 text-sm">
+            👤
+          </div>
+        {% endif %}
+      </a>
+
+      <div class="leading-tight">
+        <p class="text-sm text-slate-500">Tu guía</p>
+        <a href="{% url 'profiles:public_guide' exp.guide.pk %}"
+           class="text-base font-semibold text-slate-900 hover:underline">
+          {{ gp.display_name|default:exp.guide.username }}
+        </a>
+
+        {% if gp.verification_status == "verified" %}
+          <div class="mt-1">
+            <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 border border-emerald-200">
+              ✔ Verificado
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <a href="{% url 'profiles:public_guide' exp.guide.pk %}" class="btn btn-ghost">
+      Ver perfil
+    </a>
+  {% endwith %}
+</div>
 
 
-{% if user.is_authenticated and user.is_guide and user == exp.guide %}
-  <p>
-    <a href="{% url 'experiences:edit' exp.pk %}">Editar</a> |
-    <a href="{% url 'experiences:delete' exp.pk %}">Eliminar</a>
-  </p>
-{% endif %}
+      {% if user.is_authenticated and user.is_guide and user == exp.guide %}
+        <div class="flex gap-2">
+          <a href="{% url 'experiences:edit' exp.pk %}" class="btn btn-ghost">Editar</a>
+          <a href="{% url 'experiences:delete' exp.pk %}" class="btn btn-ghost text-red-600 hover:bg-red-50">
+            Eliminar
+          </a>
+        </div>
+      {% endif %}
+    </div>
 
-<p><a href="{% url 'experiences:list' %}">Volver</a></p>
+    <!-- Right: Booking card -->
+    <aside class="lg:sticky lg:top-24 h-fit">
+      <div class="card">
+        <div class="card-body space-y-4">
+          <div>
+            <p class="text-sm text-slate-500">Precio por persona</p>
+            <p class="text-2xl font-semibold text-slate-900">{{ exp.price }} €</p>
+          </div>
+
+          {% if user.is_authenticated and user.is_traveler %}
+            <a href="{% url 'bookings:create' exp.pk %}" class="btn btn-primary w-full">
+              Reservar ahora
+            </a>
+          {% else %}
+            <p class="text-sm text-slate-600">
+              Inicia sesión como viajero para reservar.
+            </p>
+            <a href="{% url 'accounts:login' %}?next={% url 'experiences:detail' exp.pk %}"
+               class="btn btn-ghost w-full text-center">
+              Iniciar sesión
+            </a>
+          {% endif %}
+
+          <div class="text-xs text-slate-500">
+            Cancelación gratuita según condiciones del guía.
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="mt-8">
+    <a href="{% url 'experiences:list' %}" class="text-sm text-slate-600 hover:underline">
+      ← Volver a experiencias
+    </a>
+  </div>
 {% endblock %}

@@ -1,23 +1,76 @@
 {% extends "layouts/dashboard_base.html" %}
-{% block dashboard_content %}
-<h1>Mis Reservas</h1>
+{% block title %}Mis Reservas{% endblock %}
 
-<ul>
-  {% for b in bookings %}
-    <li>
-      <strong>
-        <a href="{% url 'experiences:detail' b.experience.pk %}">
-          {{ b.experience.title }}
-        </a>
-      </strong>
-      <br>
-      Fecha: {{ b.date }} |
-      Personas: {{ b.people }} |
-      Estado: {{ b.status }}
-    </li>
-    <hr>
-  {% empty %}
-    <p>No tienes reservas aún.</p>
-  {% endfor %}
-</ul>
+{% block dashboard_content %}
+  <div class="flex flex-col gap-6">
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight">Mis Reservas</h1>
+      <p class="mt-1 text-sm text-slate-600">
+        Revisa el estado de tus reservas y accede a los detalles de cada experiencia.
+      </p>
+    </div>
+
+    {% if bookings %}
+      <div class="space-y-3">
+        {% for b in bookings %}
+          <div class="card">
+            <div class="card-body">
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h2 class="text-base font-semibold">
+                    <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
+                      {{ b.experience.title }}
+                    </a>
+                  </h2>
+
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <span class="badge">📅 {{ b.date }}</span>
+                    <span class="badge">👥 {{ b.people }} personas</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  {# Badge por estado (no revienta si status cambia) #}
+                  {% with s=b.status|lower %}
+                    {% if s == "confirmed" or s == "confirmada" %}
+                      <span class="badge badge-amber">Confirmada</span>
+                    {% elif s == "pending" or s == "pendiente" %}
+                      <span class="badge">Pendiente</span>
+                    {% elif s == "cancelled" or s == "cancelada" %}
+                      <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                        Cancelada
+                      </span>
+                    {% else %}
+                      <span class="badge">{{ b.status }}</span>
+                    {% endif %}
+                  {% endwith %}
+
+                  <a href="{% url 'experiences:detail' b.experience.pk %}" class="btn btn-ghost">
+                    Ver
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">No tienes reservas aún</h2>
+          <p class="mt-1 text-sm text-slate-600">
+            Cuando reserves una experiencia, aparecerá aquí con su estado.
+          </p>
+
+          <div class="mt-4">
+            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+              Explorar experiencias
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}

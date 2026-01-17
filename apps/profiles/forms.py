@@ -12,6 +12,7 @@ class GuideProfileForm(forms.ModelForm):
             "phone",
             "instagram",
             "website",
+            "avatar",
             "guide_license_document",
             "insurance_or_registration_document",
         ]

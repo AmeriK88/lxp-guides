@@ -9,6 +9,7 @@ class ExperienceForm(forms.ModelForm):
             "category",
             "title",
             "description",
+            "image",
             "price",
             "duration_minutes",
             "max_people",

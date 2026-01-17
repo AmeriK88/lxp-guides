@@ -96,7 +96,7 @@ def experience_list(request):
 @guide_required
 def experience_create(request):
     if request.method == "POST":
-        form = ExperienceForm(request.POST)
+        form = ExperienceForm(request.POST, request.FILES)  # 👈 CLAVE
         if form.is_valid():
             exp = form.save(commit=False)
             exp.guide = request.user
@@ -122,7 +122,7 @@ def experience_edit(request, pk):
     exp = get_object_or_404(Experience, pk=pk, guide=request.user)
 
     if request.method == "POST":
-        form = ExperienceForm(request.POST, instance=exp)
+        form = ExperienceForm(request.POST, request.FILES, instance=exp)  # 👈 CLAVE
         if form.is_valid():
             form.save()
             messages.success(request, "Experiencia actualizada.")

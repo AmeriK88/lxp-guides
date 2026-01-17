@@ -1,5 +1,11 @@
-<p><strong>Guía:</strong>
-  <a href="{% url 'profiles:public_guide' exp.guide.pk %}">
+<div class="flex items-center gap-2 text-sm text-slate-600">
+  <span>Guía:</span>
+  <a href="{% url 'profiles:public_guide' exp.guide.pk %}"
+     class="font-medium text-blue-600 hover:underline">
     {{ exp.guide.username }}
   </a>
-</p>
+
+  {% if exp.guide.guide_profile.verification_status == "verified" %}
+    <span class="badge border-emerald-200 bg-emerald-50 text-emerald-800">✔ Verificado</span>
+  {% endif %}
+</div>

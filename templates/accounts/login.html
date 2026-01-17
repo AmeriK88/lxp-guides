@@ -2,20 +2,51 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <h1>Login</h1>
-  <form method="post">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next|default:'' }}">
+  <div class="mx-auto max-w-md">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="text-2xl font-semibold tracking-tight">Iniciar sesión</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Accede a tu cuenta para gestionar tus experiencias y reservas.
+        </p>
 
-    <p>
-      <label>Usuario</label><br />
-      <input type="text" name="username" required />
-    </p>
-    <p>
-      <label>Contraseña</label><br />
-      <input type="password" name="password" required />
-    </p>
-    <button type="submit">Entrar</button>
-  </form>
-  <p><a href="{% url 'accounts:register' %}">Crear cuenta</a></p>
+        <form method="post" class="mt-6 space-y-4">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next|default:'' }}">
+
+          <div>
+            <label class="label">Usuario</label>
+            <input
+              type="text"
+              name="username"
+              class="input"
+              required
+              autofocus
+            />
+          </div>
+
+          <div>
+            <label class="label">Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              class="input"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full">
+            Entrar
+          </button>
+        </form>
+
+        <div class="mt-4 text-center text-sm">
+          <span class="text-slate-600">¿No tienes cuenta?</span>
+          <a href="{% url 'accounts:register' %}" class="ml-1 font-medium text-blue-600 hover:text-blue-700">
+            Crear cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

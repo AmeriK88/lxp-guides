@@ -1,34 +1,74 @@
+{% load static %}
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{% block title %}LanzaXperience{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
   </head>
-  <body>
-    <nav>
-      <a href="{% url 'pages:home' %}">Home</a> |
 
-      {% if user.is_authenticated %}
-        <a href="{% url 'pages:dashboard' %}">Dashboard</a> |
-        <a href="{% url 'accounts:logout' %}">Salir</a>
-      {% else %}
-        <a href="{% url 'accounts:login' %}">Login</a> |
-        <a href="{% url 'accounts:register' %}">Registro</a>
-      {% endif %}
-    </nav>
+  <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <!-- Topbar (minimal, no compite con sidebar) -->
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <a href="{% url 'pages:home' %}" class="text-sm font-semibold tracking-tight">
+          LanzaXperience
+        </a>
 
+        <div class="flex items-center gap-2 text-sm">
+          {% if user.is_authenticated %}
+            <span class="hidden sm:inline text-slate-600">{{ user.username }}</span>
+            <a href="{% url 'accounts:logout' %}"
+               class="rounded-lg bg-slate-900 px-3 py-1.5 font-medium text-white hover:bg-slate-800">
+              Salir
+            </a>
+          {% else %}
+            <a href="{% url 'accounts:login' %}"
+               class="rounded-lg px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-100">
+              Login
+            </a>
+            <a href="{% url 'accounts:register' %}"
+               class="rounded-lg bg-blue-600 px-3 py-1.5 font-medium text-white hover:bg-blue-500">
+              Registro
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
 
+    <!-- Messages -->
     {% if messages %}
-      <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
+      <div class="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
+        <div class="space-y-2">
+          {% for message in messages %}
+            {% if message.tags == "success" %}
+              <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+                {{ message }}
+              </div>
+            {% elif message.tags == "error" %}
+              <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+                {{ message }}
+              </div>
+            {% elif message.tags == "warning" %}
+              <div class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                {{ message }}
+              </div>
+            {% else %}
+              <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+                {{ message }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
     {% endif %}
 
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+
+    {% block body %}
+      <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        {% block content %}{% endblock %}
+      </main>
+    {% endblock %}
   </body>
 </html>

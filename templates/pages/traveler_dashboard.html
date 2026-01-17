@@ -2,57 +2,97 @@
 {% block title %}Explorar{% endblock %}
 
 {% block dashboard_content %}
-<h1>Explorar Lanzarote</h1>
+  <div class="flex flex-col gap-6">
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight">Explorar Lanzarote</h1>
+      <p class="mt-1 text-sm text-slate-600">
+        Encuentra tu próxima experiencia: volcanes, calas, senderismo y más.
+      </p>
+    </div>
 
-<!-- Buscador -->
-<form method="get" action="{% url 'experiences:list' %}" style="margin-bottom: 1rem;">
-  <input type="text" name="q" placeholder="Buscar volcanes, playa, senderismo..." style="width: 320px;">
-  <button type="submit">Buscar</button>
-</form>
+    <!-- Search -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-base font-semibold">Buscar</h2>
+        <p class="mt-1 text-sm text-slate-600">Haz una búsqueda rápida y te llevamos al listado.</p>
 
-<hr>
+        <form method="get" action="{% url 'experiences:list' %}" class="mt-4 flex flex-col gap-2 sm:flex-row">
+          <input
+            type="text"
+            name="q"
+            placeholder="Buscar volcanes, playa, senderismo..."
+            class="input flex-1"
+          >
+          <button type="submit" class="btn btn-primary">
+            Buscar
+          </button>
+        </form>
+      </div>
+    </div>
 
-<!-- Categorías -->
-<h2>Categorías</h2>
-{% if categories %}
-  <ul>
-    {% for c in categories %}
-      <li>
-        <a href="{% url 'experiences:list' %}?category={{ c.slug }}">{{ c.name }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Aún no hay categorías creadas.</p>
-{% endif %}
+    <!-- Categories -->
+    <div class="card">
+      <div class="card-body">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-base font-semibold">Categorías</h2>
+            <p class="mt-1 text-sm text-slate-600">Explora por tipo de experiencia.</p>
+          </div>
+          <a href="{% url 'experiences:list' %}" class="btn btn-ghost">Ver todo</a>
+        </div>
 
-<hr>
-
-<!-- Top experiencias -->
-<h2>Top experiencias</h2>
-
-{% if top_experiences %}
-  <ul>
-    {% for e in top_experiences %}
-      <li>
-        <strong><a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a></strong>
-        {% if e.category %} — {{ e.category.name }}{% endif %}
-        <br>
-        {{ e.location }} | {{ e.duration_minutes }} min | {{ e.price }}€
-        <br>
-        Guía: {{ e.guide.username }}
-        {% if e.bookings_count %}
-          | Reservas: {{ e.bookings_count }}
+        {% if categories %}
+          <div class="mt-4 flex flex-wrap gap-2">
+            {% for c in categories %}
+              <a href="{% url 'experiences:list' %}?category={{ c.slug }}"
+                 class="badge hover:bg-slate-100">
+                {{ c.name }}
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="mt-3 text-sm text-slate-600">Aún no hay categorías creadas.</p>
         {% endif %}
-      </li>
-      <hr>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No hay experiencias activas todavía.</p>
-{% endif %}
+      </div>
+    </div>
 
-<p>
-  <a href="{% url 'experiences:list' %}">Ver todas las experiencias →</a>
-</p>
+    <!-- Top experiences -->
+    <div>
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-semibold tracking-tight">Top experiencias</h2>
+          <p class="mt-1 text-sm text-slate-600">
+            Las más populares ahora mismo.
+          </p>
+        </div>
+
+        <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
+          Ver todas →
+        </a>
+      </div>
+
+      {% if top_experiences %}
+        <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {% for experience in top_experiences %}
+            {% include "components/experience_card.html" with experience=experience %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="mt-5 card">
+          <div class="card-body">
+            <h3 class="text-base font-semibold">No hay experiencias activas todavía</h3>
+            <p class="mt-1 text-sm text-slate-600">
+              Vuelve más tarde o revisa el listado completo.
+            </p>
+            <div class="mt-4">
+              <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+                Explorar experiencias
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

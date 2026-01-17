@@ -2,43 +2,114 @@
 {% block title %}Guía - {{ profile.display_name|default:guide_user.username }}{% endblock %}
 
 {% block content %}
-<h1>
-  {{ profile.display_name|default:guide_user.username }}
-  {% if profile.verification_status == "verified" %}
-    <span style="color:green;">✔ Verificado</span>
-  {% endif %}
-</h1>
+  <div class="flex flex-col gap-8">
+    <!-- Header -->
+    <div class="card">
+      <div class="card-body relative">
+        
+        {# Avatar pequeño en la esquina #}
+        {% if profile.avatar %}
+          <img
+            src="{{ profile.avatar.url }}"
+            alt="{{ profile.display_name|default:guide_user.username }}"
+            width="150"
+            height="150"
+            class="absolute top-4 right-4 h-8 w-8 shrink-0 rounded-full object-cover border border-slate-200 bg-white"
+          />
+        {% endif %}
 
+        <div class="flex flex-col gap-3">
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight">
+              {{ profile.display_name|default:guide_user.username }}
 
-<p>
-  <strong>Estado:</strong>
-  {% if profile.verification_status == "verified" %}
-    Guía verificado ✅
-  {% elif profile.verification_status == "pending" %}
-    Pendiente de verificación ⏳
-  {% else %}
-    No verificado ❌
-  {% endif %}
-</p>
+              {% if profile.verification_status == "verified" %}
+                <span class="ml-2 inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 border border-emerald-200">
+                  ✔ Verificado
+                </span>
+              {% else %}
+                <span class="ml-2 inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 border border-amber-200">
+                  ⏳ En revisión
+                </span>
+              {% endif %}
+            </h1>
 
+            <p class="mt-2 text-sm text-slate-600">
+              {% if profile.verification_status == "verified" %}
+                Guía verificado oficialmente
+              {% else %}
+                Documentación pendiente de validación por el equipo
+              {% endif %}
+            </p>
+          </div>
 
-{% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
-{% if profile.languages %}<p><strong>Idiomas:</strong> {{ profile.languages }}</p>{% endif %}
-{% if profile.website %}<p><strong>Web:</strong> <a href="{{ profile.website }}">{{ profile.website }}</a></p>{% endif %}
+          <div class="flex justify-end">
+            <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
+              Ver experiencias
+            </a>
+          </div>
+        </div>
 
-<hr>
+        {% if profile.bio %}
+          <div class="mt-4">
+            <h2 class="text-sm font-semibold text-slate-900">Sobre mí</h2>
+            <p class="mt-2 text-slate-700 leading-relaxed">
+              {{ profile.bio }}
+            </p>
+          </div>
+        {% endif %}
 
-<h2>Experiencias activas</h2>
-{% if experiences %}
-  <ul>
-    {% for e in experiences %}
-      <li>
-        <a href="{% url 'experiences:detail' e.pk %}">{{ e.title }}</a>
-        — {{ e.price }}€ — {{ e.duration_minutes }} min — {{ e.location }}
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Este guía aún no tiene experiencias activas.</p>
-{% endif %}
+        <div class="mt-5 flex flex-wrap gap-2">
+          {% if profile.languages %}
+            <span class="badge">🗣 {{ profile.languages }}</span>
+          {% endif %}
+          {% if profile.website %}
+            <a class="badge hover:bg-slate-100" href="{{ profile.website }}" target="_blank" rel="noopener">
+              🔗 Web
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Experiences -->
+    <div>
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-semibold tracking-tight">Experiencias activas</h2>
+          <p class="mt-1 text-sm text-slate-600">
+            Planes disponibles con este guía.
+          </p>
+        </div>
+      </div>
+
+      {% if experiences %}
+        <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {% for experience in experiences %}
+            {% include "components/experience_card.html" with experience=experience %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="mt-5 card">
+          <div class="card-body">
+            <h3 class="text-base font-semibold">Este guía aún no tiene experiencias activas</h3>
+            <p class="mt-1 text-sm text-slate-600">
+              Vuelve más tarde o explora otras experiencias.
+            </p>
+            <div class="mt-4">
+              <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+                Explorar experiencias
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div>
+      <a href="{% url 'experiences:list' %}" class="text-sm text-slate-600 hover:underline">
+        ← Volver a experiencias
+      </a>
+    </div>
+  </div>
 {% endblock %}

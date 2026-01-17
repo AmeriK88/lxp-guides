@@ -35,6 +35,8 @@ class Experience(models.Model):
     duration_minutes = models.PositiveIntegerField()
     max_people = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=255)
+    image = models.ImageField( upload_to="experiences/", blank=True, null=True,)
+
 
     # NUEVO: keywords/tags para búsquedas
     tags = models.CharField(

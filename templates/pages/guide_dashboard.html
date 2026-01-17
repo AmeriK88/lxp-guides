@@ -1,6 +1,148 @@
 {% extends "layouts/dashboard_base.html" %}
+{% block title %}Panel del Guía{% endblock %}
 
 {% block dashboard_content %}
-<h1>Panel del Guía</h1>
-<p>Aquí gestionarás tus experiencias, calendario y reservas.</p>
+  <div class="flex flex-col gap-6">
+    <!-- Header -->
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight">Panel del Guía</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Gestiona tus experiencias, disponibilidad y reservas desde aquí.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <a href="{% url 'experiences:create' %}" class="btn btn-primary">
+          + Nueva experiencia
+        </a>
+        <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
+          Ver mis experiencias
+        </a>
+      </div>
+    </div>
+
+    <!-- KPIs (placeholders seguros) -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Experiencias</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.experiences|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Publicadas / activas</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Reservas (30 días)</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.bookings_30d|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Recibidas recientemente</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Pendientes</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.pending|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Por confirmar/gestionar</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Ingresos (30 días)</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.revenue_30d|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Estimado</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="grid gap-4 lg:grid-cols-2">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">Acciones rápidas</h2>
+          <p class="mt-1 text-sm text-slate-600">Lo típico del día a día.</p>
+
+          <div class="mt-4 flex flex-col gap-2">
+            <a href="{% url 'experiences:create' %}" class="btn btn-primary w-full">Crear experiencia</a>
+            <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias</a>
+            <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost w-full">Ver reservas recibidas</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity / Next steps -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">Siguiente paso recomendado</h2>
+          <p class="mt-1 text-sm text-slate-600">
+            Para vender más, asegúrate de tener disponibilidad y fotos.
+          </p>
+
+          <div class="mt-4 space-y-3">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
+              <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
+              <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
+              <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional: recent bookings list -->
+    {% if recent_bookings %}
+      <div class="card">
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-semibold">Reservas recientes</h2>
+            <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas</a>
+          </div>
+
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-slate-500">
+                <tr class="border-b border-slate-200">
+                  <th class="py-2 pr-3 font-medium">Experiencia</th>
+                  <th class="py-2 pr-3 font-medium">Fecha</th>
+                  <th class="py-2 pr-3 font-medium">Personas</th>
+                  <th class="py-2 pr-3 font-medium">Estado</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-700">
+                {% for b in recent_bookings %}
+                  <tr class="border-b border-slate-100">
+                    <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
+                    <td class="py-3 pr-3">{{ b.date }}</td>
+                    <td class="py-3 pr-3">{{ b.people }}</td>
+                    <td class="py-3 pr-3">
+                      <span class="badge">{{ b.status }}</span>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}
