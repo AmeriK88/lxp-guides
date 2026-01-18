@@ -136,6 +136,7 @@ def accept_booking(request, pk):
 
     if request.method == "POST":
         form = BookingDecisionForm(request.POST, instance=booking)
+        form.require_pickup_time = True
         if form.is_valid():
             booking = form.save(commit=False)
             booking.status = Booking.Status.ACCEPTED
@@ -148,10 +149,15 @@ def accept_booking(request, pk):
                 to_email=booking.traveler.email,
                 subject="Reserva aceptada - LanzaXperience",
                 message=(
-                    f"¡Tu reserva ha sido ACEPTADA!\n\n"
+                    f"¡Tu reserva ha sido CONFIRMADA!\n\n"
                     f"Experiencia: {booking.experience.title}\n"
-                    f"Fecha: {booking.date}\n"
-                    f"Personas: {booking.people}\n"
+                    f"Fecha: {booking.date}\n\n"
+                    f"Grupo:\n"
+                    f"- Adultos: {booking.adults}\n"
+                    f"- Niños: {booking.children}\n"
+                    f"- Bebés: {booking.infants}\n\n"
+                    f"Transporte: {booking.get_transport_mode_display()}\n"
+                    f"Recogida: {booking.pickup_notes or 'Por concretar con el guía'}\n\n"
                     f"Total: {booking.total_price}€\n\n"
                     f"Mensaje del guía:\n{booking.guide_response or '-'}\n"
                 ),
@@ -176,19 +182,24 @@ def reject_booking(request, pk):
             booking.status = Booking.Status.REJECTED
             booking.seen_by_traveler = False
             booking.seen_by_guide = True
-
             booking.save()
 
             send_booking_status_email(
                 to_email=booking.traveler.email,
                 subject="Reserva rechazada - LanzaXperience",
                 message=(
-                    f"Tu reserva ha sido RECHAZADA.\n\n"
+                    f"Tu solicitud de reserva ha sido RECHAZADA.\n\n"
                     f"Experiencia: {booking.experience.title}\n"
-                    f"Fecha solicitada: {booking.date}\n"
-                    f"Personas: {booking.people}\n"
+                    f"Fecha solicitada: {booking.date}\n\n"
+                    f"Grupo:\n"
+                    f"- Adultos: {booking.adults}\n"
+                    f"- Niños: {booking.children}\n"
+                    f"- Bebés: {booking.infants}\n\n"
+                    f"Transporte: {booking.get_transport_mode_display()}\n"
+                    f"Punto de recogida: {booking.pickup_notes or 'No especificado'}\n\n"
+                    f"Precio por adulto: {booking.unit_price}€\n"
                     f"Total estimado: {booking.total_price}€\n\n"
-                    f"Motivo / mensaje del guía:\n{booking.guide_response or '-'}\n"
+                    f"Mensaje del guía:\n{booking.guide_response or '-'}\n"
                 ),
             )
 
@@ -197,4 +208,9 @@ def reject_booking(request, pk):
     else:
         form = BookingDecisionForm(instance=booking)
 
-    return render(request, "bookings/decision.html", {"booking": booking, "form": form, "action": "reject"})
+    return render(request, "bookings/decision.html", {
+        "booking": booking,
+        "form": form,
+        "action": "reject",
+    })
+

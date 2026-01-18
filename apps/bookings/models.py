@@ -70,6 +70,9 @@ class Booking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    pickup_time = models.TimeField(null=True, blank=True)  # hora confirmada por el guía
+    meeting_point = models.CharField(max_length=255, blank=True)  # opcional: punto exacto
+
     @property
     def total_people(self) -> int:
         return (self.adults or 0) + (self.children or 0) + (self.infants or 0)
