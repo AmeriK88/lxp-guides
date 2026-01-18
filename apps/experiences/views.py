@@ -7,6 +7,10 @@ from apps.bookings.models import Booking
 from .forms import ExperienceForm
 from .models import Category, Experience
 
+from django.db.models import Avg, Count
+from apps.reviews.models import Review
+from apps.reviews.services import traveler_can_review
+
 
 def experience_list(request):
     # Público: solo experiencias activas de guías verificados
@@ -114,7 +118,33 @@ def experience_detail(request, pk):
         Experience.objects.select_related("guide", "category"),
         pk=pk,
     )
-    return render(request, "experiences/detail.html", {"exp": exp})
+
+    public_reviews = (
+        Review.objects.filter(experience=exp, is_public=True)
+        .select_related("traveler")
+        .order_by("-created_at")
+    )
+
+    review_stats = public_reviews.aggregate(
+        avg=Avg("rating"),
+        count=Count("id"),
+    )
+
+    can_review = False
+    if request.user.is_authenticated:
+        can_review = traveler_can_review(traveler=request.user, experience=exp)
+
+    return render(
+        request,
+        "experiences/detail.html",
+        {
+            "exp": exp,
+            "public_reviews": public_reviews,
+            "review_stats": review_stats,
+            "can_review": can_review,
+        },
+    )
+
 
 
 @guide_required
