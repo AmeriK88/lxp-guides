@@ -1,0 +1,44 @@
+{% extends "layouts/dashboard_base.html" %}
+{% load form_tags %}
+{% block title %}Reseñar{% endblock %}
+
+{% block dashboard_content %}
+  <div class="flex flex-col gap-6">
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight">Dejar reseña</h1>
+      <p class="mt-1 text-sm text-slate-600">
+        Experiencia: <span class="font-medium text-slate-900">{{ experience.title }}</span>
+      </p>
+
+      {% if stats.count %}
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="badge">⭐ Media: {{ stats.avg|floatformat:1 }}</span>
+          <span class="badge">🧾 Reseñas: {{ stats.count }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div>
+              <label class="label">{{ field.label }}</label>
+              {{ field|add_class:"input" }}
+              {% if field.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <a href="{% url 'experiences:detail' experience.pk %}" class="btn btn-ghost">Cancelar</a>
+            <button class="btn btn-primary" type="submit">Guardar reseña</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
