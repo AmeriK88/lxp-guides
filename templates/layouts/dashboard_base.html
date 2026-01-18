@@ -31,60 +31,80 @@
             Mi Perfil
           </a>
 
-          {% if user.is_guide %}
-            <a href="{% url 'experiences:list' %}"
-               class="block rounded-lg px-3 py-2 font-medium
-               {% if request.resolver_match.app_name == 'experiences' %}
-                 bg-blue-50 text-blue-700
-               {% else %}
-                 text-slate-700 hover:bg-slate-100
-               {% endif %}">
-              Mis Experiencias
-            </a>
+          {% if user.is_authenticated %}
+            {% if user.is_guide %}
+              <a href="{% url 'experiences:list' %}"
+                 class="block rounded-lg px-3 py-2 font-medium
+                 {% if request.resolver_match.app_name == 'experiences' %}
+                   bg-blue-50 text-blue-700
+                 {% else %}
+                   text-slate-700 hover:bg-slate-100
+                 {% endif %}">
+                Mis Experiencias
+              </a>
 
-            <a href="{% url 'bookings:guide_list' %}"
-               class="block rounded-lg px-3 py-2 font-medium
-               {% if request.resolver_match.url_name == 'guide_list' %}
-                 bg-blue-50 text-blue-700
-               {% else %}
-                 text-slate-700 hover:bg-slate-100
-               {% endif %}">
-              <span class="flex items-center justify-between">
-                <span>Reservas Recibidas</span>
-                {% if unseen_guide_bookings %}
-                  <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
-                    {{ unseen_guide_bookings }}
-                  </span>
-                {% endif %}
-              </span>
-            </a>
-          {% else %}
-            <a href="{% url 'experiences:list' %}"
-               class="block rounded-lg px-3 py-2 font-medium
-               {% if request.resolver_match.app_name == 'experiences' %}
-                 bg-blue-50 text-blue-700
-               {% else %}
-                 text-slate-700 hover:bg-slate-100
-               {% endif %}">
-              Explorar
-            </a>
+              <a href="{% url 'bookings:guide_list' %}"
+                 class="block rounded-lg px-3 py-2 font-medium
+                 {% if request.resolver_match.url_name == 'guide_list' %}
+                   bg-blue-50 text-blue-700
+                 {% else %}
+                   text-slate-700 hover:bg-slate-100
+                 {% endif %}">
+                <span class="flex items-center justify-between">
+                  <span>Reservas Recibidas</span>
 
-            <a href="{% url 'bookings:traveler_list' %}"
-               class="block rounded-lg px-3 py-2 font-medium
-               {% if request.resolver_match.url_name == 'traveler_list' %}
-                 bg-blue-50 text-blue-700
-               {% else %}
-                 text-slate-700 hover:bg-slate-100
-               {% endif %}">
-              <span class="flex items-center justify-between">
-                <span>Mis Reservas</span>
-                {% if unseen_traveler_bookings %}
-                  <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
-                    {{ unseen_traveler_bookings }}
-                  </span>
-                {% endif %}
-              </span>
-            </a>
+                  {% with n=unseen_guide_bookings|default:0 %}
+                    {% if n %}
+                      <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
+                        {{ n }}
+                      </span>
+                    {% endif %}
+                  {% endwith %}
+                </span>
+              </a>
+
+            {% else %}
+              <a href="{% url 'experiences:list' %}"
+                 class="block rounded-lg px-3 py-2 font-medium
+                 {% if request.resolver_match.app_name == 'experiences' %}
+                   bg-blue-50 text-blue-700
+                 {% else %}
+                   text-slate-700 hover:bg-slate-100
+                 {% endif %}">
+                Explorar
+              </a>
+
+              <a href="{% url 'bookings:traveler_list' %}"
+                 class="block rounded-lg px-3 py-2 font-medium
+                 {% if request.resolver_match.url_name == 'traveler_list' %}
+                   bg-blue-50 text-blue-700
+                 {% else %}
+                   text-slate-700 hover:bg-slate-100
+                 {% endif %}">
+                <span class="flex items-center justify-between">
+                  <span>Mis Reservas</span>
+
+                  {% with n=unseen_traveler_bookings|default:0 %}
+                    {% if n %}
+                      <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
+                        {{ n }}
+                      </span>
+                    {% endif %}
+                  {% endwith %}
+                </span>
+              </a>
+
+              <!-- ✅ NEW: Reviews (traveler only) -->
+              <a href="{% url 'reviews:my_reviews' %}"
+                 class="block rounded-lg px-3 py-2 font-medium
+                 {% if request.resolver_match.app_name == 'reviews' and request.resolver_match.url_name == 'my_reviews' %}
+                   bg-blue-50 text-blue-700
+                 {% else %}
+                   text-slate-700 hover:bg-slate-100
+                 {% endif %}">
+                Mis reseñas
+              </a>
+            {% endif %}
           {% endif %}
         </nav>
 
