@@ -8,19 +8,42 @@
 }
 
 @layer components {
-  .card { @apply rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md; }
+  .card { 
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md; 
+  }
+
   .card-body { @apply p-6; }
 
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition; }
+  .btn { 
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition; 
+  }
+
   .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-500; }
   .btn-dark { @apply bg-slate-900 text-white hover:bg-slate-800; }
   .btn-ghost { @apply bg-transparent text-slate-700 hover:bg-slate-100; }
 
-  .input { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20; }
+  .input { 
+    @apply w-full max-w-full min-w-0 rounded-lg border border-slate-300 bg-white 
+           px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 
+           focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20; 
+  }
+
+  .input-file {
+    @apply block w-full max-w-full min-w-0 cursor-pointer
+           rounded-lg border border-slate-300 bg-white text-sm text-slate-700
+           file:mr-3 file:rounded-md file:border-0 file:px-3 file:py-2
+           file:bg-slate-100 file:text-slate-700
+           hover:file:bg-slate-200
+           focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+  }
 
   .label { @apply mb-1 block text-sm font-medium text-slate-700; }
-  .help { @apply mt-1 text-xs text-slate-500; }
+  .help { @apply mt-1 text-xs text-slate-500 break-all; }
 
-  .badge { @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700; }
+  .badge { 
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-50 
+           px-2.5 py-1 text-xs font-medium text-slate-700; 
+  }
+
   .badge-amber { @apply border-amber-200 bg-amber-50 text-amber-800; }
 }
