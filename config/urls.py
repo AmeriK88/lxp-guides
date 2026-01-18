@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("apps.profiles.urls")),
     path("bookings/", include("apps.bookings.urls")),
     path("availability/", include("apps.availability.urls")),
+    path("reviews/", include("apps.reviews.urls")),
 ]
 
 if settings.DEBUG:

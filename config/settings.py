@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.profiles.apps.ProfilesConfig',
     'apps.bookings.apps.BookingsConfig',
     'apps.availability.apps.AvailabilityConfig',
+    'apps.reviews.apps.ReviewsConfig',
 
 
 
