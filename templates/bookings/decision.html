@@ -66,15 +66,62 @@
       <form method="post" class="mt-6 space-y-4">
         {% csrf_token %}
 
-        {% for field in form %}
-          <div>
-            <label class="label">{{ field.label }}</label>
-            {{ field|add_class:"input" }}
+        {# ✅ Si vas a aceptar, mostramos primero la logística final (hora + punto) #}
+        {% if action == "accept" %}
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <h2 class="text-sm font-semibold text-slate-900">Logística final</h2>
+            <p class="mt-1 text-xs text-slate-500">
+              Indica la hora y (si quieres) el punto exacto. Esto se enviará al viajero por email.
+            </p>
 
-            {% if field.errors %}
-              <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2">
+              {# pickup_time #}
+              {% if form.pickup_time %}
+                <div>
+                  <label class="label">{{ form.pickup_time.label }}</label>
+                  {{ form.pickup_time|add_class:"input" }}
+                  {% if form.pickup_time.errors %}
+                    <p class="mt-1 text-xs text-red-600">{{ form.pickup_time.errors|striptags }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {# meeting_point #}
+              {% if form.meeting_point %}
+                <div>
+                  <label class="label">{{ form.meeting_point.label }}</label>
+                  {{ form.meeting_point|add_class:"input" }}
+                  {% if form.meeting_point.errors %}
+                    <p class="mt-1 text-xs text-red-600">{{ form.meeting_point.errors|striptags }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {# ✅ Siempre mostramos el mensaje del guía #}
+        {% if form.guide_response %}
+          <div>
+            <label class="label">{{ form.guide_response.label }}</label>
+            {{ form.guide_response|add_class:"input" }}
+            {% if form.guide_response.errors %}
+              <p class="mt-1 text-xs text-red-600">{{ form.guide_response.errors|striptags }}</p>
             {% endif %}
           </div>
+        {% endif %}
+
+        {# Por si en el futuro metes más campos al form, los pintamos sin romper #}
+        {% for field in form %}
+          {% if field.name != "pickup_time" and field.name != "meeting_point" and field.name != "guide_response" %}
+            <div>
+              <label class="label">{{ field.label }}</label>
+              {{ field|add_class:"input" }}
+              {% if field.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
         {% endfor %}
 
         <div class="flex flex-col gap-2 sm:flex-row">
@@ -89,7 +136,7 @@
 
         <p class="text-xs text-slate-500">
           {% if action == "accept" %}
-            Al aceptar, se notificará al viajero por email con el resumen de la reserva.
+            Al aceptar, se notificará al viajero por email con la hora y el resumen de la reserva.
           {% else %}
             Al rechazar, se notificará al viajero por email con tu mensaje.
           {% endif %}

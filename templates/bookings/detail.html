@@ -69,6 +69,38 @@
         </p>
       </div>
 
+      <!-- ✅ Hora y punto (solo si está aceptada) -->
+      {% with s=booking.status|lower %}
+        {% if s == "accepted" %}
+          <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+            <h2 class="text-sm font-semibold text-slate-900">Hora y punto de encuentro</h2>
+            <p class="mt-1 text-xs text-slate-500">
+              Información final confirmada por el guía.
+            </p>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              {% if booking.pickup_time %}
+                <span class="badge">
+                  {% if booking.transport_mode == "own_vehicle" %}
+                    ⏰ Hora de encuentro: {{ booking.pickup_time|time:"H:i" }}
+                  {% else %}
+                    ⏰ Hora de recogida: {{ booking.pickup_time|time:"H:i" }}
+                  {% endif %}
+                </span>
+              {% else %}
+                <span class="badge" style="border-color: rgb(254 240 138); background-color: rgb(254 249 195); color: rgb(133 77 14);">
+                  ⏳ Pendiente de confirmar hora
+                </span>
+              {% endif %}
+
+              {% if booking.meeting_point %}
+                <span class="badge">📍 {{ booking.meeting_point }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endwith %}
+
       <!-- Personas + Transporte -->
       <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
         <h2 class="text-sm font-semibold text-slate-900">Participantes y logística</h2>
@@ -80,17 +112,12 @@
 
           {% if booking.transport_mode %}
             <span class="badge">
-              🚐
-              {% if booking.get_transport_mode_display %}
-                {{ booking.get_transport_mode_display }}
-              {% else %}
-                {{ booking.transport_mode }}
-              {% endif %}
+              🚐 {{ booking.get_transport_mode_display|default:booking.transport_mode }}
             </span>
           {% endif %}
 
           {% if booking.pickup_notes %}
-            <span class="badge">📍 {{ booking.pickup_notes }}</span>
+            <span class="badge">📝 {{ booking.pickup_notes }}</span>
           {% endif %}
         </div>
 
