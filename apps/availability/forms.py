@@ -18,16 +18,17 @@ class ExperienceAvailabilityForm(forms.ModelForm):
         choices=WEEKDAYS,
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        help_text="Si no seleccionas nada, se permitirá cualquier día de la semana.",
+        help_text="Si no seleccionas nada, permitirás cualquier día.",
     )
 
     class Meta:
         model = ExperienceAvailability
-        fields = ["is_enabled", "start_date", "end_date", "daily_capacity_people", "weekdays"]
+        fields = ["is_enabled", "start_date", "end_date", "daily_capacity_people", "daily_capacity_bookings", "weekdays"]
         widgets = {
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
         }
+
 
     def clean_weekdays(self):
         data = self.cleaned_data.get("weekdays", [])

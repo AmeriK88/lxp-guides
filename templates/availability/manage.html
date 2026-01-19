@@ -20,39 +20,73 @@
         <div class="card-body">
           <h2 class="text-base font-semibold">Reglas</h2>
           <p class="mt-1 text-sm text-slate-600">
-            Define horarios, capacidad y restricciones generales.
+            Define días permitidos, rango y límites diarios.
           </p>
 
-          <form method="post" class="mt-5 space-y-4">
+          <form method="post" class="mt-5 space-y-5">
             {% csrf_token %}
 
-{% for field in form %}
-  <div>
-    <label class="label">{{ field.label }}</label>
+            {# is_enabled #}
+            <div>
+              <label class="label">{{ form.is_enabled.label }}</label>
+              {{ form.is_enabled }}
+              {% if form.is_enabled.help_text %}<p class="help">{{ form.is_enabled.help_text|safe }}</p>{% endif %}
+              {% if form.is_enabled.errors %}<p class="mt-1 text-xs text-red-600">{{ form.is_enabled.errors|striptags }}</p>{% endif %}
+            </div>
 
-    {% if field.name == "weekdays" %}
-      <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {% for cb in field %}
-          <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
-            {{ cb.tag }}
-            <span class="text-slate-700">{{ cb.choice_label }}</span>
-          </label>
-        {% endfor %}
-      </div>
-    {% else %}
-      {{ field|add_class:"input" }}
-    {% endif %}
+            {# rango #}
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label class="label">{{ form.start_date.label }}</label>
+                {{ form.start_date|add_class:"input" }}
+                {% if form.start_date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.start_date.errors|striptags }}</p>{% endif %}
+              </div>
+              <div>
+                <label class="label">{{ form.end_date.label }}</label>
+                {{ form.end_date|add_class:"input" }}
+                {% if form.end_date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.end_date.errors|striptags }}</p>{% endif %}
+              </div>
+            </div>
 
-    {% if field.help_text %}
-      <p class="help">{{ field.help_text|safe }}</p>
-    {% endif %}
+            {# capacidad #}
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <h3 class="text-sm font-semibold text-slate-900">Capacidad diaria</h3>
+              <p class="mt-1 text-xs text-slate-600">
+                Puedes limitar por <b>personas</b>, por <b>número de excursiones</b>, o ambas.
+                (Vacío = sin límite)
+              </p>
 
-    {% if field.errors %}
-      <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
-    {% endif %}
-  </div>
-{% endfor %}
+              <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="label">{{ form.daily_capacity_people.label }}</label>
+                  {{ form.daily_capacity_people|add_class:"input" }}
+                  {% if form.daily_capacity_people.help_text %}<p class="help">{{ form.daily_capacity_people.help_text|safe }}</p>{% endif %}
+                  {% if form.daily_capacity_people.errors %}<p class="mt-1 text-xs text-red-600">{{ form.daily_capacity_people.errors|striptags }}</p>{% endif %}
+                </div>
 
+                <div>
+                  <label class="label">{{ form.daily_capacity_bookings.label }}</label>
+                  {{ form.daily_capacity_bookings|add_class:"input" }}
+                  {% if form.daily_capacity_bookings.help_text %}<p class="help">{{ form.daily_capacity_bookings.help_text|safe }}</p>{% endif %}
+                  {% if form.daily_capacity_bookings.errors %}<p class="mt-1 text-xs text-red-600">{{ form.daily_capacity_bookings.errors|striptags }}</p>{% endif %}
+                </div>
+              </div>
+            </div>
+
+            {# weekdays #}
+            <div>
+              <label class="label">{{ form.weekdays.label }}</label>
+              <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {% for cb in form.weekdays %}
+                  <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                    {{ cb.tag }}
+                    <span class="text-slate-700">{{ cb.choice_label }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+              {% if form.weekdays.help_text %}<p class="help">{{ form.weekdays.help_text|safe }}</p>{% endif %}
+              {% if form.weekdays.errors %}<p class="mt-1 text-xs text-red-600">{{ form.weekdays.errors|striptags }}</p>{% endif %}
+            </div>
 
             <button type="submit" class="btn btn-primary w-full">
               Guardar reglas
