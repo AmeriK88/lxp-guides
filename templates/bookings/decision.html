@@ -66,6 +66,13 @@
       <form method="post" class="mt-6 space-y-4">
         {% csrf_token %}
 
+        {# ✅ NUEVO: errores generales del form (non_field_errors) #}
+        {% if form.non_field_errors %}
+          <div class="rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            {{ form.non_field_errors|striptags }}
+          </div>
+        {% endif %}
+
         {# ✅ Si vas a aceptar, mostramos primero la logística final (hora + punto) #}
         {% if action == "accept" %}
           <div class="rounded-2xl border border-slate-200 bg-white p-4">
@@ -118,7 +125,7 @@
               <label class="label">{{ field.label }}</label>
               {{ field|add_class:"input" }}
               {% if field.errors %}
-                <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }} ⚠️</p>
               {% endif %}
             </div>
           {% endif %}

@@ -1,6 +1,7 @@
 from django import forms
 from apps.availability.services import is_date_available
 from .models import Booking
+from django.utils import timezone
 
 
 class BookingForm(forms.ModelForm):
@@ -37,11 +38,19 @@ class BookingForm(forms.ModelForm):
             if not ok:
                 self.add_error("date", msg)
 
+        date = cleaned.get("date")
+        if date:
+            today = timezone.localdate()
+            if date < today:
+                self.add_error("date", "No puedes reservar en una fecha pasada.")
+
         return cleaned
+
 
 
 class BookingDecisionForm(forms.ModelForm):
     require_pickup_time = False
+    require_guide_response = False
 
     class Meta:
         model = Booking
@@ -54,6 +63,31 @@ class BookingDecisionForm(forms.ModelForm):
 
     def clean(self):
         cleaned = super().clean()
-        if self.require_pickup_time and not cleaned.get("pickup_time"):
-            self.add_error("pickup_time", "Indica la hora de recogida/encuentro para aceptar la reserva.")
+
+        pickup_time = cleaned.get("pickup_time")
+        meeting_point = (cleaned.get("meeting_point") or "").strip()
+        guide_response = (cleaned.get("guide_response") or "").strip()
+        if self.require_guide_response and not guide_response:
+            self.add_error("guide_response", "Indica un motivo para rechazar la reserva.")
+
+        # Si se acepta: pickup_time obligatorio
+        if self.require_pickup_time and not pickup_time:
+            self.add_error(
+                "pickup_time",
+                "Indica la hora de recogida/encuentro para aceptar la reserva."
+            )
+
+        # Si se acepta: al menos meeting_point o guide_response
+        if self.require_pickup_time:
+            if not meeting_point and not guide_response:
+                # Puedes elegir dónde mostrarlo:
+                # 1) error general:
+                raise forms.ValidationError(
+                    "Para aceptar, indica al menos el punto de encuentro o un mensaje para el viajero."
+                )
+                # 2) o si prefieres errores por campo:
+                # self.add_error("meeting_point", "Indica el punto o añade un mensaje.")
+                # self.add_error("guide_response", "Indica el punto o añade un mensaje.")
+
         return cleaned
+
