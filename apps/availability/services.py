@@ -7,7 +7,13 @@ from apps.experiences.models import Experience
 from .models import ExperienceAvailability, AvailabilityBlock
 
 
-def is_date_available(experience: Experience, date: date_type, people: int) -> tuple[bool, str]:
+def is_date_available(
+    experience: Experience,
+    date: date_type,
+    people: int,
+    *,
+    exclude_booking_id: int | None = None,
+) -> tuple[bool, str]:
     """
     Valida:
     - experiencia activa
@@ -18,7 +24,12 @@ def is_date_available(experience: Experience, date: date_type, people: int) -> t
         - dentro de rango (si aplica)
         - weekday permitido (si lista no vacía)
         - no bloqueado
-        - no excede capacidad diaria (si aplica)
+        - no excede capacidad diaria por excursiones (si aplica)
+        - no excede capacidad diaria por personas (si aplica)
+
+    IMPORTANT:
+    - Solo las reservas ACCEPTED consumen capacidad real.
+    - exclude_booking_id sirve para revalidar al aceptar sin contarte a ti mismo.
     """
     if not experience.is_active:
         return False, "Esta experiencia no está activa."
@@ -45,24 +56,32 @@ def is_date_available(experience: Experience, date: date_type, people: int) -> t
         return False, "Fecha no disponible (después del rango permitido)."
 
     # weekday(): Lunes=0, Domingo=6
-    if availability.weekdays:
-        if date.weekday() not in availability.weekdays:
-            return False, "Fecha no disponible (día de la semana no permitido)."
+    if availability.weekdays and date.weekday() not in availability.weekdays:
+        return False, "Fecha no disponible (día de la semana no permitido)."
 
-    # Bloqueo por fecha (query directa => Pylance OK)
+    # Bloqueo por fecha
     if AvailabilityBlock.objects.filter(availability=availability, date=date).exists():
         return False, "Fecha bloqueada por el guía."
 
-    # Capacidad diaria total (sumando reservas pending + accepted)
-    if availability.daily_capacity_people is not None:
-        used_people = (
-            Booking.objects.filter(
-                experience=experience,
-                date=date,
-                status__in=[Booking.Status.PENDING, Booking.Status.ACCEPTED],
-            ).aggregate(total=Sum("people"))["total"]
-        ) or 0
+    # Base queryset: solo ACCEPTED cuenta como ocupación real
+    qs = Booking.objects.filter(
+        experience=experience,
+        date=date,
+        status=Booking.Status.ACCEPTED,
+    )
 
+    if exclude_booking_id is not None:
+        qs = qs.exclude(id=exclude_booking_id)
+
+    # Cupo diario de excursiones (reservas) (solo ACCEPTED cuentan)
+    if availability.daily_capacity_bookings is not None:
+        used_bookings = qs.count()
+        if used_bookings + 1 > availability.daily_capacity_bookings:
+            return False, "No hay más cupo de excursiones para ese día."
+
+    # Capacidad diaria total por personas (solo ACCEPTED consume cupo real)
+    if availability.daily_capacity_people is not None:
+        used_people = qs.aggregate(total=Sum("people"))["total"] or 0
         if used_people + people > availability.daily_capacity_people:
             return False, "No hay capacidad disponible para ese día."
 
