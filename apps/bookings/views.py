@@ -1,8 +1,10 @@
 from decimal import Decimal
+from urllib import request
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
 from apps.availability.services import is_date_available
 from apps.experiences.models import Experience
@@ -10,6 +12,7 @@ from core.decorators import guide_required
 from .emails import send_booking_status_email
 from .forms import BookingForm, BookingDecisionForm
 from .models import Booking
+
 
 
 @login_required
@@ -26,6 +29,22 @@ def create_booking(request, experience_id):
         booking = form.save(commit=False)
         booking.experience = experience
         booking.traveler = request.user
+        
+        # Evitar duplicados: misma experience + misma fecha + mismo traveler en PENDING
+        duplicate_exists = Booking.objects.filter(
+            traveler=request.user,
+            experience=experience,
+            date=booking.date,
+            status=Booking.Status.PENDING,
+        ).exists()
+
+        if duplicate_exists:
+            messages.warning(
+                request,
+                "Ya tienes una solicitud pendiente para esta experiencia en esa fecha. Revisa 'Mis reservas'."
+            )
+            return redirect("bookings:traveler_list")
+
 
         adults = booking.adults or 0
         children = booking.children or 0
@@ -46,25 +65,25 @@ def create_booking(request, experience_id):
         booking.save()
 
         # Email al viajero
-        send_booking_status_email(
-            to_email=request.user.email,
-            subject="Solicitud de reserva recibida - LanzaXperience",
-            message=(
-                f"Hemos recibido tu solicitud.\n\n"
-                f"Experiencia: {experience.title}\n"
-                f"Fecha: {booking.date}\n"
-                f"Adultos: {adults}\n"
-                f"Niños: {children}\n"
-                f"Bebés: {infants}\n"
-                f"Transporte: {booking.get_transport_mode_display()}\n"
-                f"{'Recogida/Zona: ' + booking.pickup_notes + chr(10) if booking.pickup_notes else ''}"
-                f"Total estimado: {booking.total_price}€\n\n"
-                f"Estado: PENDIENTE (el guía debe aceptarla)\n"
-            ),
+        message = (
+            f"¡Tu reserva ha sido CONFIRMADA!\n\n"
+            f"Experiencia: {booking.experience.title}\n"
+            f"Fecha: {booking.date}\n\n"
+            f"Grupo:\n"
+            f"- Adultos: {booking.adults}\n"
+            f"- Niños: {booking.children}\n"
+            f"- Bebés: {booking.infants}\n\n"
+            f"Transporte: {booking.get_transport_mode_display()}\n"
+            f"{'Zona/Hotel del viajero: ' + booking.pickup_notes + chr(10) if booking.pickup_notes else ''}"
+            f"{'Hora confirmada: ' + booking.pickup_time.strftime('%H:%M') + chr(10) if booking.pickup_time else ''}"
+            f"{'Punto de encuentro: ' + booking.meeting_point + chr(10) if booking.meeting_point else ''}\n"
+            f"Total: {booking.total_price}€\n\n"
+            f"Mensaje del guía:\n{booking.guide_response or '-'}\n"
         )
 
         messages.success(request, "Reserva enviada al guía.")
         return redirect("bookings:traveler_list")
+
 
     return render(request, "bookings/create.html", {"form": form, "experience": experience})
 
@@ -96,7 +115,7 @@ def booking_detail(request, pk):
 
     # Permisos: traveler dueño o guide dueño de la experience
     if request.user == booking.traveler:
-        # ✅ Marcar como visto por traveler
+        # Marcar como visto por traveler
         if not booking.seen_by_traveler:
             booking.seen_by_traveler = True
             booking.save(update_fields=["seen_by_traveler"])
@@ -117,15 +136,34 @@ def booking_detail(request, pk):
 @guide_required
 def accept_booking(request, pk):
     booking = get_object_or_404(Booking, pk=pk, experience__guide=request.user)
+    if booking.status != Booking.Status.PENDING:
+        messages.warning(request, "Esta reserva ya fue gestionada y no se puede aceptar.")
+        return redirect("bookings:detail", pk=booking.pk)
+
 
     if request.method == "POST":
         form = BookingDecisionForm(request.POST, instance=booking)
         form.require_pickup_time = True
         if form.is_valid():
             booking = form.save(commit=False)
+
+            people = booking.people
+            ok, msg = is_date_available(
+                booking.experience,
+                booking.date,
+                people,
+                exclude_booking_id=booking.id,
+            )
+
+            if not ok:
+                messages.error(request, msg or "Ya no hay disponibilidad para esa fecha.")
+                return redirect("bookings:detail", pk=booking.pk)
+
             booking.status = Booking.Status.ACCEPTED
             booking.seen_by_traveler = False
             booking.seen_by_guide = True
+            if booking.responded_at is None:
+                booking.responded_at = timezone.now()
 
             booking.save()
 
@@ -158,14 +196,22 @@ def accept_booking(request, pk):
 @guide_required
 def reject_booking(request, pk):
     booking = get_object_or_404(Booking, pk=pk, experience__guide=request.user)
+    if booking.status != Booking.Status.PENDING:
+        messages.warning(request, "Esta reserva ya fue gestionada y no se puede rechazar.")
+        return redirect("bookings:detail", pk=booking.pk)
+
 
     if request.method == "POST":
         form = BookingDecisionForm(request.POST, instance=booking)
+        form.require_guide_response = True
         if form.is_valid():
             booking = form.save(commit=False)
             booking.status = Booking.Status.REJECTED
             booking.seen_by_traveler = False
             booking.seen_by_guide = True
+            if booking.responded_at is None:
+                booking.responded_at = timezone.now()
+
             booking.save()
 
             send_booking_status_email(
