@@ -8,7 +8,8 @@ class Booking(models.Model):
     class TransportMode(models.TextChoices):
         OWN_VEHICLE = "own_vehicle", "Vehículo propio"
         MINIBUS = "minibus", "Minibus (recogida)"
-        OTHER = "other", "Otro / por definir"
+        BICICLE = "bicycle", "Bicicleta"
+        OTHER = "by foot", "A pie"
 
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
@@ -37,7 +38,7 @@ class Booking(models.Model):
     infants = models.PositiveIntegerField(default=0, help_text="Bebés 0-1 (gratis)")
 
     # Compatibilidad / agregación
-    people = models.PositiveIntegerField(default=1)
+    people = models.PositiveIntegerField(default=1, editable=False)
 
     transport_mode = models.CharField(
         max_length=20,
@@ -69,6 +70,7 @@ class Booking(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
 
     pickup_time = models.TimeField(null=True, blank=True)  # hora confirmada por el guía
     meeting_point = models.CharField(max_length=255, blank=True)  # opcional: punto exacto
