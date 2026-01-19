@@ -20,67 +20,51 @@ def create_booking(request, experience_id):
 
     experience = get_object_or_404(Experience, pk=experience_id, is_active=True)
 
-    if request.method == "POST":
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            date = form.cleaned_data["date"]
-            adults = form.cleaned_data.get("adults") or 0
-            children = form.cleaned_data.get("children") or 0
-            infants = form.cleaned_data.get("infants") or 0
+    form = BookingForm(request.POST or None, experience=experience)
 
-            people = adults + children + infants  # total real para disponibilidad/capacidad
+    if request.method == "POST" and form.is_valid():
+        booking = form.save(commit=False)
+        booking.experience = experience
+        booking.traveler = request.user
 
-            ok, msg = is_date_available(experience, date, people)
-            if not ok:
-                messages.error(request, msg)
-                return render(request, "bookings/create.html", {"form": form, "experience": experience})
+        adults = booking.adults or 0
+        children = booking.children or 0
+        infants = booking.infants or 0
 
-            booking = form.save(commit=False)
-            booking.experience = experience
-            booking.traveler = request.user
+        # Snapshot económico
+        unit_price = Decimal(str(experience.price or "0"))
+        booking.unit_price = unit_price
 
-            # Si aún mantienes el campo "people" en el modelo (compatibilidad con listados antiguos)
-            if hasattr(booking, "people"):
-                booking.people = people
+        children_unit = unit_price * Decimal("0.5")
+        booking.total_price = (unit_price * Decimal(adults)) + (children_unit * Decimal(children))
+        # infants gratis
 
-            # Snapshot económico
-            unit_price = Decimal(str(experience.price or "0"))
-            booking.unit_price = unit_price
+        # Notificaciones no vistas
+        booking.seen_by_guide = False
+        booking.seen_by_traveler = True
 
-            children_unit = (unit_price * Decimal("0.5"))  # niños al 50%
-            total_price = (unit_price * Decimal(adults)) + (children_unit * Decimal(children))
-            # infants = gratis
+        booking.save()
 
-            booking.total_price = total_price
+        # Email al viajero
+        send_booking_status_email(
+            to_email=request.user.email,
+            subject="Solicitud de reserva recibida - LanzaXperience",
+            message=(
+                f"Hemos recibido tu solicitud.\n\n"
+                f"Experiencia: {experience.title}\n"
+                f"Fecha: {booking.date}\n"
+                f"Adultos: {adults}\n"
+                f"Niños: {children}\n"
+                f"Bebés: {infants}\n"
+                f"Transporte: {booking.get_transport_mode_display()}\n"
+                f"{'Recogida/Zona: ' + booking.pickup_notes + chr(10) if booking.pickup_notes else ''}"
+                f"Total estimado: {booking.total_price}€\n\n"
+                f"Estado: PENDIENTE (el guía debe aceptarla)\n"
+            ),
+        )
 
-            # Notificaciones no vistas
-            booking.seen_by_guide = False
-            booking.seen_by_traveler = True
-
-            booking.save()
-
-            # Email al viajero (confirmación de solicitud)
-            send_booking_status_email(
-                to_email=request.user.email,
-                subject="Solicitud de reserva recibida - LanzaXperience",
-                message=(
-                    f"Hemos recibido tu solicitud.\n\n"
-                    f"Experiencia: {experience.title}\n"
-                    f"Fecha: {booking.date}\n"
-                    f"Adultos: {adults}\n"
-                    f"Niños: {children}\n"
-                    f"Bebés: {infants}\n"
-                    f"Transporte: {booking.get_transport_mode_display()}\n"
-                    f"{'Recogida/Zona: ' + booking.pickup_notes + chr(10) if booking.pickup_notes else ''}"
-                    f"Total estimado: {booking.total_price}€\n\n"
-                    f"Estado: PENDIENTE (el guía debe aceptarla)\n"
-                ),
-            )
-
-            messages.success(request, "Reserva enviada al guía.")
-            return redirect("bookings:traveler_list")
-    else:
-        form = BookingForm()
+        messages.success(request, "Reserva enviada al guía.")
+        return redirect("bookings:traveler_list")
 
     return render(request, "bookings/create.html", {"form": form, "experience": experience})
 

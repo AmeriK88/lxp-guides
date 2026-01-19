@@ -5,6 +5,10 @@ from core.decorators import guide_required
 from apps.experiences.models import Experience
 from .forms import ExperienceAvailabilityForm, AvailabilityBlockForm
 from .models import ExperienceAvailability, AvailabilityBlock
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from django.utils.dateparse import parse_date  
+from apps.availability.services import is_date_available
 
 
 @guide_required
@@ -71,3 +75,24 @@ def delete_block(request, block_id: int):
     block.delete()
     messages.success(request, "Bloqueo eliminado.")
     return redirect("availability:manage", experience_id=experience_id)
+
+@require_GET
+def experience_disabled_dates(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id, is_active=True)
+
+    start = parse_date(request.GET.get("start"))
+    end = parse_date(request.GET.get("end"))
+    people = int(request.GET.get("people", "1"))
+
+    if not start or not end or start > end:
+        return JsonResponse({"error": "Invalid range"}, status=400)
+
+    disabled = []
+    cursor = start
+    while cursor <= end:
+        ok, _msg = is_date_available(experience, cursor, people)
+        if not ok:
+            disabled.append(cursor.isoformat())
+        cursor = cursor.fromordinal(cursor.toordinal() + 1)
+
+    return JsonResponse({"disabled": disabled})

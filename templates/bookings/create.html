@@ -24,9 +24,20 @@
 
             <div class="mt-4">
               <label class="label">{{ form.date.label }}</label>
-              {{ form.date|add_class:"input" }}
-              {% if form.date.help_text %}<p class="help">{{ form.date.help_text|safe }}</p>{% endif %}
-              {% if form.date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.date.errors|striptags }}</p>{% endif %}
+
+              {{ form.date|add_class:"input js-booking-date" }}
+
+              <div id="booking-calendar-config"
+                  data-disabled-dates-url="{% url 'availability:experience_disabled_dates' experience.id %}">
+              </div>
+
+              {% if form.date.help_text %}
+                <p class="help">{{ form.date.help_text|safe }}</p>
+              {% endif %}
+
+              {% if form.date.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.date.errors|striptags }}</p>
+              {% endif %}
             </div>
           </div>
 

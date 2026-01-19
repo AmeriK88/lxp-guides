@@ -26,20 +26,33 @@
           <form method="post" class="mt-5 space-y-4">
             {% csrf_token %}
 
-            {% for field in form %}
-              <div>
-                <label class="label">{{ field.label }}</label>
-                {{ field|add_class:"input" }}
+{% for field in form %}
+  <div>
+    <label class="label">{{ field.label }}</label>
 
-                {% if field.help_text %}
-                  <p class="help">{{ field.help_text|safe }}</p>
-                {% endif %}
+    {% if field.name == "weekdays" %}
+      <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {% for cb in field %}
+          <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+            {{ cb.tag }}
+            <span class="text-slate-700">{{ cb.choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    {% else %}
+      {{ field|add_class:"input" }}
+    {% endif %}
 
-                {% if field.errors %}
-                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
-                {% endif %}
-              </div>
-            {% endfor %}
+    {% if field.help_text %}
+      <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+
+    {% if field.errors %}
+      <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+    {% endif %}
+  </div>
+{% endfor %}
+
 
             <button type="submit" class="btn btn-primary w-full">
               Guardar reglas
