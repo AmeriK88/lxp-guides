@@ -15,7 +15,7 @@
         <div class="flex items-center gap-2">
           {% with s=booking.status|lower %}
             {% if s == "accepted" %}
-              <span class="badge badge-amber">Aceptada</span>
+              <span class="badge badge-green">Aceptada</span>
             {% elif s == "pending" %}
               <span class="badge">Pendiente</span>
             {% elif s == "rejected" %}
@@ -30,6 +30,34 @@
               <span class="badge">{{ booking.status }}</span>
             {% endif %}
           {% endwith %}
+        </div>
+      </div>
+
+      <!-- ✅ Tiempos -->
+      <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+        <h2 class="text-sm font-semibold text-slate-900">Tiempos</h2>
+        <p class="mt-1 text-xs text-slate-500">
+          Referencia de cuándo se solicitó y cuándo se respondió.
+        </p>
+
+        <div class="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
+          <p>
+            <span class="text-slate-500">Solicitud enviada:</span>
+            <span class="font-medium text-slate-900">
+              {{ booking.created_at|date:"d/m/Y" }} · {{ booking.created_at|time:"H:i" }}
+            </span>
+          </p>
+
+          <p>
+            <span class="text-slate-500">Respondida:</span>
+            <span class="font-medium text-slate-900">
+              {% if booking.responded_at %}
+                {{ booking.responded_at|date:"d/m/Y" }} · {{ booking.responded_at|time:"H:i" }}
+              {% else %}
+                —
+              {% endif %}
+            </span>
+          </p>
         </div>
       </div>
 

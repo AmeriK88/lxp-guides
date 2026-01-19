@@ -19,18 +19,25 @@
   }
 
   async function loadDisabledDates(year, month) {
-    const start = new Date(year, month, 1);
-    const end = new Date(year, month + 1, 0);
+    try {
+      const start = new Date(year, month, 1);
+      const end = new Date(year, month + 1, 0);
 
-    const startISO = start.toISOString().slice(0, 10);
-    const endISO = end.toISOString().slice(0, 10);
+      const startISO = start.toISOString().slice(0, 10);
+      const endISO = end.toISOString().slice(0, 10);
 
-    const url = `${urlBase}?start=${startISO}&end=${endISO}&people=${getPeople()}`;
-    const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
-    const data = await res.json();
+      const url = `${urlBase}?start=${startISO}&end=${endISO}&people=${getPeople()}`;
+      const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+      if (!res.ok) throw new Error("Bad response");
 
-    disabledSet = new Set(data.disabled || []);
+      const data = await res.json();
+      disabledSet = new Set(data.disabled || []);
+    } catch (e) {
+      disabledSet = new Set(); // fallback: no deshabilitar nada si hay error
+      console.warn("Could not load disabled dates", e);
+    }
   }
+
 
   const fp = window.flatpickr(input, {
     dateFormat: "Y-m-d",
