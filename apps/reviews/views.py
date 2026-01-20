@@ -61,3 +61,16 @@ def my_reviews(request):
     )
 
     return render(request, "reviews/my_reviews.html", {"reviews": reviews})
+
+@login_required
+def guide_reviews(request):
+    if not request.user.is_guide():
+        return redirect("pages:dashboard")
+
+    reviews = (
+        Review.objects.filter(experience__guide=request.user, is_public=True)
+        .select_related("experience", "traveler")
+        .order_by("-created_at")
+    )
+
+    return render(request, "reviews/guide_reviews.html", {"reviews": reviews})

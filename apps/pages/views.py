@@ -7,6 +7,7 @@ from django.db.models import Count, Q, Sum
 
 from apps.experiences.models import Experience, Category
 from apps.bookings.models import Booking
+from apps.reviews.models import Review
 
 from decimal import Decimal
 from django.utils import timezone
@@ -32,20 +33,14 @@ def guide_dashboard(request):
     today = timezone.localdate()
     since = today - timedelta(days=30)
 
-    # KPI 1: experiencias activas del guía
     experiences_qs = Experience.objects.filter(guide=request.user, is_active=True)
     experiences_count = experiences_qs.count()
 
-    # bookings del guía (por sus experiencias)
     guide_bookings_qs = Booking.objects.filter(experience__guide=request.user)
 
-    # KPI 2: reservas últimos 30 días (usa created_at, no date)
     bookings_30d = guide_bookings_qs.filter(created_at__date__gte=since).count()
-
-    # KPI 3: pendientes
     pending = guide_bookings_qs.filter(status=Booking.Status.PENDING).count()
 
-    # KPI 4: ingresos estimados 30d (solo ACCEPTED)
     revenue_30d = (
         guide_bookings_qs.filter(
             status=Booking.Status.ACCEPTED,
@@ -54,20 +49,25 @@ def guide_dashboard(request):
         or Decimal("0.00")
     )
 
-    # contador “no vistos” en el botón
     unseen_guide_bookings = guide_bookings_qs.filter(seen_by_guide=False).count()
 
-    # tabla de reservas recientes
     recent_bookings = (
         guide_bookings_qs.select_related("experience", "traveler")
         .order_by("-created_at")[:8]
     )
+
+    # KPI: reseñas públicas totales del guía (por sus experiencias)
+    reviews_total = Review.objects.filter(
+        experience__guide=request.user,
+        is_public=True,
+    ).count()
 
     kpis = {
         "experiences": experiences_count,
         "bookings_30d": bookings_30d,
         "pending": pending,
         "revenue_30d": revenue_30d,
+        "reviews": reviews_total,
     }
 
     return render(
@@ -87,6 +87,9 @@ def traveler_dashboard(request):
     if request.user.is_guide():
         return redirect("pages:dashboard")
 
+    today = timezone.localdate()
+    since = today - timedelta(days=30)
+
     categories = Category.objects.all()
 
     # Top experiencias (por reservas pending+accepted). Si no hay reservas, se ordena por created_at.
@@ -102,12 +105,57 @@ def traveler_dashboard(request):
         .order_by("-bookings_count", "-created_at")[:6]
     )
 
+    # Bookings del traveler
+    traveler_bookings_qs = Booking.objects.filter(traveler=request.user).select_related("experience", "experience__guide")
+
+    # KPIs
+    bookings_30d = traveler_bookings_qs.filter(created_at__date__gte=since).count()
+    accepted = traveler_bookings_qs.filter(status=Booking.Status.ACCEPTED).count()
+    rejected = traveler_bookings_qs.filter(status=Booking.Status.REJECTED).count()
+    pending = traveler_bookings_qs.filter(status=Booking.Status.PENDING).count()
+
+    spent_30d = (
+        traveler_bookings_qs.filter(
+            status=Booking.Status.ACCEPTED,
+            created_at__date__gte=since,
+        ).aggregate(total=Sum("total_price"))["total"]
+        or Decimal("0.00")
+    )
+
+    unseen_traveler_bookings = traveler_bookings_qs.filter(seen_by_traveler=False).count()
+
+    # Próxima reserva (futura) - yo excluiría canceled y rejected
+    next_booking = (
+        traveler_bookings_qs.filter(date__gte=today)
+        .exclude(status__in=[Booking.Status.REJECTED, Booking.Status.CANCELED])
+        .order_by("date", "created_at")
+        .first()
+    )
+
+    # Tabla reservas recientes
+    recent_bookings = traveler_bookings_qs.order_by("-created_at")[:8]
+
+    reviews_count = request.user.reviews.filter(is_public=True).count()
+
+    kpis = {
+        "bookings_30d": bookings_30d,
+        "spent_30d": spent_30d,
+        "accepted": accepted,
+        "rejected": rejected,
+        "pending": pending,
+        "reviews": reviews_count,
+    }
+
     return render(
         request,
         "pages/traveler_dashboard.html",
         {
             "categories": categories,
             "top_experiences": top_experiences,
+            "kpis": kpis,
+            "unseen_traveler_bookings": unseen_traveler_bookings,
+            "next_booking": next_booking,
+            "recent_bookings": recent_bookings,
         },
     )
 

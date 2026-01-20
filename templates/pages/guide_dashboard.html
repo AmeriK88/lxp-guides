@@ -65,6 +65,17 @@
       </div>
     </div>
 
+<a href="{% url 'reviews:guide_list' %}" class="block card hover:bg-slate-50 transition">
+  <div class="card-body">
+    <p class="text-sm text-slate-600">Reseñas</p>
+    <p class="mt-2 text-2xl font-semibold text-slate-900">
+      {{ kpis.reviews|default:"—" }}
+    </p>
+    <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
+  </div>
+</a>
+
+
     <!-- Quick actions -->
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="card">

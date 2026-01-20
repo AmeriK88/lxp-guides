@@ -1,22 +1,29 @@
-<div class="card overflow-hidden">
-  {% if experience.image %}
-    <img
-      src="{{ experience.image.url }}"
-      alt="{{ experience.title }}"
-      class="h-48 w-full object-cover"
-    />
-  {% else %}
-    <div class="flex h-48 w-full items-center justify-center bg-slate-100 text-slate-400 text-sm">
-      Sin imagen
-    </div>
-  {% endif %}
+<article class="card group overflow-hidden">
+  <!-- Media -->
+  <div class="relative aspect-[16/10] w-full bg-slate-100">
+    {% if experience.image %}
+      <img
+        src="{{ experience.image.url }}"
+        alt="{{ experience.title }}"
+        class="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+        loading="lazy"
+      />
+      <!-- subtle overlay for readability -->
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+    {% else %}
+      <div class="flex h-full w-full items-center justify-center text-slate-400 text-sm">
+        Sin imagen
+      </div>
+    {% endif %}
+  </div>
 
+  <!-- Body -->
   <div class="card-body">
-    <h3 class="text-lg font-semibold leading-tight">
+    <h3 class="text-lg font-semibold leading-tight text-slate-900 line-clamp-2">
       {{ experience.title }}
     </h3>
 
-    <div class="mt-1 flex flex-wrap gap-2 text-sm">
+    <div class="mt-2 flex flex-wrap gap-2 text-sm">
       {% if experience.location %}
         <span class="badge">📍 {{ experience.location }}</span>
       {% endif %}
@@ -25,24 +32,38 @@
       {% endif %}
     </div>
 
-    <div class="mt-4 flex items-center justify-between">
-      <span class="text-lg font-bold text-slate-900">
-        {{ experience.price }} €
-      </span>
+    <!-- Price + CTA -->
+    <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xl font-bold text-slate-900">
+          {{ experience.price }} €
+        </span>
+        <span class="text-xs text-slate-500">por adulto</span>
+      </div>
 
-      <a href="{% url 'experiences:detail' experience.pk %}" class="btn btn-primary">
-        Ver experiencia
+      <a
+        href="{% url 'experiences:detail' experience.pk %}"
+        class="btn btn-primary w-full sm:w-auto"
+      >
+        Más Info
       </a>
     </div>
-          {% if user.is_authenticated and user.is_guide and experience.guide == user %}
-        <div class="mt-3 flex flex-wrap gap-2">
-          <a href="{% url 'availability:manage' experience.pk %}" class="btn btn-ghost">
-            Disponibilidad
-          </a>
-          <a href="{% url 'experiences:edit' experience.pk %}" class="btn btn-ghost">
-            Editar
-          </a>
-        </div>
-      {% endif %}
+
+    {% if user.is_authenticated and user.is_guide and experience.guide == user %}
+      <div class="mt-3 flex flex-col gap-2 sm:flex-row">
+        <a
+          href="{% url 'availability:manage' experience.pk %}"
+          class="btn btn-ghost w-full sm:w-auto"
+        >
+          Disponibilidad
+        </a>
+        <a
+          href="{% url 'experiences:edit' experience.pk %}"
+          class="btn btn-ghost w-full sm:w-auto"
+        >
+          Editar
+        </a>
+      </div>
+    {% endif %}
   </div>
-</div>
+</article>

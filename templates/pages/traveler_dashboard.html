@@ -1,15 +1,175 @@
 {% extends "layouts/dashboard_base.html" %}
-{% block title %}Explorar{% endblock %}
+{% block title %}Mi panel{% endblock %}
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
+
     <!-- Header -->
-    <div>
-      <h1 class="text-2xl font-semibold tracking-tight">Explorar Lanzarote</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Encuentra tu próxima experiencia: volcanes, calas, senderismo y más.
-      </p>
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight">Tu panel</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Tus reservas, gasto y próximas experiencias en un vistazo.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost flex items-center justify-between">
+          <span>Ver mis reservas</span>
+
+          {% if unseen_traveler_bookings %}
+            <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
+              {{ unseen_traveler_bookings }}
+            </span>
+          {% endif %}
+        </a>
+
+        <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+          Explorar experiencias
+        </a>
+      </div>
     </div>
+
+    <!-- KPIs -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Reservas (30 días)</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.bookings_30d|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Hechas recientemente</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Gastado (30 días)</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.spent_30d|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Total confirmado</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Aceptadas</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.accepted|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Histórico</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Rechazadas</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.rejected|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Histórico</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next booking + quick insight -->
+    <div class="grid gap-4 lg:grid-cols-2">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">Tu próxima experiencia</h2>
+          <p class="mt-1 text-sm text-slate-600">Para que la tengas controlada.</p>
+
+          {% if next_booking %}
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm text-slate-600">Experiencia</p>
+                  <p class="mt-1 text-sm font-semibold text-slate-900">
+                    {{ next_booking.experience.title }}
+                  </p>
+                  <p class="mt-2 text-sm text-slate-600">
+                    {{ next_booking.date }} · {{ next_booking.people }} personas
+                  </p>
+                </div>
+                <span class="badge">{{ next_booking.status }}</span>
+              </div>
+
+              <div class="mt-4 flex gap-2">
+                <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">Ver reservas</a>
+              </div>
+            </div>
+          {% else %}
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p class="text-sm font-medium text-slate-900">Aún no tienes reservas futuras</p>
+              <p class="mt-1 text-sm text-slate-600">Explora experiencias y reserva la próxima 😉</p>
+              <div class="mt-4">
+                <a href="{% url 'experiences:list' %}" class="btn btn-primary">Explorar</a>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-base font-semibold">Resumen rápido</h2>
+          <p class="mt-1 text-sm text-slate-600">Pequeña dosis de “progreso”.</p>
+
+          <div class="mt-4 space-y-3">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p class="text-sm font-medium text-slate-900">📌 Pendientes</p>
+              <p class="mt-1 text-sm text-slate-600">
+                {{ kpis.pending|default:"—" }} esperando confirmación
+              </p>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <p class="text-sm font-medium text-slate-900">⭐ Valoraciones</p>
+              <p class="mt-1 text-sm text-slate-600">
+                {{ kpis.reviews|default:"—" }} reseñas publicadas
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent bookings -->
+    {% if recent_bookings %}
+      <div class="card">
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-semibold">Tus reservas recientes</h2>
+            <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">Ver todas</a>
+          </div>
+
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-slate-500">
+                <tr class="border-b border-slate-200">
+                  <th class="py-2 pr-3 font-medium">Experiencia</th>
+                  <th class="py-2 pr-3 font-medium">Fecha</th>
+                  <th class="py-2 pr-3 font-medium">Personas</th>
+                  <th class="py-2 pr-3 font-medium">Estado</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-700">
+                {% for b in recent_bookings %}
+                  <tr class="border-b border-slate-100">
+                    <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
+                    <td class="py-3 pr-3">{{ b.date }}</td>
+                    <td class="py-3 pr-3">{{ b.people }}</td>
+                    <td class="py-3 pr-3"><span class="badge">{{ b.status }}</span></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- ====== Mantienes tu dashboard actual (Explorar) debajo ====== -->
 
     <!-- Search -->
     <div class="card">
@@ -94,5 +254,6 @@
         </div>
       {% endif %}
     </div>
+
   </div>
 {% endblock %}
