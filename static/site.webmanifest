@@ -1,0 +1,31 @@
+{
+  "name": "LanzaXperience",
+  "short_name": "LanzaXperience",
+  "description": "Plataforma de experiencias auténticas en Lanzarote con guías locales verificados.",
+  "lang": "es-ES",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#312e81",
+  "icons": [
+    {
+      "src": "/static/img/apple-touch-icon.png",
+      "sizes": "180x120",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/img/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/img/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

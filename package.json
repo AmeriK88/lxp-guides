@@ -1,24 +1,12 @@
 {
   "name": "lanzaxperience",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev:css": "tailwindcss -i ./static/src/input.css -o ./static/css/tailwind.css --watch",
-    "build:css": "tailwindcss -i ./static/src/input.css -o ./static/css/tailwind.css --minify"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AmeriK88/lxp-guides.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "private": true,
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/AmeriK88/lxp-guides/issues"
+  "scripts": {
+    "tw:dev": "tailwindcss -i ./static/src/input.css -o ./static/css/output.css --watch",
+    "tw:build": "tailwindcss -i ./static/src/input.css -o ./static/css/output.css --minify"
   },
-  "homepage": "https://github.com/AmeriK88/lxp-guides#readme",
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/cli": "^4.1.18",
@@ -27,5 +15,13 @@
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmeriK88/lxp-guides.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AmeriK88/lxp-guides/issues"
+  },
+  "homepage": "https://github.com/AmeriK88/lxp-guides#readme"
 }

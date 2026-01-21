@@ -11,25 +11,36 @@
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#312e81">
 
-    {# Open Graph básico (mejora previews al compartir) #}
+    {# Open Graph #}
     <meta property="og:site_name" content="LanzaXperience">
     <meta property="og:title" content="{% block og_title %}LanzaXperience{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Experiencias auténticas en Lanzarote con guías locales verificados.{% endblock %}">
     <meta property="og:type" content="website">
-    {# Si luego tienes dominio, añade og:url/og:image desde settings/context #}
+    {# cuando haya dominio og:url/og:image desde settings/context #}
 
-    {# Favicon / icons (deja listos los paths) #}
-    <link rel="icon" href="{% static 'img/favicon.ico' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Favicon -->
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+    <meta name="theme-color" content="#312e81">
 
+    <link rel="mask-icon" href="{% static 'img/logo-lanzaxperience.svg' %}" color="#312e81">
+    <link rel="shortcut icon" href="{% static 'img/favicon-32.png' %}">
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <!-- Preload del logo del navbar -->
+    <link rel="preload" as="image" href="{% static 'img/logo-lanzaxperience-512.png' %}" imagesizes="(max-width: 768px) 48px, 80px" fetchpriority="high"/>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-
-    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     {% block extra_head %}{% endblock %}
@@ -37,29 +48,39 @@
 
   <body class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans">
     <!-- Topbar -->
-    <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur supports-backdrop-filter:bg-white/60">
+    <header class="nav-grain">
       <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
 
 
         <!-- Left: Brand + Desktop nav -->
         <div class="flex items-center gap-4">
-          <a href="{% url 'pages:home' %}" class="flex items-center gap-2">
-            <img 
-              src="{% static 'img/logo-lanzaxperience.png' %}"
-              alt="LanzaXperience" 
-              class="h-9 sm:h-10 md:h-11 lg:h-12 w-auto"
+          <a href="{% url 'pages:home' %}" class="flex items-center gap-0">
+            <img
+              src="{% static 'img/logo-lanzaxperience-512.png' %}"
+              alt="LanzaXperience"
+              width="80"
+              height="80"
+              fetchpriority="high"
+              decoding="async"
+              class="h-12 sm:h-14 md:h-16 lg:h-20 w-auto transition-transform hover:scale-105 drop-shadow-md"
             />
+
+            <span class="px-3 py-1.5 rounded-xl text-sm sm:text-base font-semibold text-slate-900
+                        bg-linear-to-r from-white via-blue-500 to-yellow-400
+                        shadow-sm border border-slate-200/60">
+              LanzaXperience
+            </span>
           </a>
 
           <nav class="hidden md:flex items-center gap-1 text-sm">
             <a href="{% url 'experiences:list' %}"
-               class="rounded-xl px-3 py-2 font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900">
+               class="rounded-xl px-3 py-2 font-medium text-white/75 hover:text-white hover:bg-white/10 transition">
               Explorar
             </a>
 
             {% if user.is_authenticated %}
               <a href="{% url 'pages:dashboard' %}"
-                 class="rounded-xl px-3 py-2 font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900">
+                 class="rounded-xl px-3 py-2 font-medium text-white/75 hover:text-white hover:bg-white/10 transition">
                 Mi panel
               </a>
             {% endif %}
@@ -72,7 +93,7 @@
             {# Link a reservas siempre; badge solo si hay unseen #}
             <a
               href="{% if unseen_guide_bookings|default:0 %}{% url 'bookings:guide_list' %}{% elif unseen_traveler_bookings|default:0 %}{% url 'bookings:traveler_list' %}{% else %}{% url 'pages:dashboard' %}{% endif %}"
-              class="inline-flex items-center gap-2 rounded-xl px-3 py-2 font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+              class="inline-flex items-center gap-2 rounded-xl px-3 py-2 font-medium text-white/75 hover:text-white hover:bg-white/10 transition"
               title="Reservas"
             >
               Reservas
@@ -90,15 +111,16 @@
             <!-- Account dropdown -->
             <details class="relative">
               <summary class="list-none cursor-pointer">
-                <div class="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-slate-100">
-                  <div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700">
-                    {{ user.username|slice:":2"|upper }}
-                  </div>
-                  <span class="hidden lg:inline text-slate-700 font-medium">
-                    {{ user.username }}
-                  </span>
-                  <span class="text-slate-500">▾</span>
-                </div>
+<div class="group flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-slate-100 transition-colors">
+  <div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700">
+    {{ user.username|slice:":2"|upper }}
+  </div>
+  <span class="hidden lg:inline text-white/80 font-medium group-hover:text-slate-800">
+    {{ user.username }}
+  </span>
+  <span class="text-slate-500 group-hover:text-slate-700">▾</span>
+</div>
+
               </summary>
 
               <div class="absolute right-0 mt-2 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
@@ -128,7 +150,7 @@
 
           {% else %}
             <a href="{% url 'accounts:login' %}"
-               class="rounded-xl px-3 py-2 font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900">
+               class="rounded-xl px-3 py-2 font-medium text-white/75 hover:text-white hover:bg-white/10 transition">
               Login
             </a>
             <a href="{% url 'accounts:register' %}"
@@ -232,17 +254,52 @@
     {% endblock %}
 
     <!-- Footer -->
-    <footer class="mt-16 border-t border-slate-200 bg-gradient-to-b from-white to-slate-50">
+    <footer class="mt-16 border-t border-slate-200 bg-linear-to-b from-white to-slate-50">
       <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-sm">
 
           <!-- Brand -->
-          <div class="space-y-3">
-            <h3 class="text-base font-semibold text-slate-900 tracking-tight">LanzaXperience</h3>
-            <p class="text-slate-600 leading-relaxed">
-              Plataforma de experiencias auténticas en Lanzarote con guías locales verificados.
-            </p>
-          </div>
+<!-- Brand -->
+<div class="space-y-4">
+  <a href="{% url 'pages:home' %}" class="inline-flex items-center gap-3 group">
+    <!-- Logo "badge" -->
+    <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
+      <img
+        src="{% static 'img/favicon-512.png' %}"
+        alt="LanzaXperience"
+        class="h-8 w-auto object-contain"
+      />
+    </span>
+
+
+    <div class="leading-tight">
+      <p class="text-base font-semibold text-slate-900 tracking-tight">
+        LanzaXperience
+      </p>
+      <p class="text-xs text-slate-500">
+        Guías verificados · Experiencias reales
+      </p>
+    </div>
+  </a>
+
+  <p class="text-slate-600 leading-relaxed">
+    Plataforma de experiencias auténticas en Lanzarote con guías locales verificados.
+  </p>
+
+  <!-- Mini “trust chips” -->
+  <div class="flex flex-wrap gap-2">
+    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+      📍 Lanzarote
+    </span>
+    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+      ⭐ Reseñas reales
+    </span>
+    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+      🧭 Local guides
+    </span>
+  </div>
+</div>
+
 
           <!-- Producto -->
           <div>
@@ -278,9 +335,15 @@
           </div>
         </div>
 
-        <div class="mt-10 border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
-          © {{ current_year }} LanzaXperience · Todos los derechos reservados
-        </div>
+<div class="mt-10 border-t border-slate-200 pt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
+  <p>© {{ current_year }} LanzaXperience · Todos los derechos reservados</p>
+  <p class="flex items-center justify-center gap-2">
+    Hecho en Canarias <span class="text-red-500">♥</span>
+    <span class="text-slate-300">·</span>
+    <a href="{% url 'pages:home' %}" class="hover:text-slate-700 transition">Volver arriba</a>
+  </p>
+</div>
+
       </div>
     </footer>
 
