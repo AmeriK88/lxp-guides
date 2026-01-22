@@ -63,24 +63,26 @@
       {% endwith %}
 
       {# Acciones del viajero (solo si no está cancelada/rechazada y no hay solicitud ya pendiente) #}
-      <div class="mt-4 flex flex-wrap gap-2">
-        {% with s=booking.status|lower %}
-          {% if s != "rejected" and s != "canceled" %}
-            {% if s != "change_requested" and s != "cancel_requested" %}
-              <a href="{% url 'bookings:request_change' booking.pk %}" class="btn btn-primary">
-                Solicitar cambio
-              </a>
-              <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-ghost">
-                Solicitar cancelación
-              </a>
+      {% if request.user == booking.traveler %}
+        <div class="mt-4 flex flex-wrap gap-2">
+          {% with s=booking.status|lower %}
+            {% if s != "rejected" and s != "canceled" %}
+              {% if s != "change_requested" and s != "cancel_requested" %}
+                <a href="{% url 'bookings:request_change' booking.pk %}" class="btn btn-primary">
+                  Solicitar cambio
+                </a>
+                <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-ghost">
+                  Solicitar cancelación
+                </a>
+              {% endif %}
             {% endif %}
-          {% endif %}
-        {% endwith %}
+          {% endwith %}
 
-        <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
-          ← Volver a mis reservas
-        </a>
-      </div>
+          <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
+            ← Volver a mis reservas
+          </a>
+        </div>
+      {% endif %}
 
       {# Resumen del cambio solicitado (si existe) #}
       {% if booking.status|lower == "change_requested" and booking.extras.change_request %}

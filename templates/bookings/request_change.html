@@ -1,4 +1,6 @@
 {% extends "layouts/dashboard_base.html" %}
+{% load form_tags %}
+
 {% block title %}Solicitar cambio{% endblock %}
 
 {% block dashboard_content %}
@@ -12,68 +14,100 @@
 
   <div class="card">
     <div class="card-body">
-      <form method="post" class="grid gap-4 sm:grid-cols-2">
+        <form method="post" class="grid gap-4 sm:grid-cols-2">
         {% csrf_token %}
 
+        <!-- Fecha -->
         <div class="sm:col-span-2">
-          <label class="label">Fecha</label>
-          {{ form.date }}
-          {% for e in form.date.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Fecha</label>
+
+            {{ form.date|add_class:"input js-booking-date" }}
+
+            <div id="booking-calendar-config"
+                data-disabled-dates-url="{% url 'availability:experience_disabled_dates' booking.experience.id %}">
+            </div>
+
+            {% for e in form.date.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Adultos -->
         <div>
-          <label class="label">Adultos</label>
-          {{ form.adults }}
-          {% for e in form.adults.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Adultos</label>
+            {{ form.adults|add_class:"input" }}
+            {% for e in form.adults.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Niños -->
         <div>
-          <label class="label">Niños</label>
-          {{ form.children }}
-          {% for e in form.children.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Niños</label>
+            {{ form.children|add_class:"input" }}
+            {% for e in form.children.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Bebés -->
         <div>
-          <label class="label">Bebés</label>
-          {{ form.infants }}
-          {% for e in form.infants.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Bebés</label>
+            {{ form.infants|add_class:"input" }}
+            {% for e in form.infants.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Transporte -->
         <div>
-          <label class="label">Transporte</label>
-          {{ form.transport_mode }}
+            <label class="label">Transporte</label>
+            {{ form.transport_mode|add_class:"input" }}
+            {% for e in form.transport_mode.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Recogida -->
         <div class="sm:col-span-2">
-          <label class="label">Lugar de encuentro / recogida</label>
-          {{ form.pickup_notes }}
-          {% for e in form.pickup_notes.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Lugar de encuentro / recogida</label>
+            {{ form.pickup_notes|add_class:"input" }}
+            {% for e in form.pickup_notes.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Idioma -->
         <div class="sm:col-span-2">
-          <label class="label">Idioma preferido</label>
-          {{ form.preferred_language }}
-          {% for e in form.preferred_language.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+            <label class="label">Idioma preferido</label>
+            {{ form.preferred_language|add_class:"input" }}
+            {% for e in form.preferred_language.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
+        <!-- Notas -->
         <div class="sm:col-span-2">
-          <label class="label">Notas</label>
-          {{ form.notes }}
+            <label class="label">Notas</label>
+            {{ form.notes|add_class:"input" }}
+            {% for e in form.notes.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
+            {% endfor %}
         </div>
 
         {% if form.non_field_errors %}
-          <div class="sm:col-span-2">
+            <div class="sm:col-span-2">
             {% for e in form.non_field_errors %}
-              <p class="text-sm text-red-600">{{ e }}</p>
+                <p class="text-sm text-red-600">{{ e }}</p>
             {% endfor %}
-          </div>
+            </div>
         {% endif %}
 
         <div class="sm:col-span-2 flex gap-2">
-          <button class="btn btn-primary" type="submit">Enviar solicitud</button>
-          <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
+            <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+            <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
         </div>
-      </form>
+        </form>
     </div>
   </div>
 </div>

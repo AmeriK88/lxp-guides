@@ -93,12 +93,6 @@
                     <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
                       Ver reserva
                     </a>
-                  </div>
-
-                  <div class="flex flex-wrap gap-2">
-                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
-                      Ver reserva
-                    </a>
 
                     {# Mostrar acciones al viajero solo si no está cancelada/rechazada #}
                     {% if b.status != "rejected" and b.status != "canceled" %}
