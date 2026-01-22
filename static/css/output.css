@@ -273,6 +273,12 @@
   .my-2 {
     margin-block: calc(var(--spacing) * 2);
   }
+<<<<<<< HEAD
+=======
+  .mt-0 {
+    margin-top: calc(var(--spacing) * 0);
+  }
+>>>>>>> main
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
   }
@@ -336,6 +342,12 @@
   .inline-flex {
     display: inline-flex;
   }
+<<<<<<< HEAD
+=======
+  .table {
+    display: table;
+  }
+>>>>>>> main
   .aspect-\[16\/10\] {
     aspect-ratio: 16/10;
   }
@@ -664,6 +676,13 @@
     --tw-gradient-position: to top in oklab;
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
+<<<<<<< HEAD
+=======
+  .from-black {
+    --tw-gradient-from: var(--color-black);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+>>>>>>> main
   .from-black\/10 {
     --tw-gradient-from: color-mix(in srgb, #000 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -671,6 +690,13 @@
     }
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+<<<<<<< HEAD
+=======
+  .from-blue-100 {
+    --tw-gradient-from: var(--color-blue-100);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+>>>>>>> main
   .from-blue-100\/70 {
     --tw-gradient-from: color-mix(in srgb, oklch(93.2% 0.032 255.585) 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -740,6 +766,12 @@
   .px-5 {
     padding-inline: calc(var(--spacing) * 5);
   }
+<<<<<<< HEAD
+=======
+  .py-0 {
+    padding-block: calc(var(--spacing) * 0);
+  }
+>>>>>>> main
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
   }
