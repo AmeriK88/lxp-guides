@@ -32,6 +32,18 @@
           {% endwith %}
         </div>
       </div>
+      
+      {% with s=booking.status|lower %}
+        {% if s == "pending" %}
+          <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+            📩 Cuando el guía acepte tu reserva, recibirás una confirmación por correo electrónico con la hora y el punto de encuentro.
+          </div>
+        {% elif s == "accepted" %}
+          <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            ✅ Reserva aceptada. Te hemos enviado un correo de confirmación con los detalles de la experiencia.
+          </div>
+        {% endif %}
+      {% endwith %}
 
       <!-- Tiempos -->
       <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
