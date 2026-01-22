@@ -6,7 +6,7 @@
   <section class="card overflow-hidden relative">
     <div class="card-body relative">
       <!-- Subtle top gradient -->
-      <div class="pointer-events-none absolute inset-x-0 -top-24 h-48 bg-linear-to-b from-blue-100/70 to-transparent"></div>
+      <div class="hero-top-glow"></div>
 
       <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
         <!-- Left -->
@@ -47,15 +47,17 @@
 
           <!-- Trust strip -->
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <div class="panel">
               <p class="text-xs text-slate-500">Disponibilidad</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">En tiempo real</p>
             </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+
+            <div class="panel">
               <p class="text-xs text-slate-500">Guías</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">Verificados</p>
             </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+
+            <div class="panel">
               <p class="text-xs text-slate-500">Condiciones</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">Claras</p>
             </div>
@@ -68,7 +70,7 @@
 
         <!-- Right: Search card -->
         <div class="relative">
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <div class="panel-soft p-6">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-base font-semibold text-slate-900">Encuentra tu plan ideal</h2>
@@ -133,6 +135,7 @@
           </p>
         </div>
       </div>
+
       <div class="card">
         <div class="card-body">
           <h3 class="text-base font-semibold">Guías verificados</h3>
@@ -141,6 +144,7 @@
           </p>
         </div>
       </div>
+
       <div class="card">
         <div class="card-body">
           <h3 class="text-base font-semibold">Condiciones claras</h3>
@@ -168,10 +172,10 @@
           <span class="badge">🧳 Viajero</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700">
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Explora por zona, precio y duración.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Perfiles públicos, idiomas y experiencia del guía.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Reserva con disponibilidad real y políticas claras.</li>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+          <li>Explora por zona, precio y duración.</li>
+          <li>Perfiles públicos, idiomas y experiencia del guía.</li>
+          <li>Reserva con disponibilidad real y políticas claras.</li>
         </ul>
 
         <div class="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -201,10 +205,10 @@
           <span class="badge">🧭 Guía</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700">
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Crea experiencias con fotos, duración y condiciones.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Calendario para bloquear fechas y controlar plazas.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Panel de reservas con estados y notificaciones.</li>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+          <li>Crea experiencias con fotos, duración y condiciones.</li>
+          <li>Calendario para bloquear fechas y controlar plazas.</li>
+          <li>Panel de reservas con estados y notificaciones.</li>
         </ul>
 
         <div class="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -265,7 +269,7 @@
     </div>
 
     <!-- Micro-proof line -->
-    <div class="mt-4 rounded-2xl border border-slate-200 bg-white px-5 py-4">
+    <div class="mt-4 panel">
       <p class="text-sm text-slate-700">
         <span class="font-semibold text-slate-900">Bonus:</span>
         el sistema evita reservas imposibles (capacidad, bloqueos, reglas). Menos cancelaciones. Mejor experiencia.
@@ -348,21 +352,23 @@
             </p>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <div class="cta-box">
             <p class="text-sm font-semibold text-slate-900">Lo que NO prometemos</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-700">
-              <li class="flex gap-2"><span class="text-slate-400">•</span> “Te confirmo luego”</li>
-              <li class="flex gap-2"><span class="text-slate-400">•</span> Fechas disponibles que luego no lo están</li>
-              <li class="flex gap-2"><span class="text-slate-400">•</span> Precios opacos</li>
+
+            <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+              <li>“Te confirmo luego”</li>
+              <li>Fechas disponibles que luego no lo están</li>
+              <li>Precios opacos</li>
             </ul>
 
-            <div class="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
-              <p class="text-sm font-semibold text-blue-900">Lo que sí</p>
-              <p class="mt-1 text-sm text-blue-900/80">
+            <div class="cta-yes">
+              <p class="cta-yes-title">Lo que sí</p>
+              <p class="cta-yes-text">
                 Calendario inteligente + guías verificados + reglas claras.
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </div>

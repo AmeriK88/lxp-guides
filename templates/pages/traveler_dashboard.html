@@ -92,7 +92,25 @@
                     {{ next_booking.date }} · {{ next_booking.people }} personas
                   </p>
                 </div>
-                <span class="badge">{{ next_booking.status }}</span>
+
+                {# Badge de estado (bonito) #}
+                {% with s=next_booking.status|lower %}
+                  {% if s == "accepted" %}
+                    <span class="badge badge-status-accepted">Aceptada</span>
+                  {% elif s == "pending" %}
+                    <span class="badge badge-status-pending">Pendiente</span>
+                  {% elif s == "change_requested" %}
+                    <span class="badge badge-status-change">Cambio solicitado</span>
+                  {% elif s == "cancel_requested" %}
+                    <span class="badge badge-status-cancel">Cancelación solicitada</span>
+                  {% elif s == "rejected" %}
+                    <span class="badge badge-status-rejected">Rechazada</span>
+                  {% elif s == "canceled" %}
+                    <span class="badge badge-status-canceled">Cancelada</span>
+                  {% else %}
+                    <span class="badge">{{ next_booking.status }}</span>
+                  {% endif %}
+                {% endwith %}
               </div>
 
               <div class="mt-4 flex gap-2">
@@ -159,7 +177,25 @@
                     <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
                     <td class="py-3 pr-3">{{ b.date }}</td>
                     <td class="py-3 pr-3">{{ b.people }}</td>
-                    <td class="py-3 pr-3"><span class="badge">{{ b.status }}</span></td>
+                    <td class="py-3 pr-3">
+                      {% with s=b.status|lower %}
+                        {% if s == "accepted" %}
+                          <span class="badge badge-status-accepted">Aceptada</span>
+                        {% elif s == "pending" %}
+                          <span class="badge badge-status-pending">Pendiente</span>
+                        {% elif s == "change_requested" %}
+                          <span class="badge badge-status-change">Cambio solicitado</span>
+                        {% elif s == "cancel_requested" %}
+                          <span class="badge badge-status-cancel">Cancelación solicitada</span>
+                        {% elif s == "rejected" %}
+                          <span class="badge badge-status-rejected">Rechazada</span>
+                        {% elif s == "canceled" %}
+                          <span class="badge badge-status-canceled">Cancelada</span>
+                        {% else %}
+                          <span class="badge">{{ b.status }}</span>
+                        {% endif %}
+                      {% endwith %}
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>
