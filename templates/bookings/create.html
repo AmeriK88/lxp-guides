@@ -96,6 +96,26 @@
             </div>
           </div>
 
+          <!-- Idioma preferido -->
+          <div class="border-t border-slate-200 pt-5">
+            <h2 class="text-sm font-semibold text-slate-900">4) Idioma</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Elige el idioma en el que quieres realizar la experiencia.
+            </p>
+
+            <div class="mt-4">
+              <label class="label">{{ form.preferred_language.label }}</label>
+              {{ form.preferred_language|add_class:"input" }}
+
+              <p class="mt-1 text-xs text-slate-500">Ayuda al guía a preparar la experiencia.</p>
+
+              {% if form.preferred_language.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.preferred_language.errors|striptags }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+
           <!-- Notas -->
           <div class="border-t border-slate-200 pt-5">
             <h2 class="text-sm font-semibold text-slate-900">4) Comentarios</h2>

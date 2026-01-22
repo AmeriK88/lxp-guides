@@ -259,47 +259,45 @@
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-sm">
 
           <!-- Brand -->
-<!-- Brand -->
-<div class="space-y-4">
-  <a href="{% url 'pages:home' %}" class="inline-flex items-center gap-3 group">
-    <!-- Logo "badge" -->
-    <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
-      <img
-        src="{% static 'img/favicon-512.png' %}"
-        alt="LanzaXperience"
-        class="h-8 w-auto object-contain"
-      />
-    </span>
+          <div class="space-y-4">
+            <a href="{% url 'pages:home' %}" class="inline-flex items-center gap-3 group">
+              <!-- Logo "badge" -->
+              <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm group-hover:shadow-md transition overflow-hidden">
+                <img
+                  src="{% static 'img/favicon-512.png' %}"
+                  alt="LanzaXperience"
+                  class="h-8 w-auto object-contain"
+                />
+              </span>
 
 
-    <div class="leading-tight">
-      <p class="text-base font-semibold text-slate-900 tracking-tight">
-        LanzaXperience
-      </p>
-      <p class="text-xs text-slate-500">
-        Guías verificados · Experiencias reales
-      </p>
-    </div>
-  </a>
+              <div class="leading-tight">
+                <p class="text-base font-semibold text-slate-900 tracking-tight">
+                  LanzaXperience
+                </p>
+                <p class="text-xs text-slate-500">
+                  Guías verificados · Experiencias reales
+                </p>
+              </div>
+            </a>
 
-  <p class="text-slate-600 leading-relaxed">
-    Plataforma de experiencias auténticas en Lanzarote con guías locales verificados.
-  </p>
+            <p class="text-slate-600 leading-relaxed">
+              Plataforma de experiencias auténticas en Lanzarote con guías locales verificados.
+            </p>
 
-  <!-- Mini “trust chips” -->
-  <div class="flex flex-wrap gap-2">
-    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
-      📍 Lanzarote
-    </span>
-    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
-      ⭐ Reseñas reales
-    </span>
-    <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
-      🧭 Local guides
-    </span>
-  </div>
-</div>
-
+            <!-- Mini “trust chips” -->
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+                📍 Lanzarote
+              </span>
+              <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+                ⭐ Reseñas reales
+              </span>
+              <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+                🧭 Local guides
+              </span>
+            </div>
+          </div>
 
           <!-- Producto -->
           <div>
@@ -335,15 +333,14 @@
           </div>
         </div>
 
-<div class="mt-10 border-t border-slate-200 pt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
-  <p>© {{ current_year }} LanzaXperience · Todos los derechos reservados</p>
-  <p class="flex items-center justify-center gap-2">
-    Hecho en Canarias <span class="text-red-500">♥</span>
-    <span class="text-slate-300">·</span>
-    <a href="{% url 'pages:home' %}" class="hover:text-slate-700 transition">Volver arriba</a>
-  </p>
-</div>
-
+        <div class="mt-10 border-t border-slate-200 pt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
+          <p>© {{ current_year }} LanzaXperience · Todos los derechos reservados</p>
+          <p class="flex items-center justify-center gap-2">
+            Hecho en Canarias <span class="text-red-500">♥</span>
+            <span class="text-slate-300">·</span>
+            <a href="{% url 'pages:home' %}" class="hover:text-slate-700 transition">Volver arriba</a>
+          </p>
+        </div>
       </div>
     </footer>
 
