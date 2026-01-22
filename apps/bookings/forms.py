@@ -8,43 +8,70 @@ class BookingForm(forms.ModelForm):
     def __init__(self, *args, experience=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.experience = experience
+        self.fields["preferred_language"].choices = [("", "Selecciona un idioma")] + list(self.fields["preferred_language"].choices)
+        self.fields["preferred_language"].required = True
+        self.fields["pickup_notes"].label = "Lugar de encuentro / recogida"
+        self.fields["pickup_notes"].help_text = "Minibus: hotel/zona. Vehículo propio/a pie/bici: dónde quedas con el guía."
 
     class Meta:
         model = Booking
-        fields = ["date", "adults", "children", "infants", "transport_mode", "pickup_notes", "notes"]
+        fields = ["date", "adults", "children", "infants", "transport_mode", "pickup_notes", "preferred_language", "notes"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
             "notes": forms.Textarea(attrs={"rows": 3}),
-            "pickup_notes": forms.TextInput(attrs={"placeholder": "Hotel, punto de encuentro, zona..."}),
+            "pickup_notes": forms.TextInput(attrs={"placeholder": "Hotel, calle, punto exacto (si minibus: hotel/zona)"}),
         }
 
     def clean(self):
-        cleaned = super().clean()
+            cleaned = super().clean()
 
-        adults = cleaned.get("adults") or 0
-        children = cleaned.get("children") or 0
-        infants = cleaned.get("infants") or 0
+            adults = cleaned.get("adults") or 0
+            children = cleaned.get("children") or 0
+            infants = cleaned.get("infants") or 0
 
-        if adults <= 0:
-            self.add_error("adults", "Debe haber al menos 1 adulto.")
+            if adults <= 0:
+                self.add_error("adults", "Debe haber al menos 1 adulto.")
 
-        people = adults + children + infants
-        if people <= 0:
-            raise forms.ValidationError("Debes indicar al menos 1 persona.")
+            people = adults + children + infants
+            if people <= 0:
+                raise forms.ValidationError("Debes indicar al menos 1 persona.")
 
-        date = cleaned.get("date")
-        if self.experience and date:
-            ok, msg = is_date_available(self.experience, date, people)
-            if not ok:
-                self.add_error("date", msg)
+            date = cleaned.get("date")
+            if date:
+                today = timezone.localdate()
+                if date < today:
+                    self.add_error("date", "No puedes reservar en una fecha pasada.")
+                
+            if not cleaned.get("preferred_language"):
+                self.add_error("preferred_language", "Selecciona el idioma preferido para la experiencia.")
 
-        date = cleaned.get("date")
-        if date:
-            today = timezone.localdate()
-            if date < today:
-                self.add_error("date", "No puedes reservar en una fecha pasada.")
+            # Disponibilidad
+            if self.experience and date:
+                ok, msg = is_date_available(self.experience, date, people)
+                if not ok:
+                    self.add_error("date", msg)
 
-        return cleaned
+            # Pickup requerido si necesita minibus
+            transport_mode = cleaned.get("transport_mode")
+            pickup_notes = (cleaned.get("pickup_notes") or "").strip()
+
+            transport_mode = cleaned.get("transport_mode")
+            pickup_notes = (cleaned.get("pickup_notes") or "").strip()
+
+            if transport_mode == Booking.TransportMode.MINIBUS:
+                if not pickup_notes:
+                    self.add_error(
+                        "pickup_notes",
+                        "Si necesitas minibus, indica tu hotel/zona para coordinar la recogida."
+                    )
+            else:
+                if not pickup_notes:
+                    self.add_error(
+                        "pickup_notes",
+                        "Indica dónde quieres quedar con el guía (hotel, calle, punto exacto)."
+                    )
+
+            return cleaned
 
 
 

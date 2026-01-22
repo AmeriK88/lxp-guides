@@ -5,6 +5,22 @@ from apps.experiences.models import Experience
 
 
 class Booking(models.Model):
+    class Language(models.TextChoices):
+        CHOOSE = "", "Selecciona un idioma"
+        ES = "es", "Español"
+        EN = "en", "English"
+        DE = "de", "Deutsch"
+        FR = "fr", "Français"
+        IT = "it", "Italiano"
+        PT = "pt", "Português"
+    
+
+    preferred_language = models.CharField(
+        max_length=5,
+        choices=Language.choices,
+        blank=False,
+    )
+    
     class TransportMode(models.TextChoices):
         OWN_VEHICLE = "own_vehicle", "Vehículo propio"
         MINIBUS = "minibus", "Minibus (recogida)"
@@ -61,9 +77,9 @@ class Booking(models.Model):
     seen_by_traveler = models.BooleanField(default=True)
     seen_by_guide = models.BooleanField(default=True)
 
-    # Mensajes
-    notes = models.TextField(blank=True)  # mensaje del viajero al guía
-    guide_response = models.TextField(blank=True)  # respuesta del guía al aceptar/rechazar
+    # Mensajes gui/viajero
+    notes = models.TextField(blank=True) 
+    guide_response = models.TextField(blank=True)  
 
     # Para escalar sin migraciones constantes
     extras = models.JSONField(default=dict, blank=True)

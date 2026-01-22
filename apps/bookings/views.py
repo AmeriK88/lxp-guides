@@ -62,6 +62,17 @@ def create_booking(request, experience_id):
         booking.seen_by_guide = False
         booking.seen_by_traveler = True
 
+        notes = (booking.notes or "").strip()
+        if not notes:
+            # sugerencia amable, pero no bloquea
+            booking.notes = "Idioma deseado: (indica ES/EN/DE, etc.)"
+
+        preferred_language = (request.POST.get("preferred_language") or "").strip()
+        if preferred_language:
+            booking.extras = booking.extras or {}
+            booking.extras["preferred_language"] = preferred_language
+
+
         booking.save()
 
         # Email al viajero
