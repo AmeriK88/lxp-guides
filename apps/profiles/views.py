@@ -17,15 +17,25 @@ def public_guide_profile(request, user_id: int):
         .order_by("-created_at")
     )
 
-    # Reseñas públicas recibidas (de experiencias de este guía)
+    # Reseñas publicadas recibidas (de experiencias de este guía)
     reviews_qs = (
         Review.objects.filter(
-            is_public=True,
+            status=Review.Status.PUBLISHED,
             experience__guide=guide_user,
         )
         .select_related("experience", "traveler", "traveler__traveler_profile")
         .order_by("-created_at")
     )
+
+    
+    qs = Review.objects.filter(experience__guide=guide_user)
+    if request.user == guide_user:
+        # el guía ve todo
+        reviews_qs = qs
+    else:
+        # público solo published
+        reviews_qs = qs.filter(status=Review.Status.PUBLISHED)
+
 
     review_stats = reviews_qs.aggregate(
         avg=Avg("rating"),

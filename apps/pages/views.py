@@ -59,7 +59,7 @@ def guide_dashboard(request):
     # KPI: reseñas públicas totales del guía (por sus experiencias)
     reviews_total = Review.objects.filter(
         experience__guide=request.user,
-        is_public=True,
+        status=Review.Status.PUBLISHED,
     ).count()
 
     kpis = {
@@ -135,7 +135,9 @@ def traveler_dashboard(request):
     # Tabla reservas recientes
     recent_bookings = traveler_bookings_qs.order_by("-created_at")[:8]
 
-    reviews_count = request.user.reviews.filter(is_public=True).count()
+    reviews_count = request.user.reviews.filter(
+        status=Review.Status.PUBLISHED
+    ).count()
 
     kpis = {
         "bookings_30d": bookings_30d,

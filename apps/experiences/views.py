@@ -6,6 +6,7 @@ from core.decorators import guide_required
 from apps.bookings.models import Booking
 from .forms import ExperienceForm
 from .models import Category, Experience
+from apps.reviews.models import Review 
 
 from django.db.models import Avg, Count
 from apps.reviews.models import Review
@@ -120,7 +121,7 @@ def experience_detail(request, pk):
     )
 
     public_reviews = (
-        Review.objects.filter(experience=exp, is_public=True)
+        Review.objects.filter(experience=exp, status=Review.Status.PUBLISHED)
         .select_related("traveler")
         .order_by("-created_at")
     )
