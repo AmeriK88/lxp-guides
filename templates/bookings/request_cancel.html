@@ -1,0 +1,30 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Solicitar cancelación{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-6">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight">Solicitar cancelación</h1>
+    <p class="mt-1 text-sm text-slate-600">
+      El guía debe aprobar la cancelación.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form method="post" class="grid gap-4">
+        {% csrf_token %}
+        <div>
+          <label class="label">Motivo (opcional)</label>
+          <textarea class="input" name="reason" rows="3" placeholder="Cuéntanos brevemente qué ha pasado..."></textarea>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+          <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

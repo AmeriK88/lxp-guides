@@ -18,6 +18,14 @@
               <span class="badge badge-green">Aceptada</span>
             {% elif s == "pending" %}
               <span class="badge">Pendiente</span>
+            {% elif s == "change_requested" %}
+              <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                Cambio solicitado
+              </span>
+            {% elif s == "cancel_requested" %}
+              <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                Cancelación solicitada
+              </span>
             {% elif s == "rejected" %}
               <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
                 Rechazada
@@ -32,18 +40,85 @@
           {% endwith %}
         </div>
       </div>
-      
+
+      {# Avisos de estado #}
       {% with s=booking.status|lower %}
         {% if s == "pending" %}
           <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
-            📩 Cuando el guía acepte tu reserva, recibirás una confirmación por correo electrónico con la hora y el punto de encuentro.
+            📩 Cuando el guía gestione tu reserva, recibirás una confirmación por correo electrónico con la hora y el punto de encuentro.
           </div>
         {% elif s == "accepted" %}
           <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
             ✅ Reserva aceptada. Te hemos enviado un correo de confirmación con los detalles de la experiencia.
           </div>
+        {% elif s == "change_requested" %}
+          <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            ⏳ Has solicitado un cambio. El guía debe aceptarlo para que se aplique.
+          </div>
+        {% elif s == "cancel_requested" %}
+          <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            ⏳ Has solicitado la cancelación. El guía debe aprobarla.
+          </div>
         {% endif %}
       {% endwith %}
+
+      {# Acciones del viajero (solo si no está cancelada/rechazada y no hay solicitud ya pendiente) #}
+      <div class="mt-4 flex flex-wrap gap-2">
+        {% with s=booking.status|lower %}
+          {% if s != "rejected" and s != "canceled" %}
+            {% if s != "change_requested" and s != "cancel_requested" %}
+              <a href="{% url 'bookings:request_change' booking.pk %}" class="btn btn-primary">
+                Solicitar cambio
+              </a>
+              <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-ghost">
+                Solicitar cancelación
+              </a>
+            {% endif %}
+          {% endif %}
+        {% endwith %}
+
+        <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
+          ← Volver a mis reservas
+        </a>
+      </div>
+
+      {# Resumen del cambio solicitado (si existe) #}
+      {% if booking.status|lower == "change_requested" and booking.extras.change_request %}
+        <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+          <h2 class="text-sm font-semibold text-slate-900">Cambio solicitado</h2>
+          <p class="mt-1 text-xs text-slate-500">
+            Esto es lo que has pedido cambiar (pendiente de revisión).
+          </p>
+
+          {% with cr=booking.extras.change_request %}
+            <div class="mt-3 flex flex-wrap gap-2">
+              {% if cr.date %}<span class="badge">📅 {{ cr.date }}</span>{% endif %}
+              {% if cr.adults is not None %}<span class="badge">👤 {{ cr.adults }} adultos</span>{% endif %}
+              {% if cr.children is not None %}<span class="badge">🧒 {{ cr.children }} niños</span>{% endif %}
+              {% if cr.infants is not None %}<span class="badge">👶 {{ cr.infants }} bebés</span>{% endif %}
+              {% if cr.transport_mode %}<span class="badge">🚐 {{ cr.transport_mode }}</span>{% endif %}
+              {% if cr.preferred_language %}<span class="badge">🗣 {{ cr.preferred_language }}</span>{% endif %}
+              {% if cr.pickup_notes %}<span class="badge">📍 {{ cr.pickup_notes }}</span>{% endif %}
+            </div>
+
+            {% if cr.notes %}
+              <p class="mt-3 text-sm text-slate-700 leading-relaxed">
+                <span class="text-slate-500">Notas:</span> {{ cr.notes }}
+              </p>
+            {% endif %}
+          {% endwith %}
+        </div>
+      {% endif %}
+
+      {# Resumen de cancelación solicitada (si quieres mostrar motivo) #}
+      {% if booking.status|lower == "cancel_requested" and booking.extras.cancel_reason %}
+        <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
+          <h2 class="text-sm font-semibold text-slate-900">Cancelación solicitada</h2>
+          <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+            <span class="text-slate-500">Motivo:</span> {{ booking.extras.cancel_reason }}
+          </p>
+        </div>
+      {% endif %}
 
       <!-- Tiempos -->
       <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
@@ -132,9 +207,11 @@
                   ⏳ Pendiente de confirmar hora
                 </span>
               {% endif %}
+
               {% if booking.preferred_language %}
                 <span class="badge">🗣 {{ booking.get_preferred_language_display }}</span>
               {% endif %}
+
               {% if booking.meeting_point %}
                 <span class="badge">📍 {{ booking.meeting_point }}</span>
               {% endif %}
@@ -209,12 +286,6 @@
           <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.guide_response }}</p>
         </div>
       {% endif %}
-
-      <div class="mt-6">
-        <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
-          ← Volver a mis reservas
-        </a>
-      </div>
     </div>
   </div>
 {% endblock %}

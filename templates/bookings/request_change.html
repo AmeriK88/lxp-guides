@@ -1,0 +1,80 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Solicitar cambio{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-6">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight">Solicitar cambio</h1>
+    <p class="mt-1 text-sm text-slate-600">
+      Envía una solicitud al guía. No se aplicará hasta que la acepte.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form method="post" class="grid gap-4 sm:grid-cols-2">
+        {% csrf_token %}
+
+        <div class="sm:col-span-2">
+          <label class="label">Fecha</label>
+          {{ form.date }}
+          {% for e in form.date.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div>
+          <label class="label">Adultos</label>
+          {{ form.adults }}
+          {% for e in form.adults.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div>
+          <label class="label">Niños</label>
+          {{ form.children }}
+          {% for e in form.children.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div>
+          <label class="label">Bebés</label>
+          {{ form.infants }}
+          {% for e in form.infants.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div>
+          <label class="label">Transporte</label>
+          {{ form.transport_mode }}
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="label">Lugar de encuentro / recogida</label>
+          {{ form.pickup_notes }}
+          {% for e in form.pickup_notes.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="label">Idioma preferido</label>
+          {{ form.preferred_language }}
+          {% for e in form.preferred_language.errors %}<p class="text-sm text-red-600 mt-1">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="label">Notas</label>
+          {{ form.notes }}
+        </div>
+
+        {% if form.non_field_errors %}
+          <div class="sm:col-span-2">
+            {% for e in form.non_field_errors %}
+              <p class="text-sm text-red-600">{{ e }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="sm:col-span-2 flex gap-2">
+          <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+          <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
