@@ -53,14 +53,54 @@
           </div>
         {% elif s == "change_requested" %}
           <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-            ⏳ Has solicitado un cambio. El guía debe aceptarlo para que se aplique.
+            {% if request.user == booking.traveler %}
+              ⏳ Has solicitado un cambio. El guía debe aceptarlo para que se aplique.
+            {% elif request.user.is_guide and request.user == booking.experience.guide %}
+              ⏳ El viajero ha solicitado un cambio. Revisa los detalles y acepta o rechaza la solicitud.
+            {% else %}
+              ⏳ Solicitud de cambio pendiente.
+            {% endif %}
           </div>
+
         {% elif s == "cancel_requested" %}
           <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-            ⏳ Has solicitado la cancelación. El guía debe aprobarla.
+            {% if request.user == booking.traveler %}
+              ⏳ Has solicitado la cancelación. El guía debe aprobarla.
+            {% elif request.user.is_guide and request.user == booking.experience.guide %}
+              ⏳ El viajero ha solicitado cancelar la reserva. Puedes aprobar o rechazar la cancelación.
+            {% else %}
+              ⏳ Solicitud de cancelación pendiente.
+            {% endif %}
           </div>
         {% endif %}
       {% endwith %}
+
+      {# ✅ NUEVO: Banner de última actualización (solo útil para el viajero) #}
+      {% if booking.extras.last_update and request.user == booking.traveler %}
+        {% if booking.extras.last_update.type == "change" %}
+          {% if booking.extras.last_update.decision == "accepted" %}
+            <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+              ✅ El guía ha aceptado tu solicitud de cambio.
+            </div>
+          {% elif booking.extras.last_update.decision == "rejected" %}
+            <div class="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+              ❌ El guía ha rechazado tu solicitud de cambio.
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if booking.extras.last_update.type == "cancel" %}
+          {% if booking.extras.last_update.decision == "accepted" %}
+            <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+              ✅ El guía ha aprobado tu solicitud de cancelación.
+            </div>
+          {% elif booking.extras.last_update.decision == "rejected" %}
+            <div class="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+              ❌ El guía ha rechazado tu solicitud de cancelación.
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endif %}
 
       {# Acciones del viajero (solo si no está cancelada/rechazada y no hay solicitud ya pendiente) #}
       {% if request.user == booking.traveler %}
@@ -98,7 +138,11 @@
               {% if cr.adults is not None %}<span class="badge">👤 {{ cr.adults }} adultos</span>{% endif %}
               {% if cr.children is not None %}<span class="badge">🧒 {{ cr.children }} niños</span>{% endif %}
               {% if cr.infants is not None %}<span class="badge">👶 {{ cr.infants }} bebés</span>{% endif %}
-              {% if cr.transport_mode %}<span class="badge">🚐 {{ cr.transport_mode }}</span>{% endif %}
+              {% if cr.transport_mode_label %}
+                <span class="badge">🚐 {{ cr.transport_mode_label }}</span>
+              {% elif cr.transport_mode %}
+                <span class="badge">🚐 {{ cr.transport_mode }}</span>
+              {% endif %}
               {% if cr.preferred_language %}<span class="badge">🗣 {{ cr.preferred_language }}</span>{% endif %}
               {% if cr.pickup_notes %}<span class="badge">📍 {{ cr.pickup_notes }}</span>{% endif %}
             </div>
@@ -173,6 +217,9 @@
           {% if booking.experience.duration_minutes %}
             <span class="badge">⏱ {{ booking.experience.duration_minutes }} min</span>
           {% endif %}
+          {% if booking.preferred_language %}
+            <span class="badge">🗣 {{ booking.get_preferred_language_display }}</span>
+          {% endif %}
         </div>
       </div>
 
@@ -209,11 +256,6 @@
                   ⏳ Pendiente de confirmar hora
                 </span>
               {% endif %}
-
-              {% if booking.preferred_language %}
-                <span class="badge">🗣 {{ booking.get_preferred_language_display }}</span>
-              {% endif %}
-
               {% if booking.meeting_point %}
                 <span class="badge">📍 {{ booking.meeting_point }}</span>
               {% endif %}

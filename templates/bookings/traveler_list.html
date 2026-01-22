@@ -115,9 +115,16 @@
                     {% endif %}
                   </div>
 
-
                   {% if not b.seen_by_traveler %}
                     <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>
+
+                    {% if b.extras.last_update.type == "change" %}
+                      {% if b.extras.last_update.decision == "accepted" %}
+                        <span class="text-xs font-medium text-emerald-700">✅ Cambio aceptado</span>
+                      {% elif b.extras.last_update.decision == "rejected" %}
+                        <span class="text-xs font-medium text-red-700">❌ Cambio rechazado</span>
+                      {% endif %}
+                    {% endif %}
                   {% endif %}
                 </div>
               </div>
