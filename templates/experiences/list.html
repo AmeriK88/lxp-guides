@@ -100,7 +100,8 @@
 
     <!-- Results -->
     {% if experiences %}
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 [grid-auto-rows-[1fr]]">
+      <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[1fr]">
+
         {% for experience in experiences %}
           {% include "components/experience_card.html" with experience=experience %}
         {% endfor %}
