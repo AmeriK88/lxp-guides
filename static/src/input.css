@@ -1,21 +1,23 @@
-
 @config "../../tailwind.config.js";
 @import "tailwindcss";
 
-
+/* -----------------------------
+   BASE
+------------------------------ */
 @layer base {
   html { @apply scroll-smooth; }
   body { @apply bg-slate-50 text-slate-800 antialiased font-sans; }
 
   a { @apply text-brand-700 hover:text-brand-800 transition-colors; }
 
-
   :focus-visible {
     @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-slate-50;
   }
-
 }
 
+/* -----------------------------
+   COMPONENTS
+------------------------------ */
 @layer components {
 
   /* Helpers (para uso opcional en templates) */
@@ -40,14 +42,37 @@
 
   .card-body { @apply p-6; }
 
+  /* ---- Card layout helpers (para grids uniformes) ---- */
+  .card-col { @apply h-full flex flex-col; }
+  .card-body-col { @apply flex flex-1 flex-col; }
+  .card-cta { @apply mt-auto pt-4; }
+
+  /* Media con ratio 16:9 y fallback */
+  .card-media-16x9 { @apply w-full bg-slate-100 aspect-[16/9]; }
+  .card-media-img { @apply h-full w-full object-cover; }
+
+  /* Clamp multi-línea SIN plugin */
+  .clamp-1,
+  .clamp-2,
+  .clamp-3,
+  .clamp-4 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .clamp-1 { -webkit-line-clamp: 1; }
+  .clamp-2 { -webkit-line-clamp: 2; }
+  .clamp-3 { -webkit-line-clamp: 3; }
+  .clamp-4 { -webkit-line-clamp: 4; }
+
   /* Buttons */
   .btn {
-      @apply inline-flex items-center justify-center gap-2
-            rounded-xl px-4 py-2 text-sm font-medium
-            transition-all duration-200
-            hover:-translate-y-0.5
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
-    }
+    @apply inline-flex items-center justify-center gap-2
+           rounded-xl px-4 py-2 text-sm font-medium
+           transition-all duration-200
+           hover:-translate-y-0.5
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+  }
 
   .btn-primary {
     @apply text-white shadow-sm;
@@ -96,6 +121,9 @@
   .badge-green { @apply border-emerald-200 bg-emerald-50 text-emerald-800; }
 }
 
+/* -----------------------------
+   NAV
+------------------------------ */
 @layer components {
   .nav-grain {
     @apply sticky top-0 z-50 border-b border-white/10 backdrop-blur;
