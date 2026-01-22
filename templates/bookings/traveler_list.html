@@ -67,6 +67,14 @@
                       <span class="badge badge-green">Aceptada</span>
                     {% elif s == "pending" %}
                       <span class="badge">Pendiente</span>
+                    {% elif s == "change_requested" %}
+                      <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                        Cambio solicitado
+                      </span>
+                    {% elif s == "cancel_requested" %}
+                      <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                        Cancelación solicitada
+                      </span>
                     {% elif s == "rejected" %}
                       <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
                         Rechazada
@@ -80,11 +88,39 @@
                     {% endif %}
                   {% endwith %}
 
+
                   <div class="flex flex-wrap gap-2">
                     <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
                       Ver reserva
                     </a>
                   </div>
+
+                  <div class="flex flex-wrap gap-2">
+                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
+                      Ver reserva
+                    </a>
+
+                    {# Mostrar acciones al viajero solo si no está cancelada/rechazada #}
+                    {% if b.status != "rejected" and b.status != "canceled" %}
+
+                      {# Si NO hay solicitud pendiente, deja pedir cambio/cancelación #}
+                      {% if b.status != "change_requested" and b.status != "cancel_requested" %}
+                        <a href="{% url 'bookings:request_change' b.pk %}" class="btn btn-primary">
+                          Solicitar cambio
+                        </a>
+
+                        <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-ghost">
+                          Solicitar cancelación
+                        </a>
+                      {% else %}
+                        <span class="text-xs font-medium text-slate-600">
+                          ⏳ Tu solicitud está en revisión por el guía
+                        </span>
+                      {% endif %}
+
+                    {% endif %}
+                  </div>
+
 
                   {% if not b.seen_by_traveler %}
                     <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>

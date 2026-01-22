@@ -12,6 +12,7 @@ from core.decorators import guide_required
 from .emails import send_booking_status_email
 from .forms import BookingForm, BookingDecisionForm
 from .models import Booking
+from .forms import BookingChangeRequestForm
 
 
 
@@ -244,3 +245,143 @@ def reject_booking(request, pk):
         "action": "reject",
     })
 
+
+@login_required
+def request_booking_change(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, traveler=request.user)
+
+    if booking.status in [Booking.Status.REJECTED, Booking.Status.CANCELED]:
+        messages.error(request, "No puedes modificar una reserva rechazada o cancelada.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    form = BookingChangeRequestForm(request.POST or None, booking=booking, instance=booking)
+
+    if request.method == "POST" and form.is_valid():
+        booking.extras["change_request"] = form.cleaned_data
+        booking.status = Booking.Status.CHANGE_REQUESTED
+        booking.seen_by_guide = False
+        booking.seen_by_traveler = True
+        booking.save(update_fields=["extras", "status", "seen_by_guide", "seen_by_traveler", "updated_at"])
+
+        messages.success(request, "Solicitud de cambio enviada al guía.")
+        return redirect("bookings:traveler_list")
+
+    return render(request, "bookings/request_change.html", {"booking": booking, "form": form})
+
+
+@guide_required
+def decide_change_request(request, pk, decision):
+    booking = get_object_or_404(Booking, pk=pk, experience__guide=request.user)
+
+    if booking.status != Booking.Status.CHANGE_REQUESTED:
+        messages.warning(request, "No hay solicitud de cambio pendiente.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    change = (booking.extras or {}).get("change_request")
+    if not change:
+        messages.error(request, "Solicitud de cambio inválida.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    if decision == "reject":
+        booking.extras.pop("change_request", None)
+        booking.status = Booking.Status.ACCEPTED  # o PENDING, según tu flujo
+        booking.seen_by_traveler = False
+        booking.seen_by_guide = True
+        booking.save()
+        messages.success(request, "Cambio rechazado.")
+        return redirect("bookings:guide_list")
+
+    # decision == "accept"
+    # aplicar cambios
+    booking.date = change["date"]
+    booking.adults = change["adults"]
+    booking.children = change["children"]
+    booking.infants = change["infants"]
+    booking.transport_mode = change["transport_mode"]
+    booking.pickup_notes = change["pickup_notes"]
+    booking.preferred_language = change["preferred_language"]
+    booking.notes = change["notes"]
+
+    # recalcular precios
+    unit_price = Decimal(str(booking.experience.price or "0"))
+    booking.unit_price = unit_price
+    children_unit = unit_price * Decimal("0.5")
+    booking.total_price = (unit_price * Decimal(booking.adults or 0)) + (children_unit * Decimal(booking.children or 0))
+
+    # validar disponibilidad final (por seguridad)
+    ok, msg = is_date_available(
+        booking.experience,
+        booking.date,
+        booking.people,
+        exclude_booking_id=booking.pk,
+    )
+    if not ok:
+        messages.error(request, msg or "Ya no hay disponibilidad para esa fecha.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    booking.extras.pop("change_request", None)
+    booking.status = Booking.Status.ACCEPTED
+    booking.responded_at = timezone.now()
+    booking.seen_by_traveler = False
+    booking.seen_by_guide = True
+    booking.save()
+
+    messages.success(request, "Cambio aceptado y aplicado.")
+    return redirect("bookings:guide_list")
+
+@guide_required
+def decide_cancel_request(request, pk, decision):
+    booking = get_object_or_404(Booking, pk=pk, experience__guide=request.user)
+
+    if booking.status != Booking.Status.CANCEL_REQUESTED:
+        messages.warning(request, "No hay solicitud de cancelación pendiente.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    if decision == "reject":
+        booking.extras.pop("cancel_request", None)
+        booking.status = Booking.Status.ACCEPTED  # o PENDING según tu lógica
+        booking.seen_by_traveler = False
+        booking.seen_by_guide = True
+        booking.save()
+        messages.success(request, "Cancelación rechazada.")
+        return redirect("bookings:guide_list")
+
+    # decision == "accept"
+    booking.status = Booking.Status.CANCELED
+    booking.responded_at = timezone.now()
+    booking.seen_by_traveler = False
+    booking.seen_by_guide = True
+    booking.save()
+
+    send_booking_status_email(
+        to_email=booking.traveler.email,
+        subject="Reserva cancelada - LanzaXperience",
+        message=(
+            f"Tu reserva para {booking.experience.title} el {booking.date} "
+            f"ha sido cancelada por el guía."
+        ),
+    )
+
+    messages.success(request, "Reserva cancelada correctamente.")
+    return redirect("bookings:guide_list")
+
+@login_required
+def request_booking_cancel(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, traveler=request.user)
+
+    if booking.status in [Booking.Status.REJECTED, Booking.Status.CANCELED]:
+        messages.error(request, "Esta reserva no se puede cancelar.")
+        return redirect("bookings:detail", pk=booking.pk)
+
+    if request.method == "POST":
+        reason = request.POST.get("reason", "").strip()
+        booking.extras["cancel_request"] = {"reason": reason}
+        booking.status = Booking.Status.CANCEL_REQUESTED
+        booking.seen_by_guide = False
+        booking.seen_by_traveler = True
+        booking.save(update_fields=["extras", "status", "seen_by_guide", "seen_by_traveler", "updated_at"])
+
+        messages.success(request, "Solicitud de cancelación enviada al guía.")
+        return redirect("bookings:traveler_list")
+
+    return render(request, "bookings/request_cancel.html", {"booking": booking})

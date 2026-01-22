@@ -115,6 +115,51 @@ class BookingDecisionForm(forms.ModelForm):
                 # 2) o si prefieres errores por campo:
                 # self.add_error("meeting_point", "Indica el punto o añade un mensaje.")
                 # self.add_error("guide_response", "Indica el punto o añade un mensaje.")
+        return cleaned
+
+
+class BookingChangeRequestForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ["date", "adults", "children", "infants", "transport_mode",
+                  "pickup_notes", "preferred_language", "notes"]
+        widgets = {
+            "date": forms.DateInput(attrs={"type": "date"}),
+            "notes": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, booking=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.booking = booking
+
+    def clean(self):
+        cleaned = super().clean()
+
+        # mismas validaciones que BookingForm
+        adults = cleaned.get("adults") or 0
+        children = cleaned.get("children") or 0
+        infants = cleaned.get("infants") or 0
+        people = adults + children + infants
+
+        if adults <= 0:
+            self.add_error("adults", "Debe haber al menos 1 adulto.")
+        if people <= 0:
+            raise forms.ValidationError("Debes indicar al menos 1 persona.")
+
+        date = cleaned.get("date")
+        if date and date < timezone.localdate():
+            self.add_error("date", "No puedes reservar en una fecha pasada.")
+
+        # disponibilidad con exclude_booking_id
+        if self.booking and date:
+            ok, msg = is_date_available(
+                self.booking.experience,
+                date,
+                people,
+                exclude_booking_id=self.booking.id,
+            )
+            if not ok:
+                self.add_error("date", msg)
 
         return cleaned
 

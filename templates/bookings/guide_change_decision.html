@@ -1,0 +1,57 @@
+{% extends "layouts/dashboard_base.html" %}
+{% block title %}Revisar cambio{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-6">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight">Solicitud de cambio</h1>
+    <p class="mt-1 text-sm text-slate-600">Compara la reserva actual con la propuesta.</p>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-base font-semibold">Reserva actual</h2>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="badge">📅 {{ booking.date }}</span>
+          <span class="badge">👥 {{ booking.people }} pax</span>
+          <span class="badge">🚐 {{ booking.get_transport_mode_display }}</span>
+          <span class="badge">📍 {{ booking.pickup_notes }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-base font-semibold">Cambio solicitado</h2>
+        {% with cr=booking.extras.change_request %}
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="badge">📅 {{ cr.date }}</span>
+            <span class="badge">👤 {{ cr.adults }} / 🧒 {{ cr.children }} / 👶 {{ cr.infants }}</span>
+            <span class="badge">🚐 {{ cr.transport_mode }}</span>
+            <span class="badge">📍 {{ cr.pickup_notes }}</span>
+          </div>
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="flex flex-wrap gap-2">
+        <form method="post" action="{% url 'bookings:guide_change_decide' booking.pk 'accept' %}">
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Aceptar cambio</button>
+        </form>
+
+        <form method="post" action="{% url 'bookings:guide_change_decide' booking.pk 'reject' %}">
+          {% csrf_token %}
+          <button class="btn btn-ghost" type="submit">Rechazar</button>
+        </form>
+
+        <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Ver detalle</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

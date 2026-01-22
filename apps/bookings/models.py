@@ -32,6 +32,8 @@ class Booking(models.Model):
         ACCEPTED = "accepted", "Accepted"
         REJECTED = "rejected", "Rejected"
         CANCELED = "canceled", "Canceled"
+        CHANGE_REQUESTED = "change_requested", "Change requested"
+        CANCEL_REQUESTED = "cancel_requested", "Cancel requested"
 
     experience = models.ForeignKey(
         Experience,
