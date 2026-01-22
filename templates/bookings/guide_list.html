@@ -28,6 +28,9 @@
                   <div class="mt-2 flex flex-wrap gap-2">
                     <span class="badge">👤 {{ b.traveler.username }}</span>
                     <span class="badge">📅 {{ b.date }}</span>
+                    {% if b.preferred_language %}
+                      <span class="badge">🗣 {{ b.get_preferred_language_display }}</span>
+                    {% endif %}
 
                     <span class="badge">👤 {{ b.adults }} adultos</span>
                     <span class="badge">🧒 {{ b.children }} niños</span>
@@ -44,7 +47,7 @@
                     {% endif %}
                   </div>
 
-                  {% if b.notes %}
+                  {% if b.notes and b.notes != "Idioma deseado: (indica ES/EN/DE, etc.)" %}
                     <p class="mt-2 text-sm text-slate-600">
                       📝 {{ b.notes|truncatechars:120 }}
                     </p>

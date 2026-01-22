@@ -50,6 +50,10 @@
                       <span class="badge">🚐 {{ b.get_transport_mode_display }}</span>
                     {% endif %}
 
+                    {% if b.preferred_language %}
+                      <span class="badge">🗣 {{ b.get_preferred_language_display }}</span>
+                    {% endif %}
+
                     {% if b.pickup_notes %}
                       <span class="badge">📍 {{ b.pickup_notes }}</span>
                     {% endif %}

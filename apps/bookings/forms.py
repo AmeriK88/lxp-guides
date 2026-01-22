@@ -18,7 +18,7 @@ class BookingForm(forms.ModelForm):
         fields = ["date", "adults", "children", "infants", "transport_mode", "pickup_notes", "preferred_language", "notes"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
-            "notes": forms.Textarea(attrs={"rows": 3}),
+            "notes": forms.Textarea(attrs={"rows": 3, "placeholder": "Opcional: alergias, ritmo, restricciones, necesidades, etc."}),
             "pickup_notes": forms.TextInput(attrs={"placeholder": "Hotel, calle, punto exacto (si minibus: hotel/zona)"}),
         }
 

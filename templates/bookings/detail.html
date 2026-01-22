@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <!-- ✅ Tiempos -->
+      <!-- Tiempos -->
       <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
         <h2 class="text-sm font-semibold text-slate-900">Tiempos</h2>
         <p class="mt-1 text-xs text-slate-500">
@@ -97,7 +97,7 @@
         </p>
       </div>
 
-      <!-- ✅ Hora y punto (solo si está aceptada) -->
+      <!-- Hora y punto (solo si está aceptada) -->
       {% with s=booking.status|lower %}
         {% if s == "accepted" %}
           <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
@@ -120,7 +120,9 @@
                   ⏳ Pendiente de confirmar hora
                 </span>
               {% endif %}
-
+              {% if booking.preferred_language %}
+                <span class="badge">🗣 {{ booking.get_preferred_language_display }}</span>
+              {% endif %}
               {% if booking.meeting_point %}
                 <span class="badge">📍 {{ booking.meeting_point }}</span>
               {% endif %}
@@ -177,12 +179,17 @@
       </div>
 
       <!-- Mensajes -->
-      {% if booking.notes %}
-        <div class="mt-5 border-t border-slate-200 pt-5">
-          <h2 class="text-sm font-semibold text-slate-900">Tu mensaje al guía</h2>
+      <div class="mt-5 border-t border-slate-200 pt-5">
+        <h2 class="text-sm font-semibold text-slate-900">Tu mensaje al guía</h2>
+
+        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+          <strong>Idioma deseado:</strong> {{ booking.get_preferred_language_display }}
+        </p>
+
+        {% if booking.notes %}
           <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.notes }}</p>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
 
       {% if booking.guide_response %}
         <div class="mt-5 border-t border-slate-200 pt-5">
