@@ -48,7 +48,7 @@
   .card-cta { @apply mt-auto pt-4; }
 
   /* Media con ratio 16:9 y fallback */
-  .card-media-16x9 { @apply w-full bg-slate-100 aspect-[16/9]; }
+  .card-media-16x9 { @apply w-full bg-slate-100 aspect-video; }
   .card-media-img { @apply h-full w-full object-cover; }
 
   /* Clamp multi-línea SIN plugin */
