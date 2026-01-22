@@ -207,3 +207,15 @@ def profile_view(request):
         form = FormClass(instance=profile)
 
     return render(request, template, {"form": form, "profile": profile})
+
+
+def privacy_policy_view(request):
+    return render(request, "pages/privacy_policy.html")
+
+
+def terms_and_conditions_view(request):
+    return render(request, "pages/terms_and_conditions.html")
+
+
+def cookie_policy_view(request):
+    return render(request, "pages/cookie_policy.html")

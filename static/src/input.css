@@ -163,6 +163,8 @@
     /* Bullets en listas */
     .list-bullets > li { @apply flex gap-2; }
     .list-bullets > li::before { content: "•"; @apply text-slate-400; }
+
+    
   }
 
 /* -----------------------------
