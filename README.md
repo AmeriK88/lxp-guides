@@ -2,80 +2,153 @@
 
 A modern SaaS platform connecting travelers with local guides for unforgettable experiences. Built with Django and styled with Tailwind CSS, this app empowers guides to showcase their expertise and travelers to discover authentic adventures.
 
-![Lanzaxperience Logo](https://img.shields.io/badge/Lanzaxperience-Experience%20Booking-blue?style=for-the-badge&logo=map&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Lanzaxperience Logo](https://img.shields.io/badge/Lanzaxperience-Experience%20Booking-blue?style=for-the-badge&logo=map&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 
 ## 🌟 Features
 
-- **User Management**: Secure registration and login for guides and travelers.
-- **Experience Listings**: Guides can create and manage detailed experience profiles with photos and descriptions.
-- **Booking System**: Seamless booking process with availability management and real-time updates.
-- **Reviews & Ratings**: Travelers can leave feedback to help others choose the best experiences.
-- **Dashboard**: Personalized dashboards for guides and travelers to manage bookings and profiles.
-- **Responsive Design**: Mobile-friendly interface powered by Tailwind CSS.
-- **Email Notifications**: Automated emails for booking confirmations and updates.
+### For Travelers
+- **Browse Experiences**: Discover a wide range of authentic experiences offered by local guides, categorized by type and location.
+- **Advanced Search & Filtering**: Find experiences using keywords, categories, price, duration, and location.
+- **Secure Bookings**: Book experiences with real-time availability, select preferred language, transport mode, and group size (adults, children, infants).
+- **Booking Management**: View and manage your bookings, track status (pending, accepted, rejected, canceled), and communicate with guides.
+- **Leave Reviews**: Rate and review completed experiences to help other travelers and provide feedback to guides.
+- **Personal Dashboard**: Access a personalized dashboard to view your bookings, reviews, and profile.
+
+### For Guides
+- **Create & Manage Experiences**: List your experiences with detailed descriptions, photos, pricing, duration, capacity, and tags for better discoverability.
+- **Availability Management**: Set flexible availability rules including weekdays, date ranges, daily capacity limits for people and bookings, and block specific dates.
+- **Booking Oversight**: Receive booking requests, accept/reject them, set pickup times and meeting points, and communicate with travelers.
+- **Profile Verification**: Upload verification documents (guide license, insurance/registration) for admin approval to build trust.
+- **Earnings Tracking**: Monitor bookings and potential earnings through your dashboard.
+- **Public Profile**: Showcase your bio, languages spoken, contact info, and social media links.
+
+### General Features
+- **User Authentication**: Secure registration and login with role-based access (Traveler or Guide).
+- **Responsive Design**: Fully responsive interface optimized for desktop, tablet, and mobile devices using Tailwind CSS.
+- **Email Notifications**: Automated email notifications for booking confirmations, status updates, and responses.
+- **Admin Panel**: Django admin interface for managing users, experiences, bookings, reviews, and verifications.
+- **Multilingual Support**: Support for multiple languages in bookings (Spanish, English, German, French, Italian, Portuguese).
+- **Image Uploads**: Upload and manage images for experiences and profiles using Pillow.
+- **Moderated Reviews**: Review system with pending/published/flagged status for quality control.
 
 ## 🛠 Tech Stack
 
-- **Backend**: Django (Python)
-- **Frontend**: HTML, CSS, JavaScript, Tailwind CSS
-- **Database**: SQLite (development), PostgreSQL (production)
-- **Deployment**: Ready for Heroku, AWS, or similar
-- **Other Tools**: Node.js for asset compilation, Git for version control
+- **Backend**: Django 6.0.1 (Python web framework)
+- **Frontend**: HTML5, CSS3, JavaScript, Tailwind CSS 4.1.18
+- **Database**: SQLite (development), PostgreSQL (production recommended)
+- **Image Processing**: Pillow 12.1.0
+- **Environment Management**: django-environ 0.12.0
+- **Build Tools**: Node.js, npm, PostCSS, Autoprefixer
+- **Version Control**: Git
+- **Deployment**: Ready for Heroku, AWS, DigitalOcean, or similar cloud platforms
 
 ## 📦 Installation
 
+### Prerequisites
+- Python 3.8+
+- Node.js 14+
+- Git
+
+### Step-by-Step Setup
+
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/lanzaxperience.git
+   git clone https://github.com/AmeriK88/lxp-guides.git
    cd lanzaxperience
    ```
 
-2. **Set up Python environment**:
+2. **Set up Python virtual environment**:
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   ```
+
+3. **Install Python dependencies**:
+   ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up Node.js for Tailwind**:
+4. **Set up Node.js dependencies for Tailwind CSS**:
    ```bash
    npm install
-   npx tailwindcss -i ./src/input.css -o ./static/css/tailwind.css --watch
    ```
 
-4. **Run migrations**:
+5. **Configure environment variables**:
+   Create a `.env` file in the project root with:
+   ```
+   SECRET_KEY=your-secret-key-here
+   DEBUG=True
+   ALLOWED_HOSTS=localhost,127.0.0.1
+   ```
+
+6. **Run database migrations**:
    ```bash
    python manage.py migrate
    ```
 
-5. **Create a superuser**:
+7. **Create a superuser**:
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Start the server**:
+8. **Build static assets**:
+   ```bash
+   npm run tw:build
+   ```
+
+9. **Start the development server**:
    ```bash
    python manage.py runserver
    ```
 
 Visit `http://127.0.0.1:8000` to see the app in action!
 
+### Development Mode
+For development with auto-reloading Tailwind CSS:
+```bash
+npm run tw:dev
+```
+This will watch for changes in `./static/src/input.css` and compile to `./static/css/output.css`.
+
 ## 🚀 Usage
 
-- Register as a guide or traveler.
-- Guides: Create experiences, set availability, and manage bookings.
-- Travelers: Browse experiences, make bookings, and leave reviews.
-- Admins: Use Django admin for oversight.
+### Getting Started
+1. Register as either a Traveler or Guide.
+2. Complete your profile setup.
+3. For Guides: Upload verification documents and create your first experience.
+4. For Travelers: Browse and book experiences.
+
+### Key Workflows
+- **Experience Creation**: Guides can add experiences with categories, pricing, availability rules, and media.
+- **Booking Process**: Travelers select dates, group composition, and preferences; guides review and respond.
+- **Availability Logic**: System prevents overbooking based on capacity limits and blocked dates.
+- **Review System**: Post-booking reviews with ratings and comments, moderated by admins.
+
+### Admin Features
+Access `/admin/` with superuser credentials to manage:
+- Users and profiles
+- Experiences and categories
+- Bookings and availability
+- Reviews and moderation
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please fork the repo, create a feature branch, and submit a pull request.
+We welcome contributions! Please follow these steps:
 
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Development Guidelines
+- Follow Django best practices
+- Write tests for new features
+- Ensure responsive design
+- Use semantic commit messages
 
 ## 📄 License
 
