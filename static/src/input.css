@@ -8,12 +8,14 @@
   html { @apply scroll-smooth; }
   body { @apply bg-slate-50 text-slate-800 antialiased font-sans; }
 
-  a { @apply text-brand-700 hover:text-brand-800 transition-colors; }
+  /* NO pongas color global a todos los links */
+  a { @apply transition-colors; }
 
   :focus-visible {
     @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-slate-50;
   }
 }
+
 
 /* -----------------------------
    COMPONENTS
