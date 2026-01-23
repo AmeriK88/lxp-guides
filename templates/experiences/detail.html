@@ -141,31 +141,11 @@
               {% if public_reviews %}
                 <div class="mt-5 space-y-3">
                   {% for r in public_reviews %}
-                    <div class="rounded-2xl border border-slate-200 bg-white p-4">
-                      <div class="flex items-center justify-between">
-                        <p class="text-sm font-semibold text-slate-900">
-                          {{ r.traveler.username }}
-                        </p>
-                        <p class="text-xs text-slate-500">
-                          {{ r.created_at|date:"d M Y" }}
-                        </p>
-                      </div>
-
-                      <p class="mt-1 text-sm text-slate-700">
-                        {% for _ in "12345" %}
-                          {% if forloop.counter <= r.rating %}⭐{% else %}☆{% endif %}
-                        {% endfor %}
-                      </p>
-
-                      {% if r.comment %}
-                        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
-                          {{ r.comment }}
-                        </p>
-                      {% endif %}
-                    </div>
+                    {% include "components/review_card.html" with r=r variant="experience_detail" %}
                   {% endfor %}
                 </div>
               {% endif %}
+
             </div>
           </div>
         </div>

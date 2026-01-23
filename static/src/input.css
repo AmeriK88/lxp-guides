@@ -150,22 +150,21 @@
   }
 
   .alert-info {
-    @apply alert border-blue-200 bg-blue-50 text-blue-900;
+    @apply border-blue-200 bg-blue-50 text-blue-900;
   }
   .alert-success {
-    @apply alert border-emerald-200 bg-emerald-50 text-emerald-900;
+    @apply border-emerald-200 bg-emerald-50 text-emerald-900;
   }
   .alert-warn {
-    @apply alert border-amber-200 bg-amber-50 text-amber-900;
+    @apply border-amber-200 bg-amber-50 text-amber-900;
   }
   .alert-danger {
-    @apply alert border-red-200 bg-red-50 text-red-900;
+    @apply border-red-200 bg-red-50 text-red-900;
   }
 
     /* Bullets en listas */
-    .list-bullets > li { @apply flex gap-2; }
-    .list-bullets > li::before { content: "•"; @apply text-slate-400; }
-
+  .list-bullets > li { @apply flex gap-2; }
+  .list-bullets > li::before { content: "•"; @apply text-slate-400; }
   }
 
 /* -----------------------------
