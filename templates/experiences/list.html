@@ -3,21 +3,16 @@
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
-    <!-- Header -->
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Experiencias en Lanzarote</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Explora rutas, volcanes, calas y planes únicos con guías locales.
-        </p>
-      </div>
 
+    {% url 'experiences:list' as experiences_list_url %}
+
+    {% with create_experience_url="" %}
       {% if user.is_authenticated and user.is_guide and user.guide_profile.verification_status == "verified" %}
-        <a href="{% url 'experiences:create' %}" class="btn btn-primary">
-          + Crear experiencia
-        </a>
+        {% url 'experiences:create' as create_experience_url %}
       {% endif %}
-    </div>
+
+      {% include "components/section_header.html" with title="Experiencias en Lanzarote" subtitle="Explora rutas, volcanes, calas y planes únicos con guías locales." cta_url=create_experience_url cta_label="+ Crear experiencia" %}
+    {% endwith %}
 
     <!-- Filters -->
     <div class="card">
@@ -30,13 +25,7 @@
         <form method="get" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
           <div class="lg:col-span-2">
             <label class="label">Buscar</label>
-            <input
-              class="input"
-              type="text"
-              name="q"
-              value="{{ filters.q }}"
-              placeholder="Timanfaya, volcanes, senderismo..."
-            >
+            <input class="input" type="text" name="q" value="{{ filters.q }}" placeholder="Timanfaya, volcanes, senderismo...">
           </div>
 
           <div class="lg:col-span-2">
@@ -80,7 +69,7 @@
 
           <div class="lg:col-span-2 flex items-end gap-2">
             <button type="submit" class="btn btn-primary w-full">Aplicar</button>
-            <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full text-center">Limpiar</a>
+            <a href="{{ experiences_list_url }}" class="btn btn-ghost w-full text-center">Limpiar</a>
           </div>
         </form>
 
@@ -98,23 +87,7 @@
       </div>
     </div>
 
-    <!-- Results -->
-    {% if experiences %}
-      <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[1fr]">
+    {% include "components/experience_grid.html" with experiences=experiences empty_title="No hay experiencias activas todavía" empty_text="Vuelve más tarde o ajusta los filtros." empty_cta_url=experiences_list_url empty_cta_label="Limpiar filtros" %}
 
-        {% for experience in experiences %}
-          {% include "components/experience_card.html" with experience=experience %}
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">No hay experiencias activas todavía</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Vuelve más tarde o ajusta los filtros.
-          </p>
-        </div>
-      </div>
-    {% endif %}
   </div>
 {% endblock %}

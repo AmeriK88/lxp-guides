@@ -1,0 +1,15 @@
+{# components/section_header.html #}
+<div class="flex items-end justify-between gap-4">
+  <div>
+    <h2 class="{{ title_class|default:'text-xl font-semibold tracking-tight' }}">{{ title }}</h2>
+    {% if subtitle %}
+      <p class="mt-1 text-sm text-slate-600">{{ subtitle }}</p>
+    {% endif %}
+  </div>
+
+  {% if cta_url and cta_label %}
+    <a href="{{ cta_url }}" class="{{ cta_class|default:'btn btn-ghost' }}">
+      {{ cta_label }}
+    </a>
+  {% endif %}
+</div>

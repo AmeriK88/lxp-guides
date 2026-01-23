@@ -2,6 +2,8 @@
 {% block title %}LanzaXperience{% endblock %}
 
 {% block content %}
+  {% url 'experiences:list' as experiences_list_url %}
+
   <!-- Hero -->
   <section class="card overflow-hidden relative">
     <div class="card-body relative">
@@ -30,7 +32,7 @@
           </p>
 
           <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+            <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar experiencias
             </a>
 
@@ -81,7 +83,7 @@
               <span class="badge">⚡ Rápido</span>
             </div>
 
-            <form method="get" action="{% url 'experiences:list' %}" class="mt-5 space-y-3">
+            <form method="get" action="{{ experiences_list_url }}" class="mt-5 space-y-3">
               <div>
                 <label class="label">¿Qué te apetece?</label>
                 <input class="input" name="q" placeholder="volcanes, senderismo, atardecer..." />
@@ -130,10 +132,10 @@
       <div class="card">
         <div class="card-body">
           <h3 class="text-base font-semibold">Disponibilidad real</h3>
-            <p class="mt-1 text-sm text-slate-600">
-              Solicitas tu plaza con fechas reales. El guía confirma y
-              <span class="font-medium text-slate-900">no pagas hasta que esté aceptada</span>.
-            </p>
+          <p class="mt-1 text-sm text-slate-600">
+            Solicitas tu plaza con fechas reales. El guía confirma y
+            <span class="font-medium text-slate-900">no pagas hasta que esté aceptada</span>.
+          </p>
         </div>
       </div>
 
@@ -180,7 +182,7 @@
         </ul>
 
         <div class="mt-5 flex flex-col gap-2 sm:flex-row">
-          <a href="{% url 'experiences:list' %}" class="btn btn-primary">Explorar experiencias</a>
+          <a href="{{ experiences_list_url }}" class="btn btn-primary">Explorar experiencias</a>
           {% if not user.is_authenticated %}
             <a href="{% url 'accounts:register' %}" class="btn btn-ghost text-center">Crear cuenta</a>
           {% endif %}
@@ -237,7 +239,7 @@
           Simple, claro y sin vueltas.
         </p>
       </div>
-      <a href="{% url 'experiences:list' %}" class="btn btn-ghost">Explorar</a>
+      <a href="{{ experiences_list_url }}" class="btn btn-ghost">Explorar</a>
     </div>
 
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -273,8 +275,8 @@
     <div class="mt-4 panel">
       <p class="text-sm text-slate-700">
         <span class="font-semibold text-slate-900">Bonus:</span>
-          experiencias más personales: rutas poco conocidas, planes a tu ritmo y guías que adaptan la aventura.
-          Menos líos. Más Lanzarote de verdad.
+        experiencias más personales: rutas poco conocidas, planes a tu ritmo y guías que adaptan la aventura.
+        Menos líos. Más Lanzarote de verdad.
       </p>
     </div>
   </section>
@@ -289,7 +291,7 @@
         </p>
       </div>
 
-      <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
+      <a href="{{ experiences_list_url }}" class="btn btn-ghost">
         Ver todas
       </a>
     </div>
@@ -307,7 +309,7 @@
             Aún no hay experiencias destacadas. Puedes empezar explorando el listado completo.
           </p>
           <div class="mt-4 flex flex-col gap-2 sm:flex-row">
-            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+            <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar ahora
             </a>
             {% if not user.is_authenticated %}
@@ -335,7 +337,7 @@
             </p>
 
             <div class="mt-5 flex flex-col gap-2 sm:flex-row">
-              <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+              <a href="{{ experiences_list_url }}" class="btn btn-primary">
                 Ver experiencias
               </a>
               {% if not user.is_authenticated %}
