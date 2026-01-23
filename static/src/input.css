@@ -8,58 +8,61 @@
   html { @apply scroll-smooth; }
   body { @apply bg-slate-50 text-slate-800 antialiased font-sans; }
 
-  a { @apply text-brand-700 hover:text-brand-800 transition-colors; }
+  /* NO pongas color global a todos los links */
+  a { @apply transition-colors; }
 
   :focus-visible {
     @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-slate-50;
   }
 }
 
+
 /* -----------------------------
    COMPONENTS
 ------------------------------ */
 @layer components {
 
-  /* Helpers (para uso opcional en templates) */
-  .hover-lift {
-    @apply transition-transform duration-200 ease-out hover:-translate-y-0.5;
-  }
-
-  .soft-shadow {
-    @apply shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-
+  /* Helpers */
+  .hover-lift { @apply transition-transform duration-200 ease-out hover:-translate-y-0.5; }
+  .soft-shadow { @apply shadow-sm hover:shadow-md transition-shadow duration-200; }
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60
+           focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+  }
+
+  /* Hero glow (Home) */
+  .hero-top-glow {
+    @apply pointer-events-none absolute inset-x-0 -top-24 h-48;
+    background: linear-gradient(to bottom, rgba(191,219,254,.70), transparent);
   }
 
   /* Cards */
   .card {
     @apply rounded-2xl border border-slate-200 bg-white overflow-hidden
-           shadow-sm transition-all duration-200
-           hover:-translate-y-0.5 hover:shadow-md;
+           shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
   }
-
   .card-body { @apply p-6; }
 
-  /* ---- Card layout helpers (para grids uniformes) ---- */
-  .card-col { @apply h-full flex flex-col; }
-  .card-body-col { @apply flex flex-1 flex-col; }
-  .card-cta { @apply mt-auto pt-4; }
+  /* Panels (cajas suaves tipo “highlight”, “trust strip”, etc.) */
+  .panel {
+    @apply rounded-2xl border border-slate-200 bg-white px-5 py-4;
+  }
+  .panel-soft {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4;
+  }
 
-  /* Media con ratio 16:9 y fallback */
-  .card-media-16x9 { @apply w-full bg-slate-100 aspect-video; }
-  .card-media-img { @apply h-full w-full object-cover; }
+  /* Bloques “Lo que NO prometemos / Lo que sí” (Home CTA) */
+  .cta-box {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 p-6;
+  }
+  .cta-yes {
+    @apply mt-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3;
+  }
+  .cta-yes-title { @apply text-sm font-semibold text-blue-900; }
+  .cta-yes-text  { @apply mt-1 text-sm text-blue-900/80; }
 
   /* Clamp multi-línea SIN plugin */
-  .clamp-1,
-  .clamp-2,
-  .clamp-3,
-  .clamp-4 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  .clamp-1,.clamp-2,.clamp-3,.clamp-4 { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
   .clamp-1 { -webkit-line-clamp: 1; }
   .clamp-2 { -webkit-line-clamp: 2; }
   .clamp-3 { -webkit-line-clamp: 3; }
@@ -67,59 +70,102 @@
 
   /* Buttons */
   .btn {
-    @apply inline-flex items-center justify-center gap-2
-           rounded-xl px-4 py-2 text-sm font-medium
-           transition-all duration-200
-           hover:-translate-y-0.5
-           focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2
+           text-sm font-medium transition-all duration-200 hover:-translate-y-0.5
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60
+           focus-visible:ring-offset-2 focus-visible:ring-offset-white;
   }
-
   .btn-primary {
-    @apply text-white shadow-sm;
-    @apply bg-gradient-to-b from-brand-600 to-brand-700 hover:from-brand-500 hover:to-brand-700;
+    @apply text-white shadow-sm bg-gradient-to-b from-brand-600 to-brand-700
+           hover:from-brand-500 hover:to-brand-700;
   }
-
-  /* Botón acento para acciones “wow” (opcional) */
   .btn-accent {
-    @apply text-white shadow-sm;
-    @apply bg-gradient-to-b from-indigo-500 to-indigo-700 hover:from-indigo-400 hover:to-indigo-700;
+    @apply text-white shadow-sm bg-gradient-to-b from-indigo-500 to-indigo-700
+           hover:from-indigo-400 hover:to-indigo-700;
   }
-
   .btn-dark { @apply bg-slate-900 text-white hover:bg-slate-800; }
   .btn-ghost { @apply bg-transparent text-slate-700 hover:bg-slate-100; }
 
   /* Inputs */
   .input {
-    @apply w-full max-w-full min-w-0
-           rounded-lg border border-slate-300 bg-white
-           px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400
-           transition
+    @apply w-full max-w-full min-w-0 rounded-lg border border-slate-300 bg-white
+           px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 transition
            focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
   }
-
-  .input-file {
-    @apply block w-full max-w-full min-w-0 cursor-pointer
-           rounded-lg border border-slate-300 bg-white text-sm text-slate-700
-           file:mr-3 file:rounded-md file:border-0 file:px-3 file:py-2
-           file:bg-slate-100 file:text-slate-700
-           hover:file:bg-slate-200
-           transition
-           focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
-  }
-
   .label { @apply mb-1 block text-sm font-medium text-slate-700; }
   .help { @apply mt-1 text-xs text-slate-500 break-all; }
 
-  /* Badges */
+  /* Badges (base) */
   .badge {
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-slate-50
+           px-2.5 py-1 text-xs font-medium text-slate-700;
+  }
+
+  /* Badge colors */
+  .badge-amber { @apply border-amber-200 bg-amber-50 text-amber-800; }
+  .badge-green { @apply border-emerald-200 bg-emerald-50 text-emerald-800; }
+  .badge-red   { @apply border-red-200 bg-red-50 text-red-800; }
+  .badge-blue  { @apply border-blue-200 bg-blue-50 text-blue-800; }
+
+  /* Booking status badges (SIN @apply de clases custom) */
+  .badge-status-pending {
     @apply inline-flex items-center rounded-full
            border border-slate-200 bg-slate-50
            px-2.5 py-1 text-xs font-medium text-slate-700;
   }
 
-  .badge-amber { @apply border-amber-200 bg-amber-50 text-amber-800; }
-  .badge-green { @apply border-emerald-200 bg-emerald-50 text-emerald-800; }
-}
+  .badge-status-accepted {
+    @apply inline-flex items-center rounded-full
+           border border-emerald-200 bg-emerald-50
+           px-2.5 py-1 text-xs font-medium text-emerald-800;
+  }
+
+  .badge-status-rejected {
+    @apply inline-flex items-center rounded-full
+           border border-red-200 bg-red-50
+           px-2.5 py-1 text-xs font-medium text-red-800;
+  }
+
+  .badge-status-canceled {
+    @apply inline-flex items-center rounded-full
+           border border-red-200 bg-red-50
+           px-2.5 py-1 text-xs font-medium text-red-800;
+  }
+
+  .badge-status-change_requested {
+    @apply inline-flex items-center rounded-full
+           border border-amber-200 bg-amber-50
+           px-2.5 py-1 text-xs font-medium text-amber-800;
+  }
+
+  .badge-status-cancel_requested {
+    @apply inline-flex items-center rounded-full
+           border border-amber-200 bg-amber-50
+           px-2.5 py-1 text-xs font-medium text-amber-800;
+  }
+
+  /* Alerts / banners */
+  .alert {
+    @apply rounded-2xl border px-5 py-4 text-sm shadow-sm;
+  }
+
+  .alert-info {
+    @apply border-blue-200 bg-blue-50 text-blue-900;
+  }
+  .alert-success {
+    @apply border-emerald-200 bg-emerald-50 text-emerald-900;
+  }
+  .alert-warn {
+    @apply border-amber-200 bg-amber-50 text-amber-900;
+  }
+  .alert-danger {
+    @apply border-red-200 bg-red-50 text-red-900;
+  }
+
+    /* Bullets en listas */
+  .list-bullets > li { @apply flex gap-2; }
+  .list-bullets > li::before { content: "•"; @apply text-slate-400; }
+  }
 
 /* -----------------------------
    NAV
@@ -131,7 +177,6 @@
       radial-gradient(1200px 60% at 50% 0%, rgba(99,102,241,.18), transparent 60%),
       linear-gradient(to bottom, rgba(49,46,129,.92), rgba(30,27,75,.88));
   }
-
   .nav-grain::before{
     content:"";
     position:absolute;

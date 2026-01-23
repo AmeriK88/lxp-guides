@@ -2,11 +2,13 @@
 {% block title %}LanzaXperience{% endblock %}
 
 {% block content %}
+  {% url 'experiences:list' as experiences_list_url %}
+
   <!-- Hero -->
   <section class="card overflow-hidden relative">
     <div class="card-body relative">
       <!-- Subtle top gradient -->
-      <div class="pointer-events-none absolute inset-x-0 -top-24 h-48 bg-linear-to-b from-blue-100/70 to-transparent"></div>
+      <div class="hero-top-glow"></div>
 
       <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
         <!-- Left -->
@@ -30,7 +32,7 @@
           </p>
 
           <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+            <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar experiencias
             </a>
 
@@ -47,15 +49,17 @@
 
           <!-- Trust strip -->
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <div class="panel">
               <p class="text-xs text-slate-500">Disponibilidad</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">En tiempo real</p>
             </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+
+            <div class="panel">
               <p class="text-xs text-slate-500">Guías</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">Verificados</p>
             </div>
-            <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+
+            <div class="panel">
               <p class="text-xs text-slate-500">Condiciones</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">Claras</p>
             </div>
@@ -68,7 +72,7 @@
 
         <!-- Right: Search card -->
         <div class="relative">
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <div class="panel-soft p-6">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-base font-semibold text-slate-900">Encuentra tu plan ideal</h2>
@@ -79,7 +83,7 @@
               <span class="badge">⚡ Rápido</span>
             </div>
 
-            <form method="get" action="{% url 'experiences:list' %}" class="mt-5 space-y-3">
+            <form method="get" action="{{ experiences_list_url }}" class="mt-5 space-y-3">
               <div>
                 <label class="label">¿Qué te apetece?</label>
                 <input class="input" name="q" placeholder="volcanes, senderismo, atardecer..." />
@@ -103,17 +107,17 @@
               <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
                 <p class="font-semibold">¿Por qué aquí?</p>
                 <p class="mt-1 text-slate-600">
-                  Porque el calendario respeta la disponibilidad del guía y los bloqueos.
-                  Si no está disponible, no te deja reservar. Así de simple.
+                  Porque aquí ves fechas y capacidad reales. Tú solicitas, el guía confirma y
+                  <span class="font-medium text-slate-900">evitamos reservas imposibles y sorpresas</span>.
                 </p>
               </div>
             </form>
           </div>
 
           <!-- Small highlight -->
-          <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 px-5 py-4">
-            <p class="text-sm font-semibold text-blue-900">🧠 Reserva inteligente</p>
-            <p class="mt-1 text-sm text-blue-900/80">
+          <div class="cta-yes">
+            <p class="cta-yes-title">🧠 Reserva inteligente</p>
+            <p class="cta-yes-text">
               Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas).
             </p>
           </div>
@@ -129,10 +133,12 @@
         <div class="card-body">
           <h3 class="text-base font-semibold">Disponibilidad real</h3>
           <p class="mt-1 text-sm text-slate-600">
-            Nada de pedir y esperar. El calendario muestra lo que se puede reservar.
+            Solicitas tu plaza con fechas reales. El guía confirma y
+            <span class="font-medium text-slate-900">no pagas hasta que esté aceptada</span>.
           </p>
         </div>
       </div>
+
       <div class="card">
         <div class="card-body">
           <h3 class="text-base font-semibold">Guías verificados</h3>
@@ -141,6 +147,7 @@
           </p>
         </div>
       </div>
+
       <div class="card">
         <div class="card-body">
           <h3 class="text-base font-semibold">Condiciones claras</h3>
@@ -168,14 +175,14 @@
           <span class="badge">🧳 Viajero</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700">
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Explora por zona, precio y duración.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Perfiles públicos, idiomas y experiencia del guía.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Reserva con disponibilidad real y políticas claras.</li>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+          <li>Explora por zona, precio y duración.</li>
+          <li>Perfiles públicos, idiomas y experiencia del guía.</li>
+          <li>Reserva con disponibilidad real y políticas claras.</li>
         </ul>
 
         <div class="mt-5 flex flex-col gap-2 sm:flex-row">
-          <a href="{% url 'experiences:list' %}" class="btn btn-primary">Explorar experiencias</a>
+          <a href="{{ experiences_list_url }}" class="btn btn-primary">Explorar experiencias</a>
           {% if not user.is_authenticated %}
             <a href="{% url 'accounts:register' %}" class="btn btn-ghost text-center">Crear cuenta</a>
           {% endif %}
@@ -201,10 +208,10 @@
           <span class="badge">🧭 Guía</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700">
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Crea experiencias con fotos, duración y condiciones.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Calendario para bloquear fechas y controlar plazas.</li>
-          <li class="flex gap-2"><span class="text-slate-400">•</span> Panel de reservas con estados y notificaciones.</li>
+        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+          <li>Crea experiencias con fotos, duración y condiciones.</li>
+          <li>Calendario para bloquear fechas y controlar plazas.</li>
+          <li>Panel de reservas con estados y notificaciones.</li>
         </ul>
 
         <div class="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -232,7 +239,7 @@
           Simple, claro y sin vueltas.
         </p>
       </div>
-      <a href="{% url 'experiences:list' %}" class="btn btn-ghost">Explorar</a>
+      <a href="{{ experiences_list_url }}" class="btn btn-ghost">Explorar</a>
     </div>
 
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -265,10 +272,11 @@
     </div>
 
     <!-- Micro-proof line -->
-    <div class="mt-4 rounded-2xl border border-slate-200 bg-white px-5 py-4">
+    <div class="mt-4 panel">
       <p class="text-sm text-slate-700">
         <span class="font-semibold text-slate-900">Bonus:</span>
-        el sistema evita reservas imposibles (capacidad, bloqueos, reglas). Menos cancelaciones. Mejor experiencia.
+        experiencias más personales: rutas poco conocidas, planes a tu ritmo y guías que adaptan la aventura.
+        Menos líos. Más Lanzarote de verdad.
       </p>
     </div>
   </section>
@@ -283,13 +291,13 @@
         </p>
       </div>
 
-      <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
+      <a href="{{ experiences_list_url }}" class="btn btn-ghost">
         Ver todas
       </a>
     </div>
 
     {% if featured_experiences %}
-      <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[1fr] items-stretch">
         {% for experience in featured_experiences %}
           {% include "components/experience_card.html" with experience=experience %}
         {% endfor %}
@@ -301,7 +309,7 @@
             Aún no hay experiencias destacadas. Puedes empezar explorando el listado completo.
           </p>
           <div class="mt-4 flex flex-col gap-2 sm:flex-row">
-            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+            <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar ahora
             </a>
             {% if not user.is_authenticated %}
@@ -329,7 +337,7 @@
             </p>
 
             <div class="mt-5 flex flex-col gap-2 sm:flex-row">
-              <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+              <a href="{{ experiences_list_url }}" class="btn btn-primary">
                 Ver experiencias
               </a>
               {% if not user.is_authenticated %}
@@ -348,18 +356,20 @@
             </p>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-            <p class="text-sm font-semibold text-slate-900">Lo que NO prometemos</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-700">
-              <li class="flex gap-2"><span class="text-slate-400">•</span> “Te confirmo luego”</li>
-              <li class="flex gap-2"><span class="text-slate-400">•</span> Fechas disponibles que luego no lo están</li>
-              <li class="flex gap-2"><span class="text-slate-400">•</span> Precios opacos</li>
+          <div class="cta-box">
+            <p class="text-sm font-semibold text-slate-900">Por qué apetece reservar aquí</p>
+
+            <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+              <li>Experiencias únicas y personalizables (a pie, en bici o en tu propio coche).</li>
+              <li>Guías locales verificados: sabes con quién vas antes de solicitar.</li>
+              <li>Fechas y plazas reales: menos cambios de última hora y menos estrés.</li>
             </ul>
 
-            <div class="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
-              <p class="text-sm font-semibold text-blue-900">Lo que sí</p>
-              <p class="mt-1 text-sm text-blue-900/80">
-                Calendario inteligente + guías verificados + reglas claras.
+            <div class="cta-yes">
+              <p class="cta-yes-title">Lo mejor</p>
+              <p class="cta-yes-text">
+                Solicitas tu plaza, el guía confirma y tú te vas a la aventura:
+                rutas secretas, miradores y planes que no salen en los tours típicos.
               </p>
             </div>
           </div>

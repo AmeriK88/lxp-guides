@@ -15,7 +15,16 @@ from datetime import timedelta
 
 
 def home_view(request):
-    return render(request, "pages/home.html")
+    featured_experiences = (
+        Experience.objects
+        .filter(is_active=True)
+        .select_related("guide", "category")
+        .order_by("-created_at")[:6]
+    )
+
+    return render(request, "pages/home.html", {
+        "featured_experiences": featured_experiences,
+    })
 
 
 @login_required
@@ -39,24 +48,32 @@ def guide_dashboard(request):
     guide_bookings_qs = Booking.objects.filter(experience__guide=request.user)
 
     bookings_30d = guide_bookings_qs.filter(created_at__date__gte=since).count()
-    pending = guide_bookings_qs.filter(status=Booking.Status.PENDING).count()
+
+    # Pendientes “de acción” para el guía (NUEVO)
+    pending_new = guide_bookings_qs.filter(status=Booking.Status.PENDING).count()
+    pending_change = guide_bookings_qs.filter(status=Booking.Status.CHANGE_REQUESTED).count()
+    pending_cancel = guide_bookings_qs.filter(status=Booking.Status.CANCEL_REQUESTED).count()
+
+    pending_total = pending_new + pending_change + pending_cancel
 
     revenue_30d = (
         guide_bookings_qs.filter(
             status=Booking.Status.ACCEPTED,
             created_at__date__gte=since,
-        ).aggregate(total=Sum("total_price"))["total"]
+        )
+        .aggregate(total=Sum("total_price"))["total"]
         or Decimal("0.00")
     )
 
+    # “No vistas” por el guía (ya lo tenías)
     unseen_guide_bookings = guide_bookings_qs.filter(seen_by_guide=False).count()
 
+    # Reservas recientes: puedes priorizar las que requieren acción arriba (opcional)
     recent_bookings = (
         guide_bookings_qs.select_related("experience", "traveler")
         .order_by("-created_at")[:8]
     )
 
-    # KPI: reseñas públicas totales del guía (por sus experiencias)
     reviews_total = Review.objects.filter(
         experience__guide=request.user,
         status=Review.Status.PUBLISHED,
@@ -65,7 +82,15 @@ def guide_dashboard(request):
     kpis = {
         "experiences": experiences_count,
         "bookings_30d": bookings_30d,
-        "pending": pending,
+
+        # Aquí cambiamos pending para que sea “pendientes totales”
+        "pending": pending_total,
+
+        # Si quieres mostrar desglose en el template
+        "pending_new": pending_new,
+        "pending_change": pending_change,
+        "pending_cancel": pending_cancel,
+
         "revenue_30d": revenue_30d,
         "reviews": reviews_total,
     }
@@ -167,18 +192,47 @@ def profile_view(request):
         profile = request.user.guide_profile
         FormClass = GuideProfileForm
         template = "profiles/guide_edit.html"
+
+        if request.method == "POST":
+            form = FormClass(request.POST, request.FILES, instance=profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Perfil actualizado correctamente.")
+                return redirect("pages:profile")
+        else:
+            form = FormClass(instance=profile)
+
     else:
         profile = request.user.traveler_profile
-        FormClass = TravelerProfileForm
         template = "profiles/traveler_edit.html"
 
-    if request.method == "POST":
-        form = FormClass(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Perfil actualizado correctamente.")
-            return redirect("pages:profile")
-    else:
-        form = FormClass(instance=profile)
+        if request.method == "POST":
+            form = TravelerProfileForm(
+                request.POST,
+                request.FILES,
+                instance=profile,
+                user=request.user,   # 👈 CLAVE
+            )
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Perfil actualizado correctamente.")
+                return redirect("pages:profile")
+        else:
+            form = TravelerProfileForm(
+                instance=profile,
+                user=request.user,   # 👈 CLAVE
+            )
 
     return render(request, template, {"form": form, "profile": profile})
+
+
+def privacy_policy_view(request):
+    return render(request, "pages/privacy_policy.html")
+
+
+def terms_and_conditions_view(request):
+    return render(request, "pages/terms_and_conditions.html")
+
+
+def cookie_policy_view(request):
+    return render(request, "pages/cookie_policy.html")

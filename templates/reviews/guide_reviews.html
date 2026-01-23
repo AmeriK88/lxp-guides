@@ -31,7 +31,9 @@
               <tbody class="text-slate-700">
                 {% for r in reviews %}
                   <tr class="border-b border-slate-100 align-top">
-                    <td class="py-3 pr-3 font-medium text-slate-900">{{ r.experience.title }}</td>
+                    <td class="py-3 pr-3 font-medium text-slate-900">
+                      <span class="clamp-1">{{ r.experience.title }}</span>
+                    </td>
                     <td class="py-3 pr-3">{{ r.traveler.username }}</td>
 
                     <td class="py-3 pr-3">
@@ -62,11 +64,11 @@
                       {% endif %}
                     </td>
 
-                    <td class="py-3 pr-3">{{ r.created_at|date:"Y-m-d" }}</td>
+                    {{ r.created_at|date:"d M Y" }}
 
                     <td class="py-3 pr-3">
                       {% if r.comment %}
-                        {{ r.comment }}
+                        <p class="clamp-3 text-sm leading-relaxed">{{ r.comment }}</p>
                       {% else %}
                         <span class="text-slate-400">—</span>
                       {% endif %}

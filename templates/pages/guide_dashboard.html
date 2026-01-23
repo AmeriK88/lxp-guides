@@ -50,7 +50,14 @@
           <p class="mt-2 text-2xl font-semibold text-slate-900">
             {{ kpis.pending|default:"—" }}
           </p>
-          <p class="mt-1 text-xs text-slate-500">Por confirmar/gestionar</p>
+          <p class="mt-1 text-xs text-slate-500">
+            Por confirmar/gestionar
+            {% if kpis.pending_new or kpis.pending_change or kpis.pending_cancel %}
+              · {{ kpis.pending_new|default:0 }} nuevas
+              · {{ kpis.pending_change|default:0 }} cambios
+              · {{ kpis.pending_cancel|default:0 }} cancelaciones
+            {% endif %}
+          </p>
         </div>
       </div>
 
@@ -65,16 +72,15 @@
       </div>
     </div>
 
-<a href="{% url 'reviews:guide_list' %}" class="block card hover:bg-slate-50 transition">
-  <div class="card-body">
-    <p class="text-sm text-slate-600">Reseñas</p>
-    <p class="mt-2 text-2xl font-semibold text-slate-900">
-      {{ kpis.reviews|default:"—" }}
-    </p>
-    <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
-  </div>
-</a>
-
+    <a href="{% url 'reviews:guide_list' %}" class="block card hover:bg-slate-50 transition">
+      <div class="card-body">
+        <p class="text-sm text-slate-600">Reseñas</p>
+        <p class="mt-2 text-2xl font-semibold text-slate-900">
+          {{ kpis.reviews|default:"—" }}
+        </p>
+        <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
+      </div>
+    </a>
 
     <!-- Quick actions -->
     <div class="grid gap-4 lg:grid-cols-2">
@@ -153,7 +159,23 @@
                     <td class="py-3 pr-3">{{ b.date }}</td>
                     <td class="py-3 pr-3">{{ b.people }}</td>
                     <td class="py-3 pr-3">
-                      <span class="badge">{{ b.status }}</span>
+                      {% with s=b.status|lower %}
+                        {% if s == "accepted" %}
+                          <span class="badge badge-status-accepted">Aceptada</span>
+                        {% elif s == "pending" %}
+                          <span class="badge badge-status-pending">Pendiente</span>
+                        {% elif s == "change_requested" %}
+                          <span class="badge badge-status-change">Cambio solicitado</span>
+                        {% elif s == "cancel_requested" %}
+                          <span class="badge badge-status-cancel">Cancelación solicitada</span>
+                        {% elif s == "rejected" %}
+                          <span class="badge badge-status-rejected">Rechazada</span>
+                        {% elif s == "canceled" %}
+                          <span class="badge badge-status-canceled">Cancelada</span>
+                        {% else %}
+                          <span class="badge">{{ b.status }}</span>
+                        {% endif %}
+                      {% endwith %}
                     </td>
                   </tr>
                 {% endfor %}

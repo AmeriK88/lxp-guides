@@ -1,0 +1,15 @@
+{# components/experience_grid.html #}
+{% if experiences %}
+  <div class="{{ grid_class|default:'mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[1fr]' }}">
+    {% for experience in experiences %}
+      {% include "components/experience_card.html" with experience=experience %}
+    {% endfor %}
+  </div>
+{% else %}
+  {% include "components/empty_state.html" with
+    title=empty_title|default:"No hay experiencias todavía"
+    text=empty_text|default:"Vuelve más tarde o ajusta los filtros."
+    cta_url=empty_cta_url
+    cta_label=empty_cta_label
+  %}
+{% endif %}
