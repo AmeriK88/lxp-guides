@@ -78,7 +78,13 @@ class TravelerProfile(models.Model):
     )
 
     display_name = models.CharField(max_length=120, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    preferred_language = models.CharField(max_length=20, blank=True)  # ej: "es", "en"
+    country = models.CharField(max_length=80, blank=True)
+    city = models.CharField(max_length=120, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"TravelerProfile({self.user.username})"
+

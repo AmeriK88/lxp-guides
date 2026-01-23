@@ -192,19 +192,36 @@ def profile_view(request):
         profile = request.user.guide_profile
         FormClass = GuideProfileForm
         template = "profiles/guide_edit.html"
+
+        if request.method == "POST":
+            form = FormClass(request.POST, request.FILES, instance=profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Perfil actualizado correctamente.")
+                return redirect("pages:profile")
+        else:
+            form = FormClass(instance=profile)
+
     else:
         profile = request.user.traveler_profile
-        FormClass = TravelerProfileForm
         template = "profiles/traveler_edit.html"
 
-    if request.method == "POST":
-        form = FormClass(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Perfil actualizado correctamente.")
-            return redirect("pages:profile")
-    else:
-        form = FormClass(instance=profile)
+        if request.method == "POST":
+            form = TravelerProfileForm(
+                request.POST,
+                request.FILES,
+                instance=profile,
+                user=request.user,   # 👈 CLAVE
+            )
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Perfil actualizado correctamente.")
+                return redirect("pages:profile")
+        else:
+            form = TravelerProfileForm(
+                instance=profile,
+                user=request.user,   # 👈 CLAVE
+            )
 
     return render(request, template, {"form": form, "profile": profile})
 
