@@ -1,0 +1,18 @@
+<div
+  id="{{ id|default:'app-loader' }}"
+  class="loader-overlay"
+  aria-hidden="true"
+  data-loader
+>
+  <div class="loader-card" role="status" aria-live="polite" aria-label="Cargando">
+    <div class="orbital-loader"
+     style="--size: {{ size|default:'52px' }}; --radius: 24px;">
+      {% for _ in "12345678"|make_list %}
+        <span class="dot"></span>
+      {% endfor %}
+    </div>
+    {% if label %}
+      <p class="loader-label">{{ label }}</p>
+    {% endif %}
+  </div>
+</div>
