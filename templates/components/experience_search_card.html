@@ -1,0 +1,44 @@
+{# templates/components/experience_search_card.html #}
+<div class="panel-soft p-6">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h2 class="text-base font-semibold text-slate-900">
+        {{ title|default:"Encuentra tu plan ideal" }}
+      </h2>
+      <p class="mt-1 text-sm text-slate-600">
+        {{ subtitle|default:"Filtra por zona, duración y precio. Lo simple funciona." }}
+      </p>
+    </div>
+    <span class="badge">{{ badge|default:"⚡ Rápido" }}</span>
+  </div>
+
+  <form method="get" action="{{ action_url }}" class="mt-5 space-y-3">
+    <div>
+      <label class="label">¿Qué te apetece?</label>
+      <input class="input" name="q" placeholder="volcanes, senderismo, atardecer..." />
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div>
+        <label class="label">Precio máx (€)</label>
+        <input class="input" type="number" step="0.01" name="max_price" placeholder="Ej: 50" />
+      </div>
+      <div>
+        <label class="label">Duración máx (min)</label>
+        <input class="input" type="number" name="max_duration" placeholder="Ej: 180" />
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-full" type="submit">
+      Buscar experiencias
+    </button>
+
+    <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+      <p class="font-semibold">¿Por qué aquí?</p>
+      <p class="mt-1 text-slate-600">
+        Porque aquí ves fechas y capacidad reales. Tú solicitas, el guía confirma y
+        <span class="font-medium text-slate-900">evitamos reservas imposibles y sorpresas</span>.
+      </p>
+    </div>
+  </form>
+</div>

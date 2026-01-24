@@ -41,6 +41,18 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Bienvenido de nuevo, {user.username} 👋")
+
+                if next_url and url_has_allowed_host_and_scheme(
+                    url=next_url,
+                    allowed_hosts={request.get_host()},
+                    require_https=request.is_secure(),
+                ):
+                    return redirect(next_url)
+
+                return redirect("pages:dashboard")
 
             # Seguridad: solo redirigir a next si es seguro
             if next_url and url_has_allowed_host_and_scheme(
@@ -61,4 +73,6 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
+    messages.info(request, "Has cerrado sesión.")
     return redirect("accounts:login")
+

@@ -1,4 +1,4 @@
-/* static/js/bookings/cookies/consent.js */
+/* static/js/cookies/consent.js */
 (() => {
   "use strict";
 
@@ -14,8 +14,6 @@
 
   // --- DOM helpers ---
   const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-
   const banner = $("#cookie-banner");
   const modal = $("#cookie-modal");
   if (!banner || !modal) return;
@@ -54,15 +52,19 @@
     return !!state?.decided;
   }
 
-  // --- UI ---
-  function show(el) {
-    el.classList.remove("hidden");
+  // --- UI (ahora con .is-open, no con hidden) ---
+  function open(el) {
+    el.classList.add("is-open");
     el.setAttribute("aria-hidden", "false");
   }
 
-  function hide(el) {
-    el.classList.add("hidden");
+  function close(el) {
+    el.classList.remove("is-open");
     el.setAttribute("aria-hidden", "true");
+  }
+
+  function isOpen(el) {
+    return el.classList.contains("is-open");
   }
 
   function syncTogglesFromState(state) {
@@ -83,7 +85,10 @@
     // Siempre sincroniza con el estado actual
     const state = readState();
     syncTogglesFromState(state);
-    show(modal);
+
+    // Ojo: si el banner está abierto, lo cerramos para evitar overlays raros
+    close(banner);
+    open(modal);
 
     // Focus accesible: intenta enfocar el primer toggle
     const firstFocusable =
@@ -94,30 +99,28 @@
   }
 
   function closeModal() {
-    hide(modal);
+    close(modal);
   }
 
   function showBannerIfNeeded() {
     const state = readState();
-    if (!hasDecision(state)) show(banner);
-    else hide(banner);
+    if (!hasDecision(state)) open(banner);
+    else close(banner);
   }
 
   // --- Consent actions ---
   function acceptAll() {
     const state = writeState({ functional: true, analytics: true, marketing: true });
     syncTogglesFromState(state);
-    hide(banner);
+    close(banner);
     closeModal();
-    // Hook opcional por si luego metes analytics:
     window.dispatchEvent(new CustomEvent("lx:cookies:consent", { detail: state }));
   }
 
   function rejectAll() {
-    // necesarias siempre ON (no guardamos flag, se asume)
     const state = writeState({ functional: false, analytics: false, marketing: false });
     syncTogglesFromState(state);
-    hide(banner);
+    close(banner);
     closeModal();
     window.dispatchEvent(new CustomEvent("lx:cookies:consent", { detail: state }));
   }
@@ -125,7 +128,7 @@
   function savePreferences() {
     const prefs = getTogglesValue();
     const state = writeState(prefs);
-    hide(banner);
+    close(banner);
     closeModal();
     window.dispatchEvent(new CustomEvent("lx:cookies:consent", { detail: state }));
   }
@@ -169,6 +172,7 @@
   document.addEventListener("click", (e) => {
     const openBtn = e.target.closest("[data-cookie-open]");
     if (!openBtn) return;
+
     e.preventDefault();
     openModal();
   });
@@ -181,12 +185,10 @@
   // Cerrar con ESC
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    if (!modal.classList.contains("hidden")) closeModal();
+    if (isOpen(modal)) closeModal();
   });
 
   // Al cargar
+  close(modal); // asegúrate de que arranca cerrado (por si acaso)
   showBannerIfNeeded();
-
-  // Si el usuario ya decidió, sincroniza toggles cuando abras modal
-  // (ya lo hacemos dentro de openModal)
 })();
