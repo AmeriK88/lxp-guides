@@ -32,6 +32,8 @@ def experience_list(request):
     max_price = request.GET.get("max_price", "").strip()
     max_duration = request.GET.get("max_duration", "").strip()
     sort = request.GET.get("sort", "recent").strip()
+    # ¿Hay filtros activos? (para cambiar el empty state)
+    has_filters = any([q, category_slug, min_price, max_price, max_duration, sort != "recent"])
 
     if q:
         experiences = experiences.filter(
@@ -86,6 +88,7 @@ def experience_list(request):
     context = {
         "experiences": experiences,
         "categories": categories,
+        "has_filters": has_filters,
         "filters": {
             "q": q,
             "category": category_slug,

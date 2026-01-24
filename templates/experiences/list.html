@@ -72,22 +72,12 @@
             <a href="{{ experiences_list_url }}" class="btn btn-ghost w-full text-center">Limpiar</a>
           </div>
         </form>
-
-        {% if filters.q or filters.category or filters.min_price or filters.max_price or filters.max_duration or filters.sort != "recent" %}
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="text-sm text-slate-600">Filtros activos:</span>
-            {% if filters.q %}<span class="badge">🔎 {{ filters.q }}</span>{% endif %}
-            {% if filters.category %}<span class="badge">🗂 {{ filters.category }}</span>{% endif %}
-            {% if filters.min_price %}<span class="badge">💶 min {{ filters.min_price }}</span>{% endif %}
-            {% if filters.max_price %}<span class="badge">💶 max {{ filters.max_price }}</span>{% endif %}
-            {% if filters.max_duration %}<span class="badge">⏱ ≤ {{ filters.max_duration }} min</span>{% endif %}
-            {% if filters.sort and filters.sort != "recent" %}<span class="badge">↕ {{ filters.sort }}</span>{% endif %}
-          </div>
-        {% endif %}
       </div>
     </div>
-
-    {% include "components/experience_grid.html" with experiences=experiences empty_title="No hay experiencias activas todavía" empty_text="Vuelve más tarde o ajusta los filtros." empty_cta_url=experiences_list_url empty_cta_label="Limpiar filtros" %}
-
+    {% if has_filters %}
+      {% include "components/experience_grid.html" with experiences=experiences empty_title="Ups… no encontramos nada 😅" empty_text="Prueba con otros términos o limpia los filtros." empty_cta_url=experiences_list_url empty_cta_label="Limpiar filtros" %}
+    {% else %}
+      {% include "components/experience_grid.html" with experiences=experiences empty_title="No hay experiencias activas todavía" empty_text="Vuelve más tarde o ajusta los filtros." empty_cta_url=experiences_list_url empty_cta_label="Ver experiencias" %}
+    {% endif %}
   </div>
 {% endblock %}
