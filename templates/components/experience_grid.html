@@ -5,10 +5,5 @@
     {% endfor %}
   </div>
 {% else %}
-  {% include "components/empty_state.html" with
-    title=empty_title|default:"No hay experiencias todavía"
-    text=empty_text|default:"Vuelve más tarde o ajusta los filtros."
-    cta_url=empty_cta_url
-    cta_label=empty_cta_label
-  %}
+  {% include "components/empty_state.html" with title=empty_title text=empty_text cta_url=empty_cta_url cta_label=empty_cta_label %}
 {% endif %}
