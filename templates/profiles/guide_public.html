@@ -125,16 +125,7 @@
       {% if recent_reviews %}
         <div class="mt-5 space-y-3">
           {% for r in recent_reviews %}
-            {% include "components/review_card.html" with
-              r=r
-              show_status=0
-              show_experience=1
-              show_verified=0
-              show_location=0
-              show_flag_reason=0
-              show_guide_reply=0
-              show_actions=1
-            %}
+            {% include "components/review_card.html" with r=r show_status=0 show_experience=1 show_verified=0 show_location=0 show_flag_reason=0 show_guide_reply=0 show_actions=1 %}
           {% endfor %}
         </div>
       {% else %}
