@@ -415,9 +415,11 @@
     <div id="cookie-modal" class="fixed inset-0 z-70" aria-hidden="true">
       <div class="absolute inset-0 bg-slate-900/50"></div>
 
-      <div class="relative mx-auto flex min-h-full max-w-4xl items-end px-4 py-6 sm:items-center sm:px-6">
-        <div class="card w-full">
-          <div class="card-body">
+      <div class="cookie-modal__wrap">
+        <div class="cookie-modal__card">
+
+          <!-- HEADER (fijo) -->
+          <div class="cookie-modal__header">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <div class="flex flex-wrap items-center gap-2">
@@ -439,8 +441,11 @@
                 Cerrar
               </button>
             </div>
+          </div>
 
-            <div class="mt-6 space-y-4">
+          <!-- BODY (scrollea) -->
+          <div class="cookie-modal__body">
+            <div class="space-y-4">
               <!-- Necessary -->
               <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 <div class="flex items-start justify-between gap-4">
@@ -506,7 +511,15 @@
               </div>
             </div>
 
-            <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <p class="mt-4 text-xs text-slate-500">
+              Puedes cambiar esto cuando quieras. Para más info:
+              <a href="{% url 'pages:cookie_policy' %}" class="font-semibold">Política de cookies</a>.
+            </p>
+          </div>
+
+          <!-- FOOTER (fijo, botones siempre visibles) -->
+          <div class="cookie-modal__footer">
+            <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <button type="button" class="btn btn-ghost" data-cookie-action="reject">
                 Rechazar todo
               </button>
@@ -517,15 +530,12 @@
                 Guardar preferencias
               </button>
             </div>
-
-            <p class="mt-4 text-xs text-slate-500">
-              Puedes cambiar esto cuando quieras. Para más info:
-              <a href="{% url 'pages:cookie_policy' %}" class="font-semibold">Política de cookies</a>.
-            </p>
           </div>
+
         </div>
       </div>
     </div>
+
     {% include "components/loader.html" with id="app-loader" label="Cargando..." %}
 
 
