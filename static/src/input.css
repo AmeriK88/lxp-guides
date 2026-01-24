@@ -125,6 +125,105 @@
   /* Bullets en listas */
   .list-bullets > li { @apply flex gap-2; }
   .list-bullets > li::before { content: "•"; @apply text-slate-400; }
+
+
+  /* -----------------------------
+     SMOOTH DROPDOWNS (DETAILS)
+  ------------------------------ */
+
+  /* Account dropdown: panel animado */
+  .account-dd > .account-dd__panel{
+    z-index: 60;
+    transform-origin: top right;
+    opacity: 0;
+    transform: translateY(-6px) scale(.98);
+    max-height: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease, max-height .22s ease;
+  }
+  .account-dd[open] > .account-dd__panel{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 70vh;
+    pointer-events: auto;
+  }
+  .account-dd[open] .chev{ transform: rotate(180deg); }
+
+  /* Mobile menu dropdown (si le pones class="mobile-menu" al panel) */
+  details > .mobile-menu{
+    z-index: 60;
+    transform-origin: top right;
+    opacity: 0;
+    transform: translateY(-6px) scale(.98);
+    max-height: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease, max-height .22s ease;
+  }
+  details[open] > .mobile-menu{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 70vh;
+    pointer-events: auto;
+  }
+
+
+  /* -----------------------------
+     COOKIE CONSENT (BANNER + MODAL)
+    toggle de clase .is-open
+  ------------------------------ */
+
+  #cookie-banner{
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+  #cookie-banner.is-open{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #cookie-modal{
+    opacity: 0;
+    pointer-events: none;
+  }
+  #cookie-modal.is-open{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+
+  /* Overlay */
+  #cookie-modal > .absolute{
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  #cookie-modal.is-open > .absolute{
+    opacity: 1;
+  }
+
+  /* Card/panel */
+  #cookie-modal .card{
+    opacity: 0;
+    transform: translateY(16px) scale(.98);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  #cookie-modal.is-open .card{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .account-dd > .account-dd__panel,
+    .account-dd .chev,
+    details > .mobile-menu,
+    #cookie-banner,
+    #cookie-modal,
+    #cookie-modal > .absolute,
+    #cookie-modal .card{
+      transition: none;
+    }
+  }
 }
 
 /* -----------------------------
@@ -206,9 +305,7 @@
   .orbital-loader .dot:nth-child(7)::before{ animation-delay: .36s; }
   .orbital-loader .dot:nth-child(8)::before{ animation-delay: .42s; }
 
-  @keyframes orbit-spin {
-    to { transform: rotate(360deg); }
-  }
+  @keyframes orbit-spin { to { transform: rotate(360deg); } }
 
   @keyframes dot-pulse{
     0%, 100% { transform: translate(-50%, -50%) scale(.72); opacity: .55; }
@@ -220,7 +317,6 @@
     .orbital-loader .dot::before{ animation: none; opacity: .9; }
   }
 }
-
 
 /* -----------------------------
    NAV
@@ -242,4 +338,3 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
   }
 }
-
