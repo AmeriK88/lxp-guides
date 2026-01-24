@@ -50,18 +50,18 @@
           <!-- Trust strip -->
           <div class="mt-6 grid gap-3 sm:grid-cols-3">
             <div class="panel">
-              <p class="text-xs text-slate-500">Disponibilidad</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">En tiempo real</p>
+              <p class="text-xs text-slate-500">Pagos</p>
+              <p class="mt-0.5 text-sm font-semibold text-slate-900">100% seguros</p>
             </div>
 
             <div class="panel">
-              <p class="text-xs text-slate-500">Guías</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">Verificados</p>
+              <p class="text-xs text-slate-500">Cancelación</p>
+              <p class="mt-0.5 text-sm font-semibold text-slate-900">Gratis hasta 48h</p>
             </div>
 
             <div class="panel">
-              <p class="text-xs text-slate-500">Condiciones</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">Claras</p>
+              <p class="text-xs text-slate-500">Reserva</p>
+              <p class="mt-0.5 text-sm font-semibold text-slate-900">En pocos clicks</p>
             </div>
           </div>
 
@@ -72,55 +72,15 @@
 
         <!-- Right: Search card -->
         <div class="relative">
-          <div class="panel-soft p-6">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h2 class="text-base font-semibold text-slate-900">Encuentra tu plan ideal</h2>
-                <p class="mt-1 text-sm text-slate-600">
-                  Filtra por zona, duración y precio. Lo simple funciona.
-                </p>
-              </div>
-              <span class="badge">⚡ Rápido</span>
-            </div>
-
-            <form method="get" action="{{ experiences_list_url }}" class="mt-5 space-y-3">
-              <div>
-                <label class="label">¿Qué te apetece?</label>
-                <input class="input" name="q" placeholder="volcanes, senderismo, atardecer..." />
-              </div>
-
-              <div class="grid gap-3 sm:grid-cols-2">
-                <div>
-                  <label class="label">Precio máx (€)</label>
-                  <input class="input" type="number" step="0.01" name="max_price" placeholder="Ej: 50" />
-                </div>
-                <div>
-                  <label class="label">Duración máx (min)</label>
-                  <input class="input" type="number" name="max_duration" placeholder="Ej: 180" />
-                </div>
-              </div>
-
-              <button class="btn btn-primary w-full" type="submit">
-                Buscar experiencias
-              </button>
-
-              <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
-                <p class="font-semibold">¿Por qué aquí?</p>
-                <p class="mt-1 text-slate-600">
-                  Porque aquí ves fechas y capacidad reales. Tú solicitas, el guía confirma y
-                  <span class="font-medium text-slate-900">evitamos reservas imposibles y sorpresas</span>.
-                </p>
-              </div>
-            </form>
-          </div>
+          {% with action_url=experiences_list_url %}
+            {% include "components/experience_search_card.html" %}
+          {% endwith %}
 
           <!-- Small highlight -->
-          <div class="cta-yes">
-            <p class="cta-yes-title">🧠 Reserva inteligente</p>
-            <p class="cta-yes-text">
-              Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas).
-            </p>
-          </div>
+          {% with title="🧠 Reserva inteligente" text="Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas)." %}
+            {% include "components/cta_yes.html" %}
+          {% endwith %}
+
         </div>
       </div>
     </div>
@@ -129,35 +89,20 @@
   <!-- Value props -->
   <section class="mt-8">
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">Disponibilidad real</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Solicitas tu plaza con fechas reales. El guía confirma y
-            <span class="font-medium text-slate-900">no pagas hasta que esté aceptada</span>.
-          </p>
-        </div>
-      </div>
+      {% with title="Disponibilidad real" text="Solicitas tu plaza con fechas reales. El guía confirma y no pagas hasta que esté aceptada." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
 
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">Guías verificados</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Perfiles públicos, documentos y estado de verificación. Confianza primero.
-          </p>
-        </div>
-      </div>
+      {% with title="Guías verificados" text="Perfiles públicos, documentos y estado de verificación. Confianza primero." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
 
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">Condiciones claras</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Duración, precio, plazas, punto de encuentro y políticas sin letra pequeña.
-          </p>
-        </div>
-      </div>
+      {% with title="Condiciones claras" text="Duración, precio, plazas, punto de encuentro y políticas sin letra pequeña." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
     </div>
   </section>
+
 
   <!-- Two audiences -->
   <section class="mt-8 grid gap-4 lg:grid-cols-2">
@@ -232,44 +177,24 @@
 
   <!-- How it works -->
   <section class="mt-8">
-    <div class="flex items-end justify-between gap-4">
-      <div>
-        <h2 class="text-xl font-semibold tracking-tight">Cómo funciona</h2>
-        <p class="mt-1 text-sm text-slate-600">
-          Simple, claro y sin vueltas.
-        </p>
-      </div>
-      <a href="{{ experiences_list_url }}" class="btn btn-ghost">Explorar</a>
-    </div>
+    {% with title="Cómo funciona" subtitle="Simple, claro y sin vueltas." cta_url=experiences_list_url cta_label="Explorar" %}
+      {% include "components/section_header.html" %}
+    {% endwith %}
 
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">1) Explora</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Filtra por lo que te apetezca: volcanes, costa, atardeceres, senderismo…
-          </p>
-        </div>
-      </div>
+      {% with title="1) Explora" text="Filtra por lo que te apetezca: volcanes, costa, atardeceres, senderismo…" %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
 
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">2) Reserva</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            Elige fecha según disponibilidad real y solicita tu plaza en minutos.
-          </p>
-        </div>
-      </div>
+      {% with title="2) Reserva" text="Elige fecha según disponibilidad real y solicita tu plaza en minutos." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
 
-      <div class="card">
-        <div class="card-body">
-          <h3 class="text-base font-semibold">3) Disfruta</h3>
-          <p class="mt-1 text-sm text-slate-600">
-            El guía confirma y tú solo te ocupas de vivir la isla como un local.
-          </p>
-        </div>
-      </div>
+      {% with title="3) Disfruta" text="El guía confirma y tú solo te ocupas de vivir la isla como un local." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
     </div>
+
 
     <!-- Micro-proof line -->
     <div class="mt-4 panel">
@@ -283,18 +208,9 @@
 
   <!-- Featured experiences -->
   <section class="mt-10">
-    <div class="flex items-end justify-between gap-4">
-      <div>
-        <h2 class="text-xl font-semibold tracking-tight">Experiencias destacadas</h2>
-        <p class="mt-1 text-sm text-slate-600">
-          Ideas para empezar si no sabes qué elegir.
-        </p>
-      </div>
-
-      <a href="{{ experiences_list_url }}" class="btn btn-ghost">
-        Ver todas
-      </a>
-    </div>
+    {% with title="Experiencias destacadas" subtitle="Ideas para empezar si no sabes qué elegir." cta_url=experiences_list_url cta_label="Ver todas" %}
+      {% include "components/section_header.html" %}
+    {% endwith %}
 
     {% if featured_experiences %}
       <div class="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[1fr] items-stretch">
@@ -308,10 +224,12 @@
           <p class="text-sm text-slate-600">
             Aún no hay experiencias destacadas. Puedes empezar explorando el listado completo.
           </p>
+
           <div class="mt-4 flex flex-col gap-2 sm:flex-row">
             <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar ahora
             </a>
+
             {% if not user.is_authenticated %}
               <a href="{% url 'accounts:register' %}" class="btn btn-ghost text-center">
                 Crear cuenta
@@ -322,6 +240,7 @@
       </div>
     {% endif %}
   </section>
+
 
   <!-- Final CTA -->
   <section class="mt-10">
@@ -365,13 +284,9 @@
               <li>Fechas y plazas reales: menos cambios de última hora y menos estrés.</li>
             </ul>
 
-            <div class="cta-yes">
-              <p class="cta-yes-title">Lo mejor</p>
-              <p class="cta-yes-text">
-                Solicitas tu plaza, el guía confirma y tú te vas a la aventura:
-                rutas secretas, miradores y planes que no salen en los tours típicos.
-              </p>
-            </div>
+            {% with title="Lo mejor" text="Solicitas tu plaza, el guía confirma y tú te vas a la aventura: rutas secretas, miradores y planes que no salen en los tours típicos." %}
+              {% include "components/cta_yes.html" %}
+            {% endwith %}
           </div>
         </div>
       </div>

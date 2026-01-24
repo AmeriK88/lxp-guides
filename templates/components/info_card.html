@@ -1,0 +1,12 @@
+
+<div class="{{ wrapper_class|default:'card' }}">
+  <div class="{{ body_class|default:'card-body' }}">
+    <h3 class="{{ title_class|default:'text-base font-semibold' }}">{{ title }}</h3>
+
+    {% if text %}
+      <p class="{{ text_class|default:'mt-1 text-sm text-slate-600' }}">
+        {{ text }}
+      </p>
+    {% endif %}
+  </div>
+</div>
