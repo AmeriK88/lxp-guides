@@ -31,21 +31,21 @@
 
           <div class="grid gap-4 sm:grid-cols-2">
             {% for field in form %}
-              <div class="{% if field.name in 'description,tags' %}sm:col-span-2{% endif %}">
+              <div class="min-w-0 {% if field.name in 'description tags' %}sm:col-span-2{% endif %}">
                 <label class="label">{{ field.label }}</label>
 
-                {# Textarea: un pelín más alto #}
                 {% if field.field.widget.input_type == "textarea" %}
-                  {{ field|add_class:"input min-h-[120px]" }}
+                  {{ field|add_class:"input w-full min-h-[120px]" }}
+
                 {% elif field.field.widget.input_type == "file" %}
-                  <div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600">
-                    {{ field }}
+                  <div class="min-w-0 rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+                    {{ field|add_class:"input w-full max-w-full" }}
                     <p class="mt-1 text-xs text-slate-500">Sube una imagen representativa de la experiencia.</p>
                   </div>
-                {% else %}
-                  {{ field|add_class:"input" }}
-                {% endif %}
 
+                {% else %}
+                  {{ field|add_class:"input w-full" }}
+                {% endif %}
 
                 {% if field.help_text %}
                   <p class="help">{{ field.help_text|safe }}</p>

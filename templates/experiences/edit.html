@@ -32,26 +32,20 @@
 
           <div class="grid gap-4 sm:grid-cols-2">
             {% for field in form %}
-              <div class="{% if field.name in 'description,tags' %}sm:col-span-2{% endif %}">
+              <div class="min-w-0 {% if field.name == 'description' or field.name == 'tags' %}sm:col-span-2{% endif %}">
                 <label class="label">{{ field.label }}</label>
 
                 {% if field.field.widget.input_type == "textarea" %}
-                  {{ field|add_class:"input min-h-[140px]" }}
+                  {{ field|add_class:"input w-full min-h-[140px]" }}
 
                 {% elif field.field.widget.input_type == "file" %}
-                  {% if exp.image %}
-                    <div class="mb-3 overflow-hidden rounded-xl border border-slate-200 bg-white">
-                      <img src="{{ exp.image.url }}" alt="{{ exp.title }}" class="h-40 w-full object-cover">
-                    </div>
-                  {% endif %}
-
-                  <div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600">
-                    {{ field }}
+                  <div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600 min-w-0">
+                    {{ field|add_class:"input w-full max-w-full" }}
                     <p class="mt-1 text-xs text-slate-500">Sube una imagen representativa (JPG/PNG).</p>
                   </div>
 
                 {% else %}
-                  {{ field|add_class:"input" }}
+                  {{ field|add_class:"input w-full" }}
                 {% endif %}
 
                 {% if field.help_text %}
