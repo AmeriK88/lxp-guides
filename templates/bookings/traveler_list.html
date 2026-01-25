@@ -3,8 +3,9 @@
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
+
     <!-- Header -->
-    <div>
+    <div data-animate="fade-up">
       <h1 class="text-2xl font-semibold tracking-tight">Mis Reservas</h1>
       <p class="mt-1 text-sm text-slate-600">
         Revisa el estado de tus reservas y accede a los detalles de cada reserva.
@@ -12,142 +13,147 @@
     </div>
 
     {% if bookings %}
-      <div class="space-y-3">
+      <!-- Stagger container -->
+      <div class="space-y-3" data-stagger>
         {% for b in bookings %}
-          <div class="card">
-            <div class="card-body">
-              <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <!-- Left -->
-                <div class="min-w-0">
-                  <h2 class="text-base font-semibold">
-                    <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
-                      {{ b.experience.title }}
-                    </a>
-                  </h2>
 
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    <span class="badge">📅 {{ b.date }}</span>
+          {# ✅ Animamos el WRAPPER, no la card #}
+          <div data-animate="scale-in">
+            <div class="card">
+              <div class="card-body">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 
-                    <!-- Si mantienes people en el modelo -->
-                    {% if b.people %}
-                      <span class="badge">👥 {{ b.people }} personas</span>
-                    {% else %}
-                      <span class="badge">👥 {{ b.adults|default:0|add:b.children|default:0|add:b.infants|default:0 }} personas</span>
-                    {% endif %}
+                  <!-- Left -->
+                  <div class="min-w-0">
+                    <h2 class="text-base font-semibold">
+                      <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
+                        {{ b.experience.title }}
+                      </a>
+                    </h2>
 
-                    {% if b.total_price %}
-                      <span class="badge">💶 {{ b.total_price }}€</span>
-                    {% endif %}
-                  </div>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                      <span class="badge">📅 {{ b.date }}</span>
 
-                  {# NUEVO: desglose + transporte #}
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    <span class="badge">👤 {{ b.adults }} adultos</span>
-                    <span class="badge">🧒 {{ b.children }} niños</span>
-                    <span class="badge">👶 {{ b.infants }} bebés</span>
-
-                    {% if b.transport_mode %}
-                      <span class="badge">🚐 {{ b.get_transport_mode_display }}</span>
-                    {% endif %}
-
-                    {% if b.preferred_language %}
-                      <span class="badge">🗣 {{ b.get_preferred_language_display }}</span>
-                    {% endif %}
-
-                    {% if b.pickup_notes %}
-                      <span class="badge">📍 {{ b.pickup_notes }}</span>
-                    {% endif %}
-                  </div>
-                </div>
-
-                <!-- Right -->
-                <div class="flex flex-col items-start gap-2 sm:items-end">
-                  {% with s=b.status|lower %}
-                    {% if s == "accepted" %}
-                      <span class="badge badge-green">Aceptada</span>
-                    {% elif s == "pending" %}
-                      <span class="badge">Pendiente</span>
-                    {% elif s == "change_requested" %}
-                      <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                        Cambio solicitado
-                      </span>
-                    {% elif s == "cancel_requested" %}
-                      <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                        Cancelación solicitada
-                      </span>
-                    {% elif s == "rejected" %}
-                      <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                        Rechazada
-                      </span>
-                    {% elif s == "canceled" %}
-                      <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                        Cancelada
-                      </span>
-                    {% else %}
-                      <span class="badge">{{ b.status }}</span>
-                    {% endif %}
-                  {% endwith %}
-
-
-                  <div class="flex flex-wrap gap-2">
-                    <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
-                      Ver reserva
-                    </a>
-
-                    {# Mostrar acciones al viajero solo si no está cancelada/rechazada #}
-                    {% if b.status != "rejected" and b.status != "canceled" %}
-
-                      {# Si NO hay solicitud pendiente, deja pedir cambio/cancelación #}
-                      {% if b.status != "change_requested" and b.status != "cancel_requested" %}
-                        <a href="{% url 'bookings:request_change' b.pk %}" class="btn btn-primary">
-                          Solicitar cambio
-                        </a>
-
-                        <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-ghost">
-                          Solicitar cancelación
-                        </a>
+                      {% if b.people %}
+                        <span class="badge">👥 {{ b.people }} personas</span>
                       {% else %}
-                        <span class="text-xs font-medium text-slate-600">
-                          ⏳ Tu solicitud está en revisión por el guía
-                        </span>
+                        <span class="badge">👥 {{ b.adults|default:0|add:b.children|default:0|add:b.infants|default:0 }} personas</span>
                       {% endif %}
 
+                      {% if b.total_price %}
+                        <span class="badge">💶 {{ b.total_price }}€</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="mt-2 flex flex-wrap gap-2">
+                      <span class="badge">👤 {{ b.adults }} adultos</span>
+                      <span class="badge">🧒 {{ b.children }} niños</span>
+                      <span class="badge">👶 {{ b.infants }} bebés</span>
+
+                      {% if b.transport_mode %}
+                        <span class="badge">🚐 {{ b.get_transport_mode_display }}</span>
+                      {% endif %}
+
+                      {% if b.preferred_language %}
+                        <span class="badge">🗣 {{ b.get_preferred_language_display }}</span>
+                      {% endif %}
+
+                      {% if b.pickup_notes %}
+                        <span class="badge">📍 {{ b.pickup_notes }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <!-- Right -->
+                  <div class="flex flex-col items-start gap-2 sm:items-end">
+                    {% with s=b.status|lower %}
+                      {% if s == "accepted" %}
+                        <span class="badge badge-green">Aceptada</span>
+                      {% elif s == "pending" %}
+                        <span class="badge">Pendiente</span>
+                      {% elif s == "change_requested" %}
+                        <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                          Cambio solicitado
+                        </span>
+                      {% elif s == "cancel_requested" %}
+                        <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
+                          Cancelación solicitada
+                        </span>
+                      {% elif s == "rejected" %}
+                        <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                          Rechazada
+                        </span>
+                      {% elif s == "canceled" %}
+                        <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
+                          Cancelada
+                        </span>
+                      {% else %}
+                        <span class="badge">{{ b.status }}</span>
+                      {% endif %}
+                    {% endwith %}
+
+                    <div class="flex flex-wrap gap-2">
+                      <a href="{% url 'bookings:detail' b.pk %}" class="btn btn-ghost">
+                        Ver reserva
+                      </a>
+
+                      {% if b.status != "rejected" and b.status != "canceled" %}
+                        {% if b.status != "change_requested" and b.status != "cancel_requested" %}
+                          <a href="{% url 'bookings:request_change' b.pk %}" class="btn btn-primary">
+                            Solicitar cambio
+                          </a>
+
+                          <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-ghost">
+                            Solicitar cancelación
+                          </a>
+                        {% else %}
+                          <span class="text-xs font-medium text-slate-600">
+                            ⏳ Tu solicitud está en revisión por el guía
+                          </span>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+
+                    {% if not b.seen_by_traveler %}
+                      <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>
+
+                      {% if b.extras.last_update.type == "change" %}
+                        {% if b.extras.last_update.decision == "accepted" %}
+                          <span class="text-xs font-medium text-emerald-700">✅ Cambio aceptado</span>
+                        {% elif b.extras.last_update.decision == "rejected" %}
+                          <span class="text-xs font-medium text-red-700">❌ Cambio rechazado</span>
+                        {% endif %}
+                      {% endif %}
                     {% endif %}
                   </div>
 
-                  {% if not b.seen_by_traveler %}
-                    <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>
-
-                    {% if b.extras.last_update.type == "change" %}
-                      {% if b.extras.last_update.decision == "accepted" %}
-                        <span class="text-xs font-medium text-emerald-700">✅ Cambio aceptado</span>
-                      {% elif b.extras.last_update.decision == "rejected" %}
-                        <span class="text-xs font-medium text-red-700">❌ Cambio rechazado</span>
-                      {% endif %}
-                    {% endif %}
-                  {% endif %}
                 </div>
               </div>
             </div>
           </div>
+
         {% endfor %}
       </div>
 
     {% else %}
-      <div class="card">
-        <div class="card-body">
-          <h2 class="text-base font-semibold">No tienes reservas aún</h2>
-          <p class="mt-1 text-sm text-slate-600">
-            Cuando reserves una experiencia, aparecerá aquí con su estado.
-          </p>
+      {# ✅ Igual: animamos wrapper #}
+      <div data-animate="scale-in">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-base font-semibold">No tienes reservas aún</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Cuando reserves una experiencia, aparecerá aquí con su estado.
+            </p>
 
-          <div class="mt-4">
-            <a href="{% url 'experiences:list' %}" class="btn btn-primary">
-              Explorar experiencias
-            </a>
+            <div class="mt-4">
+              <a href="{% url 'experiences:list' %}" class="btn btn-primary">
+                Explorar experiencias
+              </a>
+            </div>
           </div>
         </div>
       </div>
     {% endif %}
+
   </div>
 {% endblock %}

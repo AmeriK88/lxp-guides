@@ -3,19 +3,21 @@
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
-    <div>
+    <div data-animate="fade-up">
       <h1 class="text-2xl font-semibold tracking-tight">Mis reseñas</h1>
       <p class="mt-1 text-sm text-slate-600">Tus reseñas (publicadas, pendientes o marcadas).</p>
     </div>
 
     {% if reviews %}
-      <div class="space-y-3">
+      <div class="space-y-3" data-stagger>
         {% for r in reviews %}
-          {% include "components/review_card.html" with r=r variant="my_reviews" %}
+          <div data-animate="fade-up">
+            {% include "components/review_card.html" with r=r variant="my_reviews" %}
+          </div>
         {% endfor %}
       </div>
     {% else %}
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <p class="text-sm text-slate-600">Aún no has dejado reseñas.</p>
         </div>

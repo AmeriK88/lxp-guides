@@ -1,0 +1,85 @@
+:root{
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+}
+
+/* -----------------------------
+   PAGE ENTER (FAILSAFE)
+   - Por defecto: visible
+   - Solo anima si le pones la clase .page-enter
+------------------------------ */
+
+/* Default: visible (no más pantallas en blanco si JS falla) */
+[data-page]{
+  opacity: 1;
+  transform: none;
+}
+
+/* Estado inicial animado (lo activas con class="page-enter") */
+[data-page].page-enter{
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Cuando JS añade is-ready: transiciona a visible */
+[data-page].page-enter.is-ready{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .35s var(--ease-out), transform .35s var(--ease-out);
+}
+
+/* -----------------------------
+   SCROLL REVEAL
+------------------------------ */
+
+/* Reveal base */
+[data-animate]{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+  will-change: auto;
+}
+
+/* Variants */
+[data-animate="fade"]{ transform: none; }
+[data-animate="fade-up"]{ transform: translateY(14px); }
+[data-animate="fade-down"]{ transform: translateY(-14px); }
+[data-animate="fade-left"]{ transform: translateX(-14px); }
+[data-animate="fade-right"]{ transform: translateX(14px); }
+[data-animate="scale-in"]{ transform: scale(.98); }
+
+/* Active state */
+[data-animate].is-in{
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger support */
+[data-stagger] > [data-animate]{
+  transition-delay: var(--delay, 0ms);
+}
+
+/* Card specific */
+.card[data-animate]{
+  transition: opacity .5s var(--ease-out);
+}
+
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  [data-page],
+  [data-animate]{
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-animate].is-in,
+  [data-page].is-ready{
+    transform: none;
+    filter: none;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+
+}

@@ -41,13 +41,17 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Styles -->
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     {% block extra_head %}{% endblock %}
   </head>
 
-  <body class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans">
+  <body class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans overflow-x-hidden">
+
     <!-- Topbar -->
     <header class="nav-grain">
       <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -229,41 +233,45 @@
       </div>
     </header>
 
-
     <!-- Messages -->
     {% if messages %}
-      <div class="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
-        <div class="space-y-2">
+      <div class="mx-auto max-w-6xl px-4 pt-4 sm:px-6" aria-live="polite" aria-atomic="true">
+        <div class="space-y-2" data-stagger>
           {% for message in messages %}
             {% if message.tags == "success" %}
-              <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+              <div data-animate="fade-down" role="status"
+                  class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
                 {{ message }}
               </div>
             {% elif message.tags == "error" %}
-              <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+              <div data-animate="fade-down" role="alert"
+                  class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
                 {{ message }}
               </div>
             {% elif message.tags == "warning" %}
-              <div class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              <div data-animate="fade-down" role="status"
+                  class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
                 {{ message }}
               </div>
             {% elif message.tags == "info" %}
-              <div class="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+              <div data-animate="fade-down" role="status"
+                  class="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
                 {{ message }}
               </div>
             {% else %}
-              <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+              <div data-animate="fade-down" role="status"
+                  class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
                 {{ message }}
               </div>
             {% endif %}
-
           {% endfor %}
         </div>
       </div>
     {% endif %}
 
+
     {% block body %}
-      <main class="mx-auto max-w-6xl flex-1 w-full px-4 py-6 sm:px-6 pb-16">
+      <main id="page" class="mx-auto max-w-6xl flex-1 w-full px-4 py-6 sm:px-6 pb-16 page-enter" data-page>
         {% block content %}{% endblock %}
       </main>
     {% endblock %}
@@ -544,6 +552,8 @@
     <script src="{% static 'js/bookings/booking_calendar.js' %}"></script>
     <script src="{% static 'js/cookies/consent.js' %}"></script>
     <script src="{% static 'js/components/loader.js' %}"></script>
+    <script type="module" src="{% static 'js/animations/index.js' %}"></script>
+ 
     {% block extra_js %}{% endblock %}
   </body>
 </html>

@@ -3,8 +3,9 @@
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
+
     <!-- Header -->
-    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between" data-animate="fade-up">
       <div>
         <h1 class="text-2xl font-semibold tracking-tight">Panel del Guía</h1>
         <p class="mt-1 text-sm text-slate-600">
@@ -22,9 +23,9 @@
       </div>
     </div>
 
-    <!-- KPIs (placeholders seguros) -->
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="card">
+    <!-- KPIs -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <p class="text-sm text-slate-600">Experiencias</p>
           <p class="mt-2 text-2xl font-semibold text-slate-900">
@@ -34,7 +35,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <p class="text-sm text-slate-600">Reservas (30 días)</p>
           <p class="mt-2 text-2xl font-semibold text-slate-900">
@@ -44,7 +45,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <p class="text-sm text-slate-600">Pendientes</p>
           <p class="mt-2 text-2xl font-semibold text-slate-900">
@@ -61,7 +62,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <p class="text-sm text-slate-600">Ingresos (30 días)</p>
           <p class="mt-2 text-2xl font-semibold text-slate-900">
@@ -72,7 +73,10 @@
       </div>
     </div>
 
-    <a href="{% url 'reviews:guide_list' %}" class="block card hover:bg-slate-50 transition">
+    <!-- Reviews card link -->
+    <a href="{% url 'reviews:guide_list' %}"
+       class="block card hover:bg-slate-50 transition"
+       data-animate="fade-up">
       <div class="card-body">
         <p class="text-sm text-slate-600">Reseñas</p>
         <p class="mt-2 text-2xl font-semibold text-slate-900">
@@ -82,9 +86,9 @@
       </div>
     </a>
 
-    <!-- Quick actions -->
-    <div class="grid gap-4 lg:grid-cols-2">
-      <div class="card">
+    <!-- Quick actions + Next steps -->
+    <div class="grid gap-4 lg:grid-cols-2" data-stagger>
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <h2 class="text-base font-semibold">Acciones rápidas</h2>
           <p class="mt-1 text-sm text-slate-600">Lo típico del día a día.</p>
@@ -105,26 +109,25 @@
         </div>
       </div>
 
-      <!-- Activity / Next steps -->
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <h2 class="text-base font-semibold">Siguiente paso recomendado</h2>
           <p class="mt-1 text-sm text-slate-600">
             Para vender más, asegúrate de tener disponibilidad y fotos.
           </p>
 
-          <div class="mt-4 space-y-3">
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <div class="mt-4 space-y-3" data-stagger>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
               <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
               <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
               <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
               <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
               <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
               <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
             </div>
@@ -133,9 +136,9 @@
       </div>
     </div>
 
-    <!-- Optional: recent bookings list -->
+    <!-- Recent bookings -->
     {% if recent_bookings %}
-      <div class="card">
+      <div class="card" data-animate="fade-up">
         <div class="card-body">
           <div class="flex items-center justify-between">
             <h2 class="text-base font-semibold">Reservas recientes</h2>
@@ -152,9 +155,10 @@
                   <th class="py-2 pr-3 font-medium">Estado</th>
                 </tr>
               </thead>
-              <tbody class="text-slate-700">
+
+              <tbody class="text-slate-700" data-stagger>
                 {% for b in recent_bookings %}
-                  <tr class="border-b border-slate-100">
+                  <tr class="border-b border-slate-100" data-animate="fade-up">
                     <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
                     <td class="py-3 pr-3">{{ b.date }}</td>
                     <td class="py-3 pr-3">{{ b.people }}</td>
@@ -185,5 +189,6 @@
         </div>
       </div>
     {% endif %}
+
   </div>
 {% endblock %}

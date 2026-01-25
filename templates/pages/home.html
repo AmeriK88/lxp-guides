@@ -4,15 +4,16 @@
 {% block content %}
   {% url 'experiences:list' as experiences_list_url %}
 
-  <!-- Hero -->
-  <section class="card overflow-hidden relative">
+<!-- Hero -->
+<section data-animate="fade-up">
+  <div class="card overflow-hidden relative">
     <div class="card-body relative">
       <!-- Subtle top gradient -->
       <div class="hero-top-glow"></div>
 
-      <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-center" data-stagger>
         <!-- Left -->
-        <div class="relative">
+        <div class="relative" data-animate="fade-up">
           <div class="inline-flex flex-wrap items-center gap-2">
             <span class="badge">📍 Lanzarote</span>
             <span class="badge">✅ Guías verificados</span>
@@ -67,7 +68,7 @@
         </div>
 
         <!-- Right: Search card -->
-        <div class="relative">
+        <div class="relative" data-animate="fade-up">
           {% with action_url=experiences_list_url %}
             {% include "components/experience_search_card.html" %}
           {% endwith %}
@@ -76,14 +77,15 @@
           {% with title="🧠 Reserva inteligente" text="Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas)." %}
             {% include "components/cta_yes.html" %}
           {% endwith %}
-
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Value props -->
-  <section class="mt-8">
+  <section class="mt-8" data-animate="fade-up">
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {% with title="Disponibilidad real" text="Solicitas tu plaza con fechas reales. El guía confirma y no pagas hasta que esté aceptada." %}
         {% include "components/info_card.html" %}
@@ -101,7 +103,7 @@
 
 
   <!-- Two audiences -->
-  <section class="mt-8 grid gap-4 lg:grid-cols-2">
+  <section class="mt-8 grid gap-4 lg:grid-cols-2" data-animate="fade-up">
     <!-- Traveler -->
     <div class="card">
       <div class="card-body">
@@ -172,7 +174,7 @@
   </section>
 
   <!-- How it works -->
-  <section class="mt-8">
+  <section class="mt-8" data-animate="fade-up">
     {% with title="Cómo funciona" subtitle="Simple, claro y sin vueltas." cta_url=experiences_list_url cta_label="Explorar" %}
       {% include "components/section_header.html" %}
     {% endwith %}
@@ -203,7 +205,7 @@
   </section>
 
   <!-- Featured experiences -->
-  <section class="mt-10">
+  <section class="mt-10" data-animate="fade-up">
     {% with title="Experiencias destacadas" subtitle="Ideas para empezar si no sabes qué elegir." cta_url=experiences_list_url cta_label="Ver todas" %}
       {% include "components/section_header.html" %}
     {% endwith %}
@@ -237,9 +239,8 @@
     {% endif %}
   </section>
 
-
   <!-- Final CTA -->
-  <section class="mt-10">
+  <section class="mt-10" data-animate="fade-up">
     <div class="card">
       <div class="card-body">
         <div class="grid gap-6 lg:grid-cols-2 lg:items-center">
