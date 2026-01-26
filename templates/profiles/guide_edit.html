@@ -13,11 +13,11 @@
           <span class="text-slate-600">Estado de verificación:</span>
 
           {% if profile.verification_status == "verified" %}
-            <span class="badge border-emerald-200 bg-emerald-50 text-emerald-800">✅ Verificado</span>
+            <span class="badge badge-green">✅ Verificado</span>
           {% elif profile.verification_status == "pending" %}
-            <span class="badge border-amber-200 bg-amber-50 text-amber-800">⏳ Pendiente</span>
+            <span class="badge badge-amber">⏳ Pendiente</span>
           {% elif profile.verification_status == "rejected" %}
-            <span class="badge border-red-200 bg-red-50 text-red-800">❌ Rechazado</span>
+            <span class="badge badge-red">❌ Rechazado</span>
           {% else %}
             <span class="badge">No verificado</span>
           {% endif %}
@@ -35,7 +35,7 @@
 
     <!-- Guidance box (si no está verificado) -->
     {% if profile.verification_status != "verified" %}
-      <div class="card border-amber-200 bg-amber-50">
+      <div class="card-warning">
         <div class="card-body">
           <h2 class="text-base font-semibold text-amber-900">⚠️ Verificación requerida</h2>
           <p class="mt-1 text-sm text-amber-900/80">
@@ -56,7 +56,7 @@
           {% csrf_token %}
 
           {% if form.non_field_errors %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+            <div class="form-error">
               {{ form.non_field_errors }}
             </div>
           {% endif %}
@@ -79,7 +79,7 @@
       {% endif %}
 
       {% if field.errors %}
-        <p class="mt-1 text-xs text-red-600 break-all leading-snug">{{ field.errors|striptags }}</p>
+        <p class="field-error">{{ field.errors|striptags }}</p>
       {% endif %}
     </div>
   {% endfor %}
@@ -106,7 +106,7 @@
         <p class="mt-1 text-sm text-slate-600">Revisa lo que has adjuntado.</p>
 
         <div class="mt-4 space-y-3 text-sm">
-          <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+          <div class="doc-item">
             <div>
               <p class="font-medium text-slate-900">Carnet guía</p>
               <p class="text-slate-500">Acreditación oficial</p>
@@ -122,7 +122,7 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+          <div class="doc-item">
             <div>
               <p class="font-medium text-slate-900">Seguro / Alta</p>
               <p class="text-slate-500">Seguro RC o alta autónomo/empresa</p>
@@ -140,7 +140,7 @@
         </div>
 
         {% if profile.verification_status == "rejected" and profile.verification_notes %}
-          <div class="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3">
+          <div class="mt-5 alert alert-danger">
             <p class="text-sm font-semibold text-red-900">Motivo de rechazo</p>
             <p class="mt-1 text-sm text-red-900/80">{{ profile.verification_notes }}</p>
           </div>

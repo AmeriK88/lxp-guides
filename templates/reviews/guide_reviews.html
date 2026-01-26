@@ -42,7 +42,7 @@
 
                         {# Verificada = viene de booking aceptada #}
                         {% if r.booking and r.booking.status == "accepted" %}
-                          <span class="badge border-emerald-200 bg-emerald-50 text-emerald-800">
+                          <span class="badge badge-green">
                             ✓ Verificada
                           </span>
                         {% endif %}
@@ -51,11 +51,11 @@
 
                     <td class="py-3 pr-3">
                       {% if r.status == "published" %}
-                        <span class="badge border-emerald-200 bg-emerald-50 text-emerald-800">Publicada</span>
+                        <span class="badge badge-green">Publicada</span>
                       {% elif r.status == "pending" %}
-                        <span class="badge border-amber-200 bg-amber-50 text-amber-800">Pendiente</span>
+                        <span class="badge badge-amber">Pendiente</span>
                       {% elif r.status == "flagged" %}
-                        <span class="badge border-red-200 bg-red-50 text-red-800">Marcada</span>
+                        <span class="badge badge-red">Marcada</span>
                         {% if r.flagged_reason %}
                           <div class="mt-1 text-xs text-slate-500">{{ r.flagged_reason }}</div>
                         {% endif %}

@@ -15,25 +15,17 @@
         <div class="flex items-center gap-2">
           {% with s=booking.status|lower %}
             {% if s == "accepted" %}
-              <span class="badge badge-green">Aceptada</span>
+              <span class="badge-status-accepted">Aceptada</span>
             {% elif s == "pending" %}
-              <span class="badge">Pendiente</span>
+              <span class="badge-status-pending">Pendiente</span>
             {% elif s == "change_requested" %}
-              <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                Cambio solicitado
-              </span>
+              <span class="badge-status-change_requested">Cambio solicitado</span>
             {% elif s == "cancel_requested" %}
-              <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                Cancelación solicitada
-              </span>
+              <span class="badge-status-cancel_requested">Cancelación solicitada</span>
             {% elif s == "rejected" %}
-              <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                Rechazada
-              </span>
+              <span class="badge-status-rejected">Rechazada</span>
             {% elif s == "canceled" %}
-              <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                Cancelada
-              </span>
+              <span class="badge-status-canceled">Cancelada</span>
             {% else %}
               <span class="badge">{{ booking.status }}</span>
             {% endif %}
@@ -44,15 +36,15 @@
       {# Avisos de estado #}
       {% with s=booking.status|lower %}
         {% if s == "pending" %}
-          <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+          <div class="status-banner status-banner-pending">
             📩 Cuando el guía gestione tu reserva, recibirás una confirmación por correo electrónico con la hora y el punto de encuentro.
           </div>
         {% elif s == "accepted" %}
-          <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+          <div class="status-banner status-banner-accepted">
             ✅ Reserva aceptada. Te hemos enviado un correo de confirmación con los detalles de la experiencia.
           </div>
         {% elif s == "change_requested" %}
-          <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <div class="status-banner status-banner-change">
             {% if request.user == booking.traveler %}
               ⏳ Has solicitado un cambio. El guía debe aceptarlo para que se aplique.
             {% elif request.user.is_guide and request.user == booking.experience.guide %}
@@ -63,7 +55,7 @@
           </div>
 
         {% elif s == "cancel_requested" %}
-          <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <div class="status-banner status-banner-cancel">
             {% if request.user == booking.traveler %}
               ⏳ Has solicitado la cancelación. El guía debe aprobarla.
             {% elif request.user.is_guide and request.user == booking.experience.guide %}
@@ -79,11 +71,11 @@
       {% if booking.extras.last_update and request.user == booking.traveler %}
         {% if booking.extras.last_update.type == "change" %}
           {% if booking.extras.last_update.decision == "accepted" %}
-            <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <div class="status-banner status-banner-update-accepted">
               ✅ El guía ha aceptado tu solicitud de cambio.
             </div>
           {% elif booking.extras.last_update.decision == "rejected" %}
-            <div class="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+            <div class="status-banner status-banner-update-rejected">
               ❌ El guía ha rechazado tu solicitud de cambio.
             </div>
           {% endif %}
@@ -91,11 +83,11 @@
 
         {% if booking.extras.last_update.type == "cancel" %}
           {% if booking.extras.last_update.decision == "accepted" %}
-            <div class="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <div class="status-banner status-banner-update-accepted">
               ✅ El guía ha aprobado tu solicitud de cancelación.
             </div>
           {% elif booking.extras.last_update.decision == "rejected" %}
-            <div class="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+            <div class="status-banner status-banner-update-rejected">
               ❌ El guía ha rechazado tu solicitud de cancelación.
             </div>
           {% endif %}
@@ -252,7 +244,7 @@
                   {% endif %}
                 </span>
               {% else %}
-                <span class="badge" style="border-color: rgb(254 240 138); background-color: rgb(254 249 195); color: rgb(133 77 14);">
+                <span class="badge badge-amber">
                   ⏳ Pendiente de confirmar hora
                 </span>
               {% endif %}

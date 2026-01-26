@@ -39,7 +39,7 @@
                 {% endif %}
 
                 {% if field.errors %}
-                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                  <p class="field-error">{{ field.errors|striptags }}</p>
                 {% endif %}
               </div>
             {% endfor %}

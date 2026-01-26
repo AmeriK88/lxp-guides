@@ -25,111 +25,124 @@
 
     <!-- KPIs -->
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <p class="text-sm text-slate-600">Experiencias</p>
-          <p class="mt-2 text-2xl font-semibold text-slate-900">
-            {{ kpis.experiences|default:"—" }}
-          </p>
-          <p class="mt-1 text-xs text-slate-500">Publicadas / activas</p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-sm text-slate-600">Experiencias</p>
+            <p class="mt-2 text-2xl font-semibold text-slate-900">
+              {{ kpis.experiences|default:"—" }}
+            </p>
+            <p class="mt-1 text-xs text-slate-500">Publicadas / activas</p>
+          </div>
         </div>
       </div>
 
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <p class="text-sm text-slate-600">Reservas (30 días)</p>
-          <p class="mt-2 text-2xl font-semibold text-slate-900">
-            {{ kpis.bookings_30d|default:"—" }}
-          </p>
-          <p class="mt-1 text-xs text-slate-500">Recibidas recientemente</p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-sm text-slate-600">Reservas (30 días)</p>
+            <p class="mt-2 text-2xl font-semibold text-slate-900">
+              {{ kpis.bookings_30d|default:"—" }}
+            </p>
+            <p class="mt-1 text-xs text-slate-500">Recibidas recientemente</p>
+          </div>
         </div>
       </div>
 
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <p class="text-sm text-slate-600">Pendientes</p>
-          <p class="mt-2 text-2xl font-semibold text-slate-900">
-            {{ kpis.pending|default:"—" }}
-          </p>
-          <p class="mt-1 text-xs text-slate-500">
-            Por confirmar/gestionar
-            {% if kpis.pending_new or kpis.pending_change or kpis.pending_cancel %}
-              · {{ kpis.pending_new|default:0 }} nuevas
-              · {{ kpis.pending_change|default:0 }} cambios
-              · {{ kpis.pending_cancel|default:0 }} cancelaciones
-            {% endif %}
-          </p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-sm text-slate-600">Pendientes</p>
+            <p class="mt-2 text-2xl font-semibold text-slate-900">
+              {{ kpis.pending|default:"—" }}
+            </p>
+            <p class="mt-1 text-xs text-slate-500">
+              Por confirmar/gestionar
+              {% if kpis.pending_new or kpis.pending_change or kpis.pending_cancel %}
+                · {{ kpis.pending_new|default:0 }} nuevas
+                · {{ kpis.pending_change|default:0 }} cambios
+                · {{ kpis.pending_cancel|default:0 }} cancelaciones
+              {% endif %}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <p class="text-sm text-slate-600">Ingresos (30 días)</p>
-          <p class="mt-2 text-2xl font-semibold text-slate-900">
-            {{ kpis.revenue_30d|default:"—" }}
-          </p>
-          <p class="mt-1 text-xs text-slate-500">Estimado</p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <p class="text-sm text-slate-600">Ingresos (30 días)</p>
+            <p class="mt-2 text-2xl font-semibold text-slate-900">
+              {{ kpis.revenue_30d|default:"—" }}
+            </p>
+            <p class="mt-1 text-xs text-slate-500">Estimado</p>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Reviews card link -->
-    <a href="{% url 'reviews:guide_list' %}"
-       class="block card hover:bg-slate-50 transition"
-       data-animate="fade-up">
-      <div class="card-body">
-        <p class="text-sm text-slate-600">Reseñas</p>
-        <p class="mt-2 text-2xl font-semibold text-slate-900">
-          {{ kpis.reviews|default:"—" }}
-        </p>
-        <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
-      </div>
-    </a>
+    <div data-animate="fade-up">
+      <a href="{% url 'reviews:guide_list' %}"
+         class="block card hover:bg-slate-50 transition">
+        <div class="card-body">
+          <p class="text-sm text-slate-600">Reseñas</p>
+          <p class="mt-2 text-2xl font-semibold text-slate-900">
+            {{ kpis.reviews|default:"—" }}
+          </p>
+          <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
+        </div>
+      </a>
+    </div>
 
     <!-- Quick actions + Next steps -->
     <div class="grid gap-4 lg:grid-cols-2" data-stagger>
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <h2 class="text-base font-semibold">Acciones rápidas</h2>
-          <p class="mt-1 text-sm text-slate-600">Lo típico del día a día.</p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-base font-semibold">Acciones rápidas</h2>
+            <p class="mt-1 text-sm text-slate-600">Lo típico del día a día.</p>
 
-          <div class="mt-4 flex flex-col gap-2">
-            <a href="{% url 'experiences:create' %}" class="btn btn-primary w-full">Crear experiencia</a>
-            <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias</a>
-            <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost w-full flex items-center justify-between">
-              <span>Ver reservas recibidas</span>
+            <div class="mt-4 flex flex-col gap-2">
+              <a href="{% url 'experiences:create' %}" class="btn btn-primary w-full">Crear experiencia</a>
+              <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias</a>
+              <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost w-full flex items-center justify-between">
+                <span>Ver reservas recibidas</span>
 
-              {% if unseen_guide_bookings %}
-                <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
-                  {{ unseen_guide_bookings }}
-                </span>
-              {% endif %}
-            </a>
+                {% if unseen_guide_bookings %}
+                  <span class="notification-badge">
+                    {{ unseen_guide_bookings }}
+                  </span>
+                {% endif %}
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <h2 class="text-base font-semibold">Siguiente paso recomendado</h2>
-          <p class="mt-1 text-sm text-slate-600">
-            Para vender más, asegúrate de tener disponibilidad y fotos.
-          </p>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="text-base font-semibold">Siguiente paso recomendado</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Para vender más, asegúrate de tener disponibilidad y fotos.
+            </p>
 
-          <div class="mt-4 space-y-3" data-stagger>
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
-              <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
-              <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
-            </div>
+            <div class="mt-4 space-y-3" data-stagger>
+              <div class="step-item" data-animate="fade-up">
+                <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
+                <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
+              </div>
 
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
-              <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
-              <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
-            </div>
+              <div class="step-item" data-animate="fade-up">
+                <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
+                <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
+              </div>
 
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
-              <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
-              <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
+              <div class="step-item" data-animate="fade-up">
+                <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
+                <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -138,53 +151,55 @@
 
     <!-- Recent bookings -->
     {% if recent_bookings %}
-      <div class="card" data-animate="fade-up">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-semibold">Reservas recientes</h2>
-            <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas</a>
-          </div>
+      <div data-animate="fade-up">
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <h2 class="text-base font-semibold">Reservas recientes</h2>
+              <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas</a>
+            </div>
 
-          <div class="mt-4 overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-slate-500">
-                <tr class="border-b border-slate-200">
-                  <th class="py-2 pr-3 font-medium">Experiencia</th>
-                  <th class="py-2 pr-3 font-medium">Fecha</th>
-                  <th class="py-2 pr-3 font-medium">Personas</th>
-                  <th class="py-2 pr-3 font-medium">Estado</th>
-                </tr>
-              </thead>
-
-              <tbody class="text-slate-700" data-stagger>
-                {% for b in recent_bookings %}
-                  <tr class="border-b border-slate-100" data-animate="fade-up">
-                    <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
-                    <td class="py-3 pr-3">{{ b.date }}</td>
-                    <td class="py-3 pr-3">{{ b.people }}</td>
-                    <td class="py-3 pr-3">
-                      {% with s=b.status|lower %}
-                        {% if s == "accepted" %}
-                          <span class="badge badge-status-accepted">Aceptada</span>
-                        {% elif s == "pending" %}
-                          <span class="badge badge-status-pending">Pendiente</span>
-                        {% elif s == "change_requested" %}
-                          <span class="badge badge-status-change">Cambio solicitado</span>
-                        {% elif s == "cancel_requested" %}
-                          <span class="badge badge-status-cancel">Cancelación solicitada</span>
-                        {% elif s == "rejected" %}
-                          <span class="badge badge-status-rejected">Rechazada</span>
-                        {% elif s == "canceled" %}
-                          <span class="badge badge-status-canceled">Cancelada</span>
-                        {% else %}
-                          <span class="badge">{{ b.status }}</span>
-                        {% endif %}
-                      {% endwith %}
-                    </td>
+            <div class="mt-4 overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead class="text-slate-500">
+                  <tr class="border-b border-slate-200">
+                    <th class="py-2 pr-3 font-medium">Experiencia</th>
+                    <th class="py-2 pr-3 font-medium">Fecha</th>
+                    <th class="py-2 pr-3 font-medium">Personas</th>
+                    <th class="py-2 pr-3 font-medium">Estado</th>
                   </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody class="text-slate-700" data-stagger>
+                  {% for b in recent_bookings %}
+                    <tr class="border-b border-slate-100" data-animate="fade-up">
+                      <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
+                      <td class="py-3 pr-3">{{ b.date }}</td>
+                      <td class="py-3 pr-3">{{ b.people }}</td>
+                      <td class="py-3 pr-3">
+                        {% with s=b.status|lower %}
+                          {% if s == "accepted" %}
+                            <span class="badge badge-status-accepted">Aceptada</span>
+                          {% elif s == "pending" %}
+                            <span class="badge badge-status-pending">Pendiente</span>
+                          {% elif s == "change_requested" %}
+                            <span class="badge badge-status-change">Cambio solicitado</span>
+                          {% elif s == "cancel_requested" %}
+                            <span class="badge badge-status-cancel">Cancelación solicitada</span>
+                          {% elif s == "rejected" %}
+                            <span class="badge badge-status-rejected">Rechazada</span>
+                          {% elif s == "canceled" %}
+                            <span class="badge badge-status-canceled">Cancelada</span>
+                          {% else %}
+                            <span class="badge">{{ b.status }}</span>
+                          {% endif %}
+                        {% endwith %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
