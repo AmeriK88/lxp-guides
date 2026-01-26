@@ -1,0 +1,44 @@
+@layer components {
+  /* Account dropdown: panel animado */
+  .account-dd > .account-dd__panel{
+    z-index: 60;
+    transform-origin: top right;
+    opacity: 0;
+    transform: translateY(-6px) scale(.98);
+    max-height: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease, max-height .22s ease;
+  }
+  .account-dd[open] > .account-dd__panel{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 70vh;
+    pointer-events: auto;
+  }
+  .account-dd[open] .chev{ transform: rotate(180deg); }
+
+  /* Mobile menu dropdown (si le pones class="mobile-menu" al panel) */
+  details > .mobile-menu{
+    z-index: 60;
+    transform-origin: top right;
+    opacity: 0;
+    transform: translateY(-6px) scale(.98);
+    max-height: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease, max-height .22s ease;
+  }
+  details[open] > .mobile-menu{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 70vh;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .account-dd > .account-dd__panel,
+    .account-dd .chev,
+    details > .mobile-menu{
+      transition: none;
+    }
+  }
+}

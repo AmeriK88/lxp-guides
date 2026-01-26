@@ -6,8 +6,8 @@
     <div class="card-body">
       <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 class="text-2xl font-semibold tracking-tight">Detalle de reserva</h1>
-          <p class="mt-1 text-sm text-slate-600">
+          <h1 class="h1-page">Detalle de reserva</h1>
+          <p class="mt-1 p-muted">
             Aquí tienes todos los datos de tu solicitud y la respuesta del guía.
           </p>
         </div>
@@ -152,7 +152,7 @@
       {% if booking.status|lower == "cancel_requested" and booking.extras.cancel_reason %}
         <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
           <h2 class="text-sm font-semibold text-slate-900">Cancelación solicitada</h2>
-          <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+          <p class="mt-2 p-body">
             <span class="text-slate-500">Motivo:</span> {{ booking.extras.cancel_reason }}
           </p>
         </div>
@@ -168,14 +168,14 @@
         <div class="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
           <p>
             <span class="text-slate-500">Solicitud enviada:</span>
-            <span class="font-medium text-slate-900">
+            <span class="p-secondary">
               {{ booking.created_at|date:"d/m/Y" }} · {{ booking.created_at|time:"H:i" }}
             </span>
           </p>
 
           <p>
             <span class="text-slate-500">Respondida:</span>
-            <span class="font-medium text-slate-900">
+            <span class="p-secondary">
               {% if booking.responded_at %}
                 {{ booking.responded_at|date:"d/m/Y" }} · {{ booking.responded_at|time:"H:i" }}
               {% else %}
@@ -280,18 +280,18 @@
           {% if booking.unit_price %}
             <p>
               <span class="text-slate-500">Precio adulto:</span>
-              <span class="font-medium text-slate-900">{{ booking.unit_price }}€</span>
+              <span class="p-secondary">{{ booking.unit_price }}€</span>
             </p>
           {% endif %}
 
           <p>
             <span class="text-slate-500">Niño:</span>
-            <span class="font-medium text-slate-900">50%</span>
+            <span class="p-secondary">50%</span>
           </p>
 
           <p>
             <span class="text-slate-500">Bebé:</span>
-            <span class="font-medium text-slate-900">Gratis</span>
+            <span class="p-secondary">Gratis</span>
           </p>
 
           {% if booking.total_price %}
@@ -307,19 +307,19 @@
       <div class="mt-5 border-t border-slate-200 pt-5">
         <h2 class="text-sm font-semibold text-slate-900">Tu mensaje al guía</h2>
 
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <p class="mt-2 p-body">
           <strong>Idioma deseado:</strong> {{ booking.get_preferred_language_display }}
         </p>
 
         {% if booking.notes %}
-          <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.notes }}</p>
+          <p class="mt-2 p-body">{{ booking.notes }}</p>
         {% endif %}
       </div>
 
       {% if booking.guide_response %}
         <div class="mt-5 border-t border-slate-200 pt-5">
           <h2 class="text-sm font-semibold text-slate-900">Respuesta del guía</h2>
-          <p class="mt-2 text-sm text-slate-700 leading-relaxed">{{ booking.guide_response }}</p>
+          <p class="mt-2 p-body">{{ booking.guide_response }}</p>
         </div>
       {% endif %}
     </div>

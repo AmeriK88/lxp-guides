@@ -7,10 +7,10 @@
     <!-- Header -->
     <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between" data-animate="fade-up">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Panel del Guía</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Gestiona tus experiencias, disponibilidad y reservas desde aquí.
-        </p>
+        <h1 class="h1-page">Panel del Guía</h1>
+          <p class="mt-1 p-muted">
+            Gestiona tus experiencias, disponibilidad y reservas desde aquí.
+          </p>
       </div>
 
       <div class="flex flex-wrap gap-2">
@@ -28,11 +28,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Experiencias</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Experiencias</p>
+            <p class="mt-2 p-large">
               {{ kpis.experiences|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Publicadas / activas</p>
+            <p class="mt-1 p-micro">Total Publicadas / activas</p>
           </div>
         </div>
       </div>
@@ -40,11 +40,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Reservas (30 días)</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Reservas (30 días)</p>
+            <p class="mt-2 p-large">
               {{ kpis.bookings_30d|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Recibidas recientemente</p>
+            <p class="mt-1 p-micro">Recibidas recientemente</p>
           </div>
         </div>
       </div>
@@ -52,11 +52,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Pendientes</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Pendientes</p>
+            <p class="mt-2 p-large">
               {{ kpis.pending|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">
+            <p class="mt-1 p-micro">
               Por confirmar/gestionar
               {% if kpis.pending_new or kpis.pending_change or kpis.pending_cancel %}
                 · {{ kpis.pending_new|default:0 }} nuevas
@@ -71,11 +71,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Ingresos (30 días)</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
-              {{ kpis.revenue_30d|default:"—" }}
+            <p class="p-muted">Ingresos</p>
+            <p class="mt-2 p-large">
+              {{ kpis.revenue_30d|default:"—" }} €
             </p>
-            <p class="mt-1 text-xs text-slate-500">Estimado</p>
+            <p class="mt-1 p-micro">Total generado (30 días)</p>
           </div>
         </div>
       </div>
@@ -84,13 +84,13 @@
     <!-- Reviews card link -->
     <div data-animate="fade-up">
       <a href="{% url 'reviews:guide_list' %}"
-         class="block card hover:bg-slate-50 transition">
+         class="block card hover-lift soft-shadow">
         <div class="card-body">
-          <p class="text-sm text-slate-600">Reseñas</p>
-          <p class="mt-2 text-2xl font-semibold text-slate-900">
+          <p class="p-muted">Reseñas</p>
+          <p class="mt-2 p-large">
             {{ kpis.reviews|default:"—" }}
           </p>
-          <p class="mt-1 text-xs text-slate-500">Ver todas →</p>
+          <p class="mt-1 p-micro">Ver todas →</p>
         </div>
       </a>
     </div>
@@ -100,9 +100,10 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <h2 class="text-base font-semibold">Acciones rápidas</h2>
-            <p class="mt-1 text-sm text-slate-600">Lo típico del día a día.</p>
-
+            <h2 class="h2-section">Acciones rápidas</h2>
+            <p class="mt-1 p-muted">
+              Lo típico del día a día.
+            </p>
             <div class="mt-4 flex flex-col gap-2">
               <a href="{% url 'experiences:create' %}" class="btn btn-primary w-full">Crear experiencia</a>
               <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias</a>
@@ -123,25 +124,29 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <h2 class="text-base font-semibold">Siguiente paso recomendado</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <h2 class="h2-section">Siguiente paso recomendado</h2>
+            <p class="mt-1 p-muted">
+
               Para vender más, asegúrate de tener disponibilidad y fotos.
             </p>
 
             <div class="mt-4 space-y-3" data-stagger>
               <div class="step-item" data-animate="fade-up">
-                <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
-                <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
+                <p class="label-title">✅ Completa tu perfil</p>
+                <p class="mt-1 p-muted">
+              Bio, idiomas, foto y verificación.</p>
               </div>
 
               <div class="step-item" data-animate="fade-up">
-                <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
-                <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
+                <p class="label-title">📅 Ajusta disponibilidad</p>
+                <p class="mt-1 p-muted">
+              Reglas, horarios y bloqueos.</p>
               </div>
 
               <div class="step-item" data-animate="fade-up">
-                <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
-                <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
+                <p class="label-title">📷 Añade buenas fotos</p>
+                <p class="mt-1 p-muted">
+              Las experiencias con fotos convierten mejor.</p>
               </div>
             </div>
           </div>
@@ -155,13 +160,13 @@
         <div class="card">
           <div class="card-body">
             <div class="flex items-center justify-between">
-              <h2 class="text-base font-semibold">Reservas recientes</h2>
+              <h2 class="h2-section">Reservas recientes</h2>
               <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas</a>
             </div>
 
             <div class="mt-4 overflow-x-auto">
               <table class="w-full text-left text-sm">
-                <thead class="text-slate-500">
+                <thead class="p-muted">
                   <tr class="border-b border-slate-200">
                     <th class="py-2 pr-3 font-medium">Experiencia</th>
                     <th class="py-2 pr-3 font-medium">Fecha</th>
@@ -173,7 +178,7 @@
                 <tbody class="text-slate-700" data-stagger>
                   {% for b in recent_bookings %}
                     <tr class="border-b border-slate-100" data-animate="fade-up">
-                      <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
+                      <td class="py-3 pr-3 p-secondary">{{ b.experience.title }}</td>
                       <td class="py-3 pr-3">{{ b.date }}</td>
                       <td class="py-3 pr-3">{{ b.people }}</td>
                       <td class="py-3 pr-3">

@@ -7,12 +7,10 @@
   <div class="mx-auto max-w-lg">
     <div class="card">
       <div class="card-body">
-        <h1 class="text-2xl font-semibold tracking-tight">
-          Reservar experiencia
-        </h1>
-        <p class="mt-1 text-sm text-slate-600">
-          {{ experience.title }}
-        </p>
+        <h1 class="h1-page">Reservar experiencia</h1>
+          <p class="mt-1 p-muted">
+            {{ experience.title }}
+          </p>
 
         <form method="post" class="mt-6 space-y-6">
           {% csrf_token %}
@@ -20,7 +18,7 @@
           <!-- Fecha -->
           <div>
             <h2 class="text-sm font-semibold text-slate-900">1) Fecha</h2>
-            <p class="mt-1 text-sm text-slate-600">Elige el día en que quieres hacer la experiencia.</p>
+            <p class="mt-1 p-muted">Elige el día en que quieres hacer la experiencia.</p>
 
             <div class="mt-4">
               <label class="label">{{ form.date.label }}</label>
@@ -44,7 +42,7 @@
           <!-- Personas -->
           <div class="border-t border-slate-200 pt-5">
             <h2 class="text-sm font-semibold text-slate-900">2) Personas</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Adultos (precio completo), niños (50%) y bebés (gratis).
             </p>
 
@@ -76,7 +74,7 @@
           <!-- Transporte -->
           <div class="border-t border-slate-200 pt-5">
             <h2 class="text-sm font-semibold text-slate-900">3) Transporte</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Indica si necesitas minibus o si vas por tu cuenta.
             </p>
 
@@ -99,7 +97,7 @@
           <!-- Idioma preferido -->
           <div class="border-t border-slate-200 pt-5">
             <h2 class="text-sm font-semibold text-slate-900">4) Idioma</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Elige el idioma en el que quieres realizar la experiencia.
             </p>
 
@@ -119,7 +117,7 @@
           <!-- Notas -->
           <div class="border-t border-slate-200 pt-5">
             <h2 class="text-sm font-semibold text-slate-900">4) Comentarios</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Cuenta cualquier detalle importante (ritmo, restricciones, alergias, necesidades, etc.).
             </p>
 

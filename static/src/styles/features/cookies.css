@@ -1,0 +1,62 @@
+@layer components {
+  #cookie-banner{
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+  #cookie-banner.is-open{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #cookie-modal{
+    opacity: 0;
+    pointer-events: none;
+    overscroll-behavior: contain;
+  }
+  #cookie-modal.is-open{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #cookie-modal > .absolute{
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  #cookie-modal.is-open > .absolute{
+    opacity: 1;
+  }
+
+  #cookie-modal .cookie-modal__card{
+    opacity: 0;
+    transform: translateY(16px) scale(.98);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  #cookie-modal.is-open .cookie-modal__card{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .cookie-modal__wrap{
+    @apply relative mx-auto flex min-h-dvh max-w-4xl items-end px-4 py-6 sm:items-center sm:px-6;
+  }
+  .cookie-modal__card{
+    @apply w-full max-h-[85dvh] overflow-hidden flex flex-col rounded-2xl border border-slate-200 bg-white shadow-lg;
+  }
+  .cookie-modal__header{ @apply p-6 border-b border-slate-200 bg-white; }
+  .cookie-modal__body{
+    @apply flex-1 min-h-0 overflow-y-auto p-6 overscroll-contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cookie-modal__footer{ @apply p-6 border-t border-slate-200 bg-white; }
+
+  @media (prefers-reduced-motion: reduce){
+    #cookie-banner,
+    #cookie-modal,
+    #cookie-modal > .absolute,
+    #cookie-modal .cookie-modal__card{
+      transition: none;
+    }
+  }
+}

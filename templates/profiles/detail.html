@@ -1,11 +1,13 @@
-<div class="flex items-center gap-2 text-sm text-slate-600">
+<div class="flex items-center gap-2 p-muted">
   <span>Guía:</span>
+
   <a href="{% url 'profiles:public_guide' exp.guide.pk %}"
-     class="font-medium text-blue-600 hover:underline">
+     class="p-secondary text-blue-600 hover:underline">
     {{ exp.guide.username }}
   </a>
 
   {% if exp.guide.guide_profile.verification_status == "verified" %}
-    <span class="badge badge-green">✔ Verificado</span>
+    <span class="badge-emerald">✔ Verificado</span>
+    {# o si quieres compat total: <span class="badge badge-green">✔ Verificado</span> #}
   {% endif %}
 </div>

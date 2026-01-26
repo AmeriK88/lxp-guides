@@ -21,18 +21,18 @@
             <span class="badge badge-amber">🌋 Timanfaya vibes</span>
           </div>
 
-          <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
+          <h1 class="h1-hero">
             Experiencias auténticas en Lanzarote,
-            <span class="text-blue-700">con reserva sin sorpresas</span>
+            <span class="blue-hero-span">con reserva sin sorpresas</span>
           </h1>
 
-          <p class="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p class="p-lead">
             Aquí no hay “te confirmo por WhatsApp”.
             Ves opciones claras, guías locales verificados y un calendario que
-            <span class="font-medium text-slate-900">solo te deja reservar días disponibles</span>.
+            <span class="p-secondary">solo te deja reservar días disponibles</span>.
           </p>
 
-          <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div class="cta-actions">
             <a href="{{ experiences_list_url }}" class="btn btn-primary">
               Explorar experiencias
             </a>
@@ -49,19 +49,19 @@
           </div>
 
           <!-- Trust strip -->
-          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+          <div class="trust-strip">
             <div class="panel">
-              <p class="text-xs text-slate-500">Pagos</p>
+              <p class="p-micro">Pagos</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">100% seguros</p>
             </div>
 
             <div class="panel">
-              <p class="text-xs text-slate-500">Cancelación</p>
+              <p class="p-micro">Cancelación</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">Gratis hasta 48h</p>
             </div>
 
             <div class="panel">
-              <p class="text-xs text-slate-500">Reserva</p>
+              <p class="p-micro">Reserva</p>
               <p class="mt-0.5 text-sm font-semibold text-slate-900">En pocos clicks</p>
             </div>
           </div>
@@ -109,8 +109,8 @@
       <div class="card-body">
         <div class="flex items-start justify-between gap-4">
           <div>
-            <h2 class="text-lg font-semibold">Si buscas un guía</h2>
-            <p class="mt-2 text-sm text-slate-600">
+            <h2 class="h2-section">Si buscas un guía</h2>
+            <p class="mt-2 p-muted">
               Planes reales, detalles claros y reserva en pocos pasos.
               Verás duración, plazas y precio sin sorpresas.
             </p>
@@ -118,7 +118,7 @@
           <span class="badge">🧳 Viajero</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+        <ul class="mt-4 space-y-2 p-body list-bullets">
           <li>Explora por zona, precio y duración.</li>
           <li>Perfiles públicos, idiomas y experiencia del guía.</li>
           <li>Reserva con disponibilidad real y políticas claras.</li>
@@ -131,7 +131,7 @@
           {% endif %}
         </div>
 
-        <p class="mt-3 text-xs text-slate-500">
+        <p class="mt-3 p-micro">
           Ideal para viajeros que quieren vivir Lanzarote “de verdad”.
         </p>
       </div>
@@ -143,7 +143,7 @@
         <div class="flex items-start justify-between gap-4">
           <div>
             <h2 class="text-lg font-semibold">Si eres guía</h2>
-            <p class="mt-2 text-sm text-slate-600">
+            <p class="mt-2 p-muted">
               Publica tus rutas y gestiona reservas sin perder tiempo.
               Tú decides precio, plazas, disponibilidad y reglas.
             </p>
@@ -151,7 +151,7 @@
           <span class="badge">🧭 Guía</span>
         </div>
 
-        <ul class="mt-4 space-y-2 text-sm text-slate-700 list-bullets">
+        <ul class="mt-4 space-y-2 p-body list-bullets">
           <li>Crea experiencias con fotos, duración y condiciones.</li>
           <li>Calendario para bloquear fechas y controlar plazas.</li>
           <li>Panel de reservas con estados y notificaciones.</li>
@@ -166,7 +166,7 @@
           {% endif %}
         </div>
 
-        <p class="mt-3 text-xs text-slate-500">
+        <p class="mt-3 p-micro">
           Comisión por excursión completada. Sin cuotas fijas (por ahora 😉).
         </p>
       </div>
@@ -175,7 +175,7 @@
 
   <!-- How it works -->
   <section class="mt-8" data-animate="fade-up">
-    {% with title="Cómo funciona" subtitle="Simple, claro y sin vueltas." cta_url=experiences_list_url cta_label="Explorar" %}
+    {% with title="Cómo funciona" subtitle="Simple, claro y sin vueltas." cta_url=experiences_list_url cta_label="Explorar →" %}
       {% include "components/section_header.html" %}
     {% endwith %}
 
@@ -195,9 +195,9 @@
 
 
     <!-- Micro-proof line -->
-    <div class="mt-4 panel">
-      <p class="text-sm text-slate-700">
-        <span class="font-semibold text-slate-900">Bonus:</span>
+    <div class="mt-4 cta-yes">
+      <p class="cta-yes-text">
+        <span class="cta-yes-title">Bonus:</span>
         experiencias más personales: rutas poco conocidas, planes a tu ritmo y guías que adaptan la aventura.
         Menos líos. Más Lanzarote de verdad.
       </p>
@@ -206,7 +206,7 @@
 
   <!-- Featured experiences -->
   <section class="mt-10" data-animate="fade-up">
-    {% with title="Experiencias destacadas" subtitle="Ideas para empezar si no sabes qué elegir." cta_url=experiences_list_url cta_label="Ver todas" %}
+    {% with title="Experiencias destacadas" subtitle="Ideas para empezar si no sabes qué elegir." cta_url=experiences_list_url cta_label="Ver todas →" %}
       {% include "components/section_header.html" %}
     {% endwith %}
 
@@ -219,7 +219,7 @@
     {% else %}
       <div class="mt-5 card">
         <div class="card-body">
-          <p class="text-sm text-slate-600">
+          <p class="p-muted">
             Aún no hay experiencias destacadas. Puedes empezar explorando el listado completo.
           </p>
 
@@ -248,7 +248,7 @@
             <h2 class="text-xl font-semibold tracking-tight">
               Reserva Lanzarote como se debe: <span class="text-blue-700">claro y sin fricción</span>
             </h2>
-            <p class="mt-2 text-sm text-slate-600">
+            <p class="mt-2 p-muted">
               Experiencias auténticas con guías locales verificados y un sistema de disponibilidad que evita líos.
             </p>
 
@@ -267,15 +267,15 @@
               {% endif %}
             </div>
 
-            <p class="mt-3 text-xs text-slate-500">
+            <p class="mt-3 p-micro">
               Hecho en Lanzarote. Pensado para viajeros que quieren calidad y para guías que quieren control.
             </p>
           </div>
 
           <div class="cta-box">
-            <p class="text-sm font-semibold text-slate-900">Por qué apetece reservar aquí</p>
+            <p class="label-title">Por qué apetece reservar aquí</p>
 
-            <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+            <ul class="mt-3 space-y-2 p-body list-bullets">
               <li>Experiencias únicas y personalizables (a pie, en bici o en tu propio coche).</li>
               <li>Guías locales verificados: sabes con quién vas antes de solicitar.</li>
               <li>Fechas y plazas reales: menos cambios de última hora y menos estrés.</li>

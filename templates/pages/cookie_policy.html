@@ -12,32 +12,29 @@
         <span class="badge badge-blue">LanzaXperience</span>
       </div>
 
-      <h1 class="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-        Política de Cookies
-      </h1>
+      <h1 class="h1-hero">Política de Cookies</h1>
 
-      <p class="mt-2 text-slate-600">
+      <p class="mt-2 p-muted">
         Qué cookies usamos, para qué sirven y cómo puedes gestionarlas.
       </p>
 
-      <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4">
-        <p class="text-sm text-slate-600">
+      <div class="mt-5 content-box-blue">
+        <p class="p-muted">
           <span class="font-semibold text-slate-900">Última actualización:</span>
           {{ current_date|default:"22 de enero de 2026" }}
         </p>
       </div>
 
-      <!-- Quick links -->
       <div class="mt-6">
-        <p class="text-sm font-semibold text-slate-900">Ir a sección</p>
+        <p class="label-title">Ir a sección</p>
         <div class="mt-2 flex flex-wrap gap-2">
-          <a href="#what" class="badge hover:bg-slate-100">1. Qué son</a>
-          <a href="#types" class="badge hover:bg-slate-100">2. Tipos</a>
-          <a href="#list" class="badge hover:bg-slate-100">3. Cookies usadas</a>
-          <a href="#third" class="badge hover:bg-slate-100">4. Terceros</a>
-          <a href="#manage" class="badge hover:bg-slate-100">5. Gestión</a>
-          <a href="#changes" class="badge hover:bg-slate-100">6. Cambios</a>
-          <a href="#contact" class="badge hover:bg-slate-100">7. Contacto</a>
+          <a href="#what" class="badge hover-lift">1. Qué son</a>
+          <a href="#types" class="badge hover-lift">2. Tipos</a>
+          <a href="#list" class="badge hover-lift">3. Cookies usadas</a>
+          <a href="#third" class="badge hover-lift">4. Terceros</a>
+          <a href="#manage" class="badge hover-lift">5. Gestión</a>
+          <a href="#changes" class="badge hover-lift">6. Cambios</a>
+          <a href="#contact" class="badge hover-lift">7. Contacto</a>
         </div>
       </div>
     </div>
@@ -45,40 +42,39 @@
 
   <!-- Content -->
   <div class="mt-6 space-y-4">
-    <!-- 1 -->
-    <section id="what" class="card" data-animate="fade-up">
+
+    <section id="what" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">1. ¿Qué son las cookies?</h2>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <h2 class="h2-section">1. ¿Qué son las cookies?</h2>
+        <p class="mt-2 p-body">
           Las cookies son pequeños archivos de texto que se guardan en tu dispositivo cuando visitas un sitio web.
           Sirven para que la web funcione correctamente, recordar preferencias y, en algunos casos, medir el uso de la plataforma.
         </p>
       </div>
     </section>
 
-    <!-- 2 -->
-    <section id="types" class="card" data-animate="fade-up">
+    <section id="types" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">2. Tipos de cookies</h2>
+        <h2 class="h2-section">2. Tipos de cookies</h2>
 
         <div class="mt-4 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <h3 class="text-sm font-semibold text-slate-900">Cookies necesarias</h3>
-            <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+          <div class="content-box">
+            <h3 class="h3-card">Cookies necesarias</h3>
+            <p class="mt-2 p-body">
               Imprescindibles para que la web funcione. Sin ellas, no podrías iniciar sesión, enviar formularios o navegar de forma segura.
             </p>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <h3 class="text-sm font-semibold text-slate-900">Cookies funcionales</h3>
-            <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+          <div class="content-box">
+            <h3 class="h3-card">Cookies funcionales</h3>
+            <p class="mt-2 p-body">
               Mejoran la experiencia recordando preferencias básicas (por ejemplo idioma o ajustes).
             </p>
           </div>
         </div>
 
-        <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 px-5 py-4">
-          <p class="text-sm text-blue-900">
+        <div class="mt-4 content-box-blue">
+          <p class="p-blue">
             <span class="font-semibold">Importante:</span>
             actualmente no usamos cookies de publicidad ni cookies de seguimiento de terceros con fines comerciales.
           </p>
@@ -86,32 +82,31 @@
       </div>
     </section>
 
-    <!-- 3 -->
-    <section id="list" class="card" data-animate="fade-up">
+    <section id="list" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">3. Cookies que utilizamos</h2>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <h2 class="h2-section">3. Cookies que utilizamos</h2>
+        <p class="mt-2 p-body">
           Estas son las cookies más comunes que se usan en LanzaXperience (pueden variar según configuración y entorno):
         </p>
 
         <div class="mt-4 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <h3 class="text-sm font-semibold text-slate-900">Cookies necesarias</h3>
-            <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+          <div class="content-box">
+            <h3 class="h3-card">Cookies necesarias</h3>
+            <ul class="mt-3 space-y-2 p-body list-bullets">
               <li><span class="font-semibold">django_session</span>: mantiene tu sesión activa (login y navegación segura).</li>
               <li><span class="font-semibold">csrftoken</span>: protección contra ataques CSRF en formularios.</li>
               <li><span class="font-semibold">messages</span>: muestra avisos temporales (éxito/error) dentro de la plataforma.</li>
             </ul>
           </div>
 
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <h3 class="text-sm font-semibold text-slate-900">Cookies funcionales</h3>
-            <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+          <div class="content-box">
+            <h3 class="h3-card">Cookies funcionales</h3>
+            <ul class="mt-3 space-y-2 p-body list-bullets">
               <li>Preferencias básicas (por ejemplo, idioma o interfaz) si activas esas opciones.</li>
               <li>Mejoras de experiencia para mantener la plataforma consistente entre páginas.</li>
             </ul>
 
-            <p class="mt-3 text-xs text-slate-500">
+            <p class="mt-3 p-micro">
               Nota: estas cookies no se usan para publicidad.
             </p>
           </div>
@@ -119,11 +114,10 @@
       </div>
     </section>
 
-    <!-- 4 -->
-    <section id="third" class="card" data-animate="fade-up">
+    <section id="third" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">4. Cookies de terceros</h2>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <h2 class="h2-section">4. Cookies de terceros</h2>
+        <p class="mt-2 p-body">
           En este momento, LanzaXperience no integra cookies de publicidad de terceros.
           Si en el futuro añadimos herramientas externas (por ejemplo analítica), actualizaremos esta política y,
           cuando sea aplicable, te daremos control sobre esas cookies.
@@ -131,20 +125,19 @@
       </div>
     </section>
 
-    <!-- 5 -->
-    <section id="manage" class="card" data-animate="fade-up">
+    <section id="manage" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">5. Cómo gestionar o desactivar cookies</h2>
+        <h2 class="h2-section">5. Cómo gestionar o desactivar cookies</h2>
 
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <p class="mt-2 p-body">
           Puedes gestionar tus preferencias de cookies opcionales desde el panel de preferencias de LanzaXperience.
           Las cookies necesarias (seguridad, sesión y formularios) siempre estarán activas, porque son imprescindibles
           para que la plataforma funcione.
         </p>
 
-        <div class="mt-4 rounded-2xl border border-blue-200 bg-blue-50 p-5">
-          <h3 class="text-sm font-semibold text-blue-900">Gestionar desde LanzaXperience (recomendado)</h3>
-          <p class="mt-2 text-sm text-blue-900/90 leading-relaxed">
+        <div class="mt-4 content-box-blue">
+          <h3 class="h3-card-blue">Gestionar desde LanzaXperience (recomendado)</h3>
+          <p class="mt-2 p-blue-soft">
             Abre el panel de preferencias y activa o desactiva cookies funcionales y de analítica.
           </p>
 
@@ -157,19 +150,19 @@
             </a>
           </div>
 
-          <p class="mt-3 text-xs text-blue-900/70">
+          <p class="mt-3 p-blue-micro">
             Nota: si ya aceptaste o rechazaste, puedes cambiarlo cuando quieras desde el footer.
           </p>
         </div>
 
-        <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-          <h3 class="text-sm font-semibold text-slate-900">Gestionar desde tu navegador (opcional)</h3>
-          <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <div class="mt-4 content-box">
+          <h3 class="h3-card">Gestionar desde tu navegador (opcional)</h3>
+          <p class="mt-2 p-body">
             También puedes configurar tu navegador para bloquear o eliminar cookies. Ten en cuenta que si bloqueas
             cookies necesarias, algunas funciones pueden dejar de funcionar (por ejemplo iniciar sesión o enviar formularios).
           </p>
 
-          <ul class="mt-3 space-y-2 text-sm text-slate-700 list-bullets">
+          <ul class="mt-3 space-y-2 p-body list-bullets">
             <li><span class="font-semibold">Chrome:</span> Configuración → Privacidad y seguridad → Cookies.</li>
             <li><span class="font-semibold">Firefox:</span> Ajustes → Privacidad y seguridad → Cookies y datos del sitio.</li>
             <li><span class="font-semibold">Safari:</span> Preferencias → Privacidad → Gestionar datos de sitios web.</li>
@@ -179,36 +172,34 @@
       </div>
     </section>
 
-
-    <!-- 6 -->
-    <section id="changes" class="card" data-animate="fade-up">
+    <section id="changes" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">6. Cambios a esta política</h2>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <h2 class="h2-section">6. Cambios a esta política</h2>
+        <p class="mt-2 p-body">
           Podemos actualizar esta Política de Cookies si añadimos nuevas funcionalidades o cookies.
           Si el cambio es relevante, lo comunicaremos de forma visible en la plataforma.
         </p>
       </div>
     </section>
 
-    <!-- 7 -->
-    <section id="contact" class="card" data-animate="fade-up">
+    <section id="contact" class="card">
       <div class="card-body">
-        <h2 class="text-lg font-semibold text-slate-900">7. Contacto</h2>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+        <h2 class="h2-section">7. Contacto</h2>
+        <p class="mt-2 p-body">
           Si tienes preguntas sobre el uso de cookies, escríbenos:
         </p>
 
-        <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4">
-          <p class="text-sm text-slate-700">
-            Email: <span class="font-semibold text-slate-900">privacy@lanzaxperience.com</span>
+        <div class="mt-4 contact-box">
+          <p class="p-body">
+            Email: <strong>privacy@lanzaxperience.com</strong>
           </p>
           <a href="mailto:privacy@lanzaxperience.com" class="btn btn-primary">
-            Escribir email
+            Contactar
           </a>
         </div>
       </div>
     </section>
+
   </div>
 </div>
 {% endblock %}

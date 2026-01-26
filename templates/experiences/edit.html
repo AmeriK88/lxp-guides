@@ -7,10 +7,10 @@
     <!-- Header -->
     <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Editar experiencia</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          <span class="font-medium text-slate-900">{{ exp.title }}</span>
-        </p>
+        <h1 class="h1-page">Editar experiencia</h1>
+          <p class="mt-1 p-muted">
+            <span class="p-secondary">{{ exp.title }}</span>
+          </p>
       </div>
 
       <div class="flex gap-2">
@@ -25,7 +25,7 @@
           {% csrf_token %}
 
           {% if form.non_field_errors %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+            <div class="form-error">
               {{ form.non_field_errors }}
             </div>
           {% endif %}
@@ -33,19 +33,19 @@
           <div class="grid gap-4 sm:grid-cols-2">
             {% for field in form %}
               <div class="min-w-0 {% if field.name == 'description' or field.name == 'tags' %}sm:col-span-2{% endif %}">
-                <label class="label">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
 
                 {% if field.field.widget.input_type == "textarea" %}
-                  {{ field|add_class:"input w-full min-h-[140px]" }}
+                  {{ field|add_class:"input min-h-[140px]" }}
 
                 {% elif field.field.widget.input_type == "file" %}
-                  <div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600 min-w-0">
-                    {{ field|add_class:"input w-full max-w-full" }}
-                    <p class="mt-1 text-xs text-slate-500">Sube una imagen representativa (JPG/PNG).</p>
+                  <div class="file-upload">
+                    {{ field|add_class:"input" }}
+                    <p class="help">Sube una imagen representativa (JPG/PNG).</p>
                   </div>
 
                 {% else %}
-                  {{ field|add_class:"input w-full" }}
+                  {{ field|add_class:"input" }}
                 {% endif %}
 
                 {% if field.help_text %}
@@ -53,7 +53,7 @@
                 {% endif %}
 
                 {% if field.errors %}
-                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                  <p class="field-error">{{ field.errors|striptags }}</p>
                 {% endif %}
               </div>
             {% endfor %}

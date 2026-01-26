@@ -1,7 +1,7 @@
 (function () {
   console.log("loader.js loaded ✅");
 
-  const loader = document.getElementById("app-loader"); // 👈 fijo
+  const loader = document.getElementById("app-loader");
   if (!loader) {
     console.warn("AppLoader: #app-loader not found");
     return;
@@ -22,7 +22,6 @@
 
   window.AppLoader = { show, hide };
 
-  // forms submit (captura)
   document.addEventListener(
     "submit",
     function (e) {
@@ -33,7 +32,6 @@
     true
   );
 
-  // clicks en links
   document.addEventListener(
     "click",
     function (e) {
@@ -41,19 +39,20 @@
       if (link) {
         const href = link.getAttribute("href");
         if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+        if (href.startsWith("mailto:") || href.startsWith("tel:")) return;
         if (link.hasAttribute("data-no-loader")) return;
         if (link.target === "_blank") return;
+
         show("Cargando…");
         return;
       }
 
-      // clicks en submit buttons
       const btn = e.target.closest('button[type="submit"], input[type="submit"]');
       if (btn) show("Procesando…");
     },
     true
   );
 
-  // por si vuelves con bfcache
   window.addEventListener("pageshow", hide);
+  window.addEventListener("pagehide", hide);
 })();

@@ -5,9 +5,9 @@
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
     <div>
-      <h1 class="text-2xl font-semibold tracking-tight">Dejar reseña</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Experiencia: <span class="font-medium text-slate-900">{{ experience.title }}</span>
+      <h1 class="h1-page">Dejar reseña</h1>
+      <p class="mt-1 p-muted">
+        Experiencia: <span class="secondary">{{ experience.title }}</span>
       </p>
 
       {% if stats.count %}
@@ -23,10 +23,26 @@
         <form method="post" class="space-y-4">
           {% csrf_token %}
 
+          {% if form.non_field_errors %}
+            <div class="form-error">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
           {% for field in form %}
             <div>
-              <label class="label">{{ field.label }}</label>
-              {{ field|add_class:"input" }}
+              <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+
+              {% if field.field.widget.input_type == "textarea" %}
+                {{ field|add_class:"input min-h-[140px]" }}
+              {% else %}
+                {{ field|add_class:"input" }}
+              {% endif %}
+
+              {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+              {% endif %}
+
               {% if field.errors %}
                 <p class="field-error">{{ field.errors|striptags }}</p>
               {% endif %}

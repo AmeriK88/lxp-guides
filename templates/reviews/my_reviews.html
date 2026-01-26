@@ -4,8 +4,10 @@
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
     <div data-animate="fade-up">
-      <h1 class="text-2xl font-semibold tracking-tight">Mis reseñas</h1>
-      <p class="mt-1 text-sm text-slate-600">Tus reseñas (publicadas, pendientes o marcadas).</p>
+      <h1 class="h1-page">Mis reseñas</h1>
+        <p class="mt-1 p-muted">
+          Tus reseñas (publicadas, pendientes o marcadas).
+        </p>
     </div>
 
     {% if reviews %}
@@ -19,7 +21,7 @@
     {% else %}
       <div class="card" data-animate="fade-up">
         <div class="card-body">
-          <p class="text-sm text-slate-600">Aún no has dejado reseñas.</p>
+          <p class="mt-1 p-muted">Aún no has dejado reseñas.</p>
         </div>
       </div>
     {% endif %}

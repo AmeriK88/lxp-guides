@@ -7,7 +7,7 @@
   <div class="card">
     <div class="card-body">
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h1 class="text-2xl font-semibold tracking-tight">
+        <h1 class="h1-page">
           {% if action == "accept" %}Aceptar reserva{% else %}Rechazar reserva{% endif %}
         </h1>
 
@@ -25,22 +25,22 @@
         <div class="grid gap-3 sm:grid-cols-2">
           <div>
             <p class="text-xs text-slate-500">Experiencia</p>
-            <p class="font-medium text-slate-900">{{ booking.experience.title }}</p>
+            <p class="p-secondary">{{ booking.experience.title }}</p>
           </div>
 
           <div>
             <p class="text-xs text-slate-500">Viajero</p>
-            <p class="font-medium text-slate-900">{{ booking.traveler.username }}</p>
+            <p class="p-secondary">{{ booking.traveler.username }}</p>
           </div>
 
           <div>
             <p class="text-xs text-slate-500">Fecha</p>
-            <p class="font-medium text-slate-900">{{ booking.date }}</p>
+            <p class="p-secondary">{{ booking.date }}</p>
           </div>
 
           <div>
             <p class="text-xs text-slate-500">Total</p>
-            <p class="font-medium text-slate-900">{{ booking.total_price }}€</p>
+            <p class="p-secondary">{{ booking.total_price }}€</p>
           </div>
         </div>
 

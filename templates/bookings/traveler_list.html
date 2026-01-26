@@ -6,10 +6,10 @@
 
     <!-- Header -->
     <div data-animate="fade-up">
-      <h1 class="text-2xl font-semibold tracking-tight">Mis Reservas</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Revisa el estado de tus reservas y accede a los detalles de cada reserva.
-      </p>
+      <h1 class="h1-page">Mis Reservas</h1>
+        <p class="mt-1 p-muted">
+          Revisa el estado de tus reservas y accede a los detalles de cada reserva.
+        </p>
     </div>
 
     {% if bookings %}
@@ -25,7 +25,7 @@
 
                   <!-- Left -->
                   <div class="min-w-0">
-                    <h2 class="text-base font-semibold">
+                    <h2 class="h2-section">
                       <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
                         {{ b.experience.title }}
                       </a>
@@ -132,8 +132,8 @@
       <div data-animate="scale-in">
         <div class="card">
           <div class="card-body">
-            <h2 class="text-base font-semibold">No tienes reservas aún</h2>
-            <p class="mt-1 text-sm text-slate-600">
+            <h2 class="h2-section">No tienes reservas aún</h2>
+            <p class="mt-1 p-muted">
               Cuando reserves una experiencia, aparecerá aquí con su estado.
             </p>
 

@@ -7,10 +7,10 @@
     <!-- Header -->
     <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between" data-animate="fade-up">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Tu panel</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Tus reservas, gasto y próximas experiencias en un vistazo.
-        </p>
+        <h1 class="h1-page">Tu panel</h1>
+          <p class="mt-1 p-muted">
+            Tus reservas, gasto y próximas experiencias en un vistazo.
+          </p>
       </div>
 
       <div class="flex flex-wrap gap-2">
@@ -86,8 +86,8 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <h2 class="text-base font-semibold">Tu próxima experiencia</h2>
-            <p class="mt-1 text-sm text-slate-600">Para que la tengas controlada.</p>
+            <h2 class="h2-section">Tu próxima experiencia</h2>
+            <p class="mt-1 p-muted">Para que la tengas controlada.</p>
 
             {% if next_booking %}
               <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -127,8 +127,8 @@
               </div>
             {% else %}
               <div class="step-item">
-                <p class="text-sm font-medium text-slate-900">Aún no tienes reservas futuras</p>
-                <p class="mt-1 text-sm text-slate-600">Explora experiencias y reserva la próxima 😉</p>
+                <p class="label-title">Aún no tienes reservas futuras</p>
+                <p class="mt-1 p-muted">Explora experiencias y reserva la próxima 😉</p>
                 <div class="mt-4">
                   <a href="{% url 'experiences:list' %}" class="btn btn-primary">Explorar</a>
                 </div>
@@ -141,20 +141,20 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <h2 class="text-base font-semibold">Resumen rápido</h2>
-            <p class="mt-1 text-sm text-slate-600">Pequeña dosis de “progreso”.</p>
+            <h2 class="h2-section">Resumen rápido</h2>
+            <p class="mt-1 p-muted">Pequeña dosis de “progreso”.</p>
 
             <div class="mt-4 space-y-3" data-stagger>
               <div class="step-item" data-animate="fade-up">
-                <p class="text-sm font-medium text-slate-900">📌 Pendientes</p>
-                <p class="mt-1 text-sm text-slate-600">
+                <p class="label-title">📌 Pendientes</p>
+                <p class="mt-1 p-muted">
                   {{ kpis.pending|default:"—" }} esperando confirmación
                 </p>
               </div>
 
               <div class="step-item" data-animate="fade-up">
-                <p class="text-sm font-medium text-slate-900">⭐ Valoraciones</p>
-                <p class="mt-1 text-sm text-slate-600">
+                <p class="label-title">⭐ Valoraciones</p>
+                <p class="mt-1 p-muted">
                   {{ kpis.reviews|default:"—" }} reseñas publicadas
                 </p>
               </div>
@@ -170,7 +170,7 @@
         <div class="card">
           <div class="card-body">
             <div class="flex items-center justify-between">
-              <h2 class="text-base font-semibold">Tus reservas recientes</h2>
+              <h2 class="h2-section">Tus reservas recientes</h2>
               <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">Ver todas</a>
             </div>
 
@@ -188,7 +188,7 @@
                 <tbody class="text-slate-700" data-stagger>
                   {% for b in recent_bookings %}
                     <tr class="border-b border-slate-100" data-animate="fade-up">
-                      <td class="py-3 pr-3 font-medium text-slate-900">{{ b.experience.title }}</td>
+                      <td class="py-3 pr-3 p-secondary">{{ b.experience.title }}</td>
                       <td class="py-3 pr-3">{{ b.date }}</td>
                       <td class="py-3 pr-3">{{ b.people }}</td>
                       <td class="py-3 pr-3">
@@ -225,8 +225,8 @@
     <div data-animate="fade-up">
       <div class="card">
         <div class="card-body">
-          <h2 class="text-base font-semibold">Buscar</h2>
-          <p class="mt-1 text-sm text-slate-600">Haz una búsqueda rápida y te llevamos al listado.</p>
+          <h2 class="h2-section">Buscar</h2>
+          <p class="mt-1 p-muted">Haz una búsqueda rápida y te llevamos al listado.</p>
 
           <form method="get" action="{% url 'experiences:list' %}" class="mt-4 flex flex-col gap-2 sm:flex-row">
             <input
@@ -249,8 +249,8 @@
         <div class="card-body">
           <div class="flex items-center justify-between gap-4">
             <div>
-              <h2 class="text-base font-semibold">Categorías</h2>
-              <p class="mt-1 text-sm text-slate-600">Explora por tipo de experiencia.</p>
+              <h2 class="h2-section">Categorías</h2>
+              <p class="mt-1 p-muted">Explora por tipo de experiencia.</p>
             </div>
             <a href="{% url 'experiences:list' %}" class="btn btn-ghost">Ver todo</a>
           </div>
@@ -277,7 +277,7 @@
       <div class="flex items-end justify-between gap-4">
         <div>
           <h2 class="text-xl font-semibold tracking-tight">Top experiencias</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <p class="mt-1 p-muted">
             Las más populares ahora mismo.
           </p>
         </div>
@@ -300,7 +300,7 @@
           <div class="card">
             <div class="card-body">
               <h3 class="text-base font-semibold">No hay experiencias activas todavía</h3>
-              <p class="mt-1 text-sm text-slate-600">
+              <p class="mt-1 p-muted">
                 Vuelve más tarde o revisa el listado completo.
               </p>
               <div class="mt-4">

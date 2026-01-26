@@ -1,0 +1,3 @@
+/* También soporta la clase .page-enter sin data-page */
+.page-enter { opacity: 0; transform: translateY(6px); }
+.page-enter.is-ready { opacity: 1; transform: translateY(0); }

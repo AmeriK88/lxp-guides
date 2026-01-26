@@ -7,19 +7,19 @@
   <div class="flex flex-col gap-6">
     <!-- Header -->
     <div>
-      <h1 class="text-2xl font-semibold tracking-tight">Disponibilidad</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Gestiona reglas y bloqueos para la experiencia:
-        <span class="font-medium text-slate-900">{{ experience.title }}</span>
-      </p>
+      <h1 class="h1-page">Disponibilidad</h1>
+        <p class="mt-1 p-muted">
+          Gestiona reglas y bloqueos para la experiencia:
+          <span class="p-secondary">{{ experience.title }}</span>
+        </p>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-2">
       <!-- Reglas -->
       <div class="card">
         <div class="card-body">
-          <h2 class="text-base font-semibold">Reglas</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <h2 class="h2-section">Reglas</h2>
+          <p class="mt-1 p-muted">
             Define días permitidos, rango y límites diarios.
           </p>
 
@@ -98,8 +98,8 @@
       <!-- Bloqueos -->
       <div class="card">
         <div class="card-body">
-          <h2 class="text-base font-semibold">Bloqueos por fecha</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <h2 class="h2-section">Bloqueos por fecha</h2>
+          <p class="mt-1 p-muted">
             Bloquea días concretos por descanso, clima u otros motivos.
           </p>
 
@@ -134,9 +134,9 @@
                 {% for b in blocks %}
                   <li class="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
                     <div>
-                      <p class="text-sm font-medium text-slate-900">{{ b.date }}</p>
+                      <p class="label-title">{{ b.date }}</p>
                       {% if b.reason %}
-                        <p class="mt-1 text-sm text-slate-600">{{ b.reason }}</p>
+                        <p class="mt-1 p-muted">{{ b.reason }}</p>
                       {% endif %}
                     </div>
 
