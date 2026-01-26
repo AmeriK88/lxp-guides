@@ -18,7 +18,7 @@
           <span>Ver mis reservas</span>
 
           {% if unseen_traveler_bookings %}
-            <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
+            <span class="notification-badge">
               {{ unseen_traveler_bookings }}
             </span>
           {% endif %}
@@ -126,7 +126,7 @@
                 </div>
               </div>
             {% else %}
-              <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="step-item">
                 <p class="text-sm font-medium text-slate-900">Aún no tienes reservas futuras</p>
                 <p class="mt-1 text-sm text-slate-600">Explora experiencias y reserva la próxima 😉</p>
                 <div class="mt-4">
@@ -145,14 +145,14 @@
             <p class="mt-1 text-sm text-slate-600">Pequeña dosis de “progreso”.</p>
 
             <div class="mt-4 space-y-3" data-stagger>
-              <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
+              <div class="step-item" data-animate="fade-up">
                 <p class="text-sm font-medium text-slate-900">📌 Pendientes</p>
                 <p class="mt-1 text-sm text-slate-600">
                   {{ kpis.pending|default:"—" }} esperando confirmación
                 </p>
               </div>
 
-              <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
+              <div class="step-item" data-animate="fade-up">
                 <p class="text-sm font-medium text-slate-900">⭐ Valoraciones</p>
                 <p class="mt-1 text-sm text-slate-600">
                   {{ kpis.reviews|default:"—" }} reseñas publicadas

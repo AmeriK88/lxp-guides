@@ -110,7 +110,7 @@
                 <span>Ver reservas recibidas</span>
 
                 {% if unseen_guide_bookings %}
-                  <span class="ml-2 inline-flex items-center rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">
+                  <span class="notification-badge">
                     {{ unseen_guide_bookings }}
                   </span>
                 {% endif %}
@@ -129,17 +129,17 @@
             </p>
 
             <div class="mt-4 space-y-3" data-stagger>
-              <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
+              <div class="step-item" data-animate="fade-up">
                 <p class="text-sm font-medium text-slate-900">✅ Completa tu perfil</p>
                 <p class="mt-1 text-sm text-slate-600">Bio, idiomas, foto y verificación.</p>
               </div>
 
-              <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
+              <div class="step-item" data-animate="fade-up">
                 <p class="text-sm font-medium text-slate-900">📅 Ajusta disponibilidad</p>
                 <p class="mt-1 text-sm text-slate-600">Reglas, horarios y bloqueos.</p>
               </div>
 
-              <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3" data-animate="fade-up">
+              <div class="step-item" data-animate="fade-up">
                 <p class="text-sm font-medium text-slate-900">📷 Añade buenas fotos</p>
                 <p class="mt-1 text-sm text-slate-600">Las experiencias con fotos convierten mejor.</p>
               </div>

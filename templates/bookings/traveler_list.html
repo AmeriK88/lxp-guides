@@ -68,25 +68,17 @@
                   <div class="flex flex-col items-start gap-2 sm:items-end">
                     {% with s=b.status|lower %}
                       {% if s == "accepted" %}
-                        <span class="badge badge-green">Aceptada</span>
+                        <span class="badge-status-accepted">Aceptada</span>
                       {% elif s == "pending" %}
-                        <span class="badge">Pendiente</span>
+                        <span class="badge-status-pending">Pendiente</span>
                       {% elif s == "change_requested" %}
-                        <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                          Cambio solicitado
-                        </span>
+                        <span class="badge-status-change_requested">Cambio solicitado</span>
                       {% elif s == "cancel_requested" %}
-                        <span class="badge" style="border-color:#fde68a;background:#fffbeb;color:#92400e;">
-                          Cancelación solicitada
-                        </span>
+                        <span class="badge-status-cancel_requested">Cancelación solicitada</span>
                       {% elif s == "rejected" %}
-                        <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                          Rechazada
-                        </span>
+                        <span class="badge-status-rejected">Rechazada</span>
                       {% elif s == "canceled" %}
-                        <span class="badge" style="border-color: rgb(254 202 202); background-color: rgb(254 242 242); color: rgb(153 27 27);">
-                          Cancelada
-                        </span>
+                        <span class="badge-status-canceled">Cancelada</span>
                       {% else %}
                         <span class="badge">{{ b.status }}</span>
                       {% endif %}
@@ -119,9 +111,9 @@
 
                       {% if b.extras.last_update.type == "change" %}
                         {% if b.extras.last_update.decision == "accepted" %}
-                          <span class="text-xs font-medium text-emerald-700">✅ Cambio aceptado</span>
+                          <span class="update-decision-accepted">✅ Cambio aceptado</span>
                         {% elif b.extras.last_update.decision == "rejected" %}
-                          <span class="text-xs font-medium text-red-700">❌ Cambio rechazado</span>
+                          <span class="update-decision-rejected">❌ Cambio rechazado</span>
                         {% endif %}
                       {% endif %}
                     {% endif %}
@@ -136,7 +128,7 @@
       </div>
 
     {% else %}
-      {# ✅ Igual: animamos wrapper #}
+      {# Igual: animamos wrapper #}
       <div data-animate="scale-in">
         <div class="card">
           <div class="card-body">

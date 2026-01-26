@@ -24,7 +24,7 @@
           {% csrf_token %}
 
           {% if form.non_field_errors %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+            <div class="form-error">
               {{ form.non_field_errors }}
             </div>
           {% endif %}
@@ -38,7 +38,7 @@
                   {{ field|add_class:"input w-full min-h-[120px]" }}
 
                 {% elif field.field.widget.input_type == "file" %}
-                  <div class="min-w-0 rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+                  <div class="file-upload">
                     {{ field|add_class:"input w-full max-w-full" }}
                     <p class="mt-1 text-xs text-slate-500">Sube una imagen representativa de la experiencia.</p>
                   </div>
@@ -52,7 +52,7 @@
                 {% endif %}
 
                 {% if field.errors %}
-                  <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }}</p>
+                  <p class="field-error">{{ field.errors|striptags }}</p>
                 {% endif %}
               </div>
             {% endfor %}
