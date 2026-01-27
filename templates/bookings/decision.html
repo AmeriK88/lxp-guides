@@ -16,30 +16,30 @@
         </span>
       </div>
 
-      <p class="mt-2 text-sm text-slate-600">
+      <p class="mt-2 p-muted">
         Revisa los datos de la solicitud antes de confirmar.
       </p>
 
       <!-- Resumen -->
-      <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+      <div class="mt-5 content-box">
         <div class="grid gap-3 sm:grid-cols-2">
           <div>
-            <p class="text-xs text-slate-500">Experiencia</p>
+            <p class="p-micro">Experiencia</p>
             <p class="p-secondary">{{ booking.experience.title }}</p>
           </div>
 
           <div>
-            <p class="text-xs text-slate-500">Viajero</p>
+            <p class="p-micro">Viajero</p>
             <p class="p-secondary">{{ booking.traveler.username }}</p>
           </div>
 
           <div>
-            <p class="text-xs text-slate-500">Fecha</p>
+            <p class="p-micro">Fecha</p>
             <p class="p-secondary">{{ booking.date }}</p>
           </div>
 
           <div>
-            <p class="text-xs text-slate-500">Total</p>
+            <p class="p-micro">Total</p>
             <p class="p-secondary">{{ booking.total_price }}€</p>
           </div>
         </div>
@@ -74,9 +74,9 @@
 
         {# Si vas a aceptar, mostramos primero la logística final (hora + punto) #}
         {% if action == "accept" %}
-          <div class="rounded-2xl border border-slate-200 bg-white p-4">
-            <h2 class="text-sm font-semibold text-slate-900">Logística final</h2>
-            <p class="mt-1 text-xs text-slate-500">
+          <div class="panel p-4">
+            <h2 class="label-title">Logística final</h2>
+            <p class="mt-1 p-micro">
               Indica la hora y (si quieres) el punto exacto. Esto se enviará al viajero por email.
             </p>
 
@@ -87,7 +87,7 @@
                   <label class="label">{{ form.pickup_time.label }}</label>
                   {{ form.pickup_time|add_class:"input" }}
                   {% if form.pickup_time.errors %}
-                    <p class="mt-1 text-xs text-red-600">{{ form.pickup_time.errors|striptags }}</p>
+                    <p class="field-error">{{ form.pickup_time.errors|striptags }}</p>
                   {% endif %}
                 </div>
               {% endif %}
@@ -98,7 +98,7 @@
                   <label class="label">{{ form.meeting_point.label }}</label>
                   {{ form.meeting_point|add_class:"input" }}
                   {% if form.meeting_point.errors %}
-                    <p class="mt-1 text-xs text-red-600">{{ form.meeting_point.errors|striptags }}</p>
+                    <p class="field-error">{{ form.meeting_point.errors|striptags }}</p>
                   {% endif %}
                 </div>
               {% endif %}
@@ -106,13 +106,13 @@
           </div>
         {% endif %}
 
-        {# ✅ Siempre mostramos el mensaje del guía #}
+        {# Siempre mostramos el mensaje del guía #}
         {% if form.guide_response %}
           <div>
             <label class="label">{{ form.guide_response.label }}</label>
             {{ form.guide_response|add_class:"input" }}
             {% if form.guide_response.errors %}
-              <p class="mt-1 text-xs text-red-600">{{ form.guide_response.errors|striptags }}</p>
+              <p class="field-error">{{ form.guide_response.errors|striptags }}</p>
             {% endif %}
           </div>
         {% endif %}
@@ -124,7 +124,7 @@
               <label class="label">{{ field.label }}</label>
               {{ field|add_class:"input" }}
               {% if field.errors %}
-                <p class="mt-1 text-xs text-red-600">{{ field.errors|striptags }} ⚠️</p>
+                <p class="field-error">{{ field.errors|striptags }} ⚠️</p>
               {% endif %}
             </div>
           {% endif %}
@@ -140,7 +140,7 @@
           </a>
         </div>
 
-        <p class="text-xs text-slate-500">
+        <p class="p-micro">
           {% if action == "accept" %}
             Al aceptar, se notificará al viajero por email con la hora y el resumen de la reserva.
           {% else %}

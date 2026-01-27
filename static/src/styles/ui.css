@@ -13,11 +13,14 @@
     background: linear-gradient(to bottom, rgba(191,219,254,.70), transparent);
   }
 
-  /* Cards */
+
+  /* Cards (hover suave + sin blur) */
   .card{
     @apply rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm
-          transition-all duration-200
+          transition-all duration-200 ease-out
           hover:-translate-y-0.5 hover:shadow-md;
+    will-change: auto;;
+    backface-visibility: hidden;
   }
 
   .card-body { @apply p-6; }
@@ -83,13 +86,14 @@
          file:mr-3 file:rounded-lg file:border-0
          file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white
          hover:file:bg-slate-800;
-}
+  }
 
   .label { @apply mb-1 block text-sm font-medium text-slate-700; }
   .help  { @apply mt-1 text-xs text-slate-500 break-all leading-snug; }
   .form-error { @apply rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900; }
   .field-error { @apply mt-1 text-xs text-red-600 break-all leading-snug; }
   .file-upload { @apply min-w-0 rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600; }
+  .account-input { @apply font-medium text-blue-600 hover:text-blue-700; }
 
   /* Cards */
   .card-warning { @apply rounded-xl border border-amber-200 bg-amber-50; }
@@ -108,43 +112,69 @@
   .content-box-blue { @apply rounded-2xl border border-blue-200 bg-blue-50 px-5 py-4; }
   .contact-box { @apply flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4; }
 
-  /* Badges (ÚNICO sistema para tags + estados) */
-  .badge,
-  .badge-neutral,
-  .badge-emerald,
-  .badge-amber,
-  .badge-red,
-  .badge-blue{
-    @apply inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium;
+/* Badges (ÚNICO sistema para tags + estados) */
+.badge,
+.badge-neutral,
+.badge-emerald,
+.badge-amber,
+.badge-red,
+.badge-blue{
+  @apply inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium;
+  transition: transform .2s ease-out, background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+  will-change: transform;
+}
+
+/* Neutral */
+.badge,
+.badge-neutral{
+  @apply border-slate-200 bg-slate-50 text-slate-700
+         hover:bg-slate-100 hover:border-slate-300 hover:shadow-sm hover:-translate-y-0.5;
+}
+
+/* Semantic colors */
+.badge-emerald{
+  @apply border-emerald-200 bg-emerald-50 text-emerald-800
+         hover:bg-emerald-100 hover:border-emerald-300 hover:shadow-sm hover:-translate-y-0.5;
+}
+.badge-amber{
+  @apply border-amber-200 bg-amber-50 text-amber-800
+         hover:bg-amber-100 hover:border-amber-300 hover:shadow-sm hover:-translate-y-0.5;
+}
+.badge-red{
+  @apply border-red-200 bg-red-50 text-red-800
+         hover:bg-red-100 hover:border-red-300 hover:shadow-sm hover:-translate-y-0.5;
+}
+.badge-blue{
+  @apply border-blue-200 bg-blue-50 text-blue-800
+         hover:bg-blue-100 hover:border-blue-300 hover:shadow-sm hover:-translate-y-0.5;
+}
+
+.badge-status-pending{
+  @apply border-slate-200 bg-slate-50 text-slate-700
+         hover:bg-slate-100 hover:border-slate-300;
+}
+
+.badge-status-accepted{
+  @apply border-emerald-200 bg-emerald-50 text-emerald-800
+         hover:bg-emerald-100 hover:border-emerald-300;
+}
+
+  .badge-status-change_requested,
+  .badge-status-cancel_requested{
+    @apply inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium
+           border-amber-200 bg-amber-50 text-amber-800
+           hover:bg-amber-100 hover:-translate-y-0.5;
     transition: transform .2s ease-out, background-color .2s ease, border-color .2s ease, color .2s ease;
   }
 
-  .badge,
-  .badge-neutral{
-    @apply border-slate-200 bg-slate-50 text-slate-700
-           hover:bg-slate-100 hover:-translate-y-0.5;
-  }
-
-  .badge-emerald { 
-    @apply border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:-translate-y-0.5; 
-  }
-  .badge-amber { 
-    @apply border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 hover:-translate-y-0.5; 
-  }
-  .badge-red { 
-    @apply border-red-200 bg-red-50 text-red-800 hover:bg-red-100 hover:-translate-y-0.5; 
-  }
-  .badge-blue { 
-    @apply border-blue-200 bg-blue-50 text-blue-800 hover:bg-blue-100 hover:-translate-y-0.5; 
-  }
-
-  /* Status badges (alias del sistema de arriba) */
-  .badge-status-pending { @apply badge-neutral; }
-  .badge-status-accepted { @apply badge-emerald; }
-  .badge-status-rejected,
-  .badge-status-canceled { @apply badge-red; }
+  /* OJO: soporta los dos nombres (por si usas change/cancel o *_requested) */
+  .badge-status-change,
+  .badge-status-cancel,
   .badge-status-change_requested,
-  .badge-status-cancel_requested { @apply badge-amber; }
+  .badge-status-cancel_requested{
+    @apply border-amber-200 bg-amber-50 text-amber-800
+          hover:bg-amber-100 hover:border-amber-300;
+  }
 
 
   .label-title { @apply text-sm font-semibold text-slate-900; }
@@ -165,6 +195,7 @@
     @apply text-lg font-semibold text-slate-900;
   }
   .h3-card{ @apply text-sm font-semibold text-slate-900; }
+  .h3-card-experience{ @apply text-lg font-semibold leading-tight text-slate-900; }
   .h3-card-blue{ @apply text-sm font-semibold text-blue-900; }
   .p-lead{
     @apply mt-4 text-slate-600 text-base sm:text-lg leading-relaxed;
@@ -177,6 +208,9 @@
   }
   .p-large{
     @apply text-2xl font-semibold text-slate-900;
+  }
+  .p-card-experience{
+    @apply mt-1 text-slate-600;
   }
 
   /* Alerts */
@@ -198,4 +232,31 @@
   /* Bullets en listas */
   .list-bullets > li { @apply flex gap-2; }
   .list-bullets > li::before { content: "•"; @apply text-slate-400; }
+
+  /* Danger zone (reutilizable) */
+  .danger-card{
+    @apply rounded-2xl border border-red-200 bg-red-50/40;
+  }
+  .danger-title{
+    @apply text-lg font-semibold text-red-700;
+  }
+  .danger-text{
+    @apply mt-1 text-sm text-red-700/80;
+  }
+
+  [data-animate]{
+  will-change: auto;
+  backface-visibility: visible;
+}
+
+.is-animating{
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.page-enter.is-ready{
+  transform: none;
+}
+
+
 }

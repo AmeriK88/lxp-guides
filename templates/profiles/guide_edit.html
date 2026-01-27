@@ -14,11 +14,11 @@
           <span class="text-slate-600">Estado de verificación:</span>
 
           {% if profile.verification_status == "verified" %}
-            <span class="badge-emerald">✅ Verificado</span>
+            <span class="badge badge-emerald">✅ Verificado</span>
           {% elif profile.verification_status == "pending" %}
-            <span class="badge-amber">⏳ Pendiente</span>
+            <span class="badge badge-amber">⏳ Pendiente</span>
           {% elif profile.verification_status == "rejected" %}
-            <span class="badge-red">❌ Rechazado</span>
+            <span class="badge badge-red">❌ Rechazado</span>
           {% else %}
             <span class="badge">No verificado</span>
           {% endif %}
@@ -30,7 +30,7 @@
       </div>
 
       <a href="{% url 'profiles:public_guide' request.user.pk %}" class="btn btn-ghost">
-        Ver mi perfil público
+        Ver perfil público →
       </a>
     </div>
 
@@ -150,6 +150,28 @@
         {% endif %}
       </div>
     </div>
+        <!-- Danger zone -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="h2-section">Zona de peligro</h2>
 
+        <div class="mt-3 alert alert-danger">
+          <p class="font-semibold">Esta acción es irreversible.</p>
+          <p class="mt-1">
+            Tus cuenta se desactivará definitivamente y no podrás volver a iniciar sesión. Sin embargo, las excursiones realizadas y los registros exigidos por ley se conservarán.
+          </p>
+        </div>
+
+        <div class="mt-4">
+          <a href="{% url 'accounts:delete' %}" class="btn btn-danger">
+            Eliminar mi cuenta
+          </a>
+        </div>
+
+        <p class="mt-3 p-micro">
+          Si tienes dudas, contacta con soporte antes de continuar.
+        </p>
+      </div>
+    </div>
   </div>
 {% endblock %}

@@ -15,17 +15,17 @@
         <div class="flex items-center gap-2">
           {% with s=booking.status|lower %}
             {% if s == "accepted" %}
-              <span class="badge-status-accepted">Aceptada</span>
+              <span class="badge badge-status-accepted">Aceptada</span>
             {% elif s == "pending" %}
-              <span class="badge-status-pending">Pendiente</span>
+              <span class="badge badge-status-pending">Pendiente</span>
             {% elif s == "change_requested" %}
-              <span class="badge-status-change_requested">Cambio solicitado</span>
+              <span class="badge badge-status-change_requested">Cambio solicitado</span>
             {% elif s == "cancel_requested" %}
-              <span class="badge-status-cancel_requested">Cancelación solicitada</span>
+              <span class="badge badge-status-cancel_requested">Cancelación solicitada</span>
             {% elif s == "rejected" %}
-              <span class="badge-status-rejected">Rechazada</span>
+              <span class="badge badge-status-rejected">Rechazada</span>
             {% elif s == "canceled" %}
-              <span class="badge-status-canceled">Cancelada</span>
+              <span class="badge badge-status-canceled">Cancelada</span>
             {% else %}
               <span class="badge">{{ booking.status }}</span>
             {% endif %}
@@ -188,7 +188,7 @@
 
       <!-- Experiencia -->
       <div class="mt-5">
-        <p class="text-sm text-slate-600">Experiencia</p>
+        <p class="p-muted">Experiencia</p>
         <p class="text-base font-semibold">
           <a href="{% url 'experiences:detail' booking.experience.pk %}" class="hover:underline">
             {{ booking.experience.title }}

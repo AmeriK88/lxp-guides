@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from .forms import RegisterForm
+from .forms import RegisterForm, DeleteAccountForm
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
+from django.db import transaction
 
 
 def register_view(request):
@@ -75,4 +76,43 @@ def logout_view(request):
     logout(request)
     messages.info(request, "Has cerrado sesión.")
     return redirect("accounts:login")
+
+
+
+@login_required
+def delete_account_view(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = DeleteAccountForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                # 1) anonimiza / desactiva (NO borrar)
+                user.is_active = False
+
+                # email y username únicos para evitar colisiones
+                # example.invalid es un dominio reservado para estos usos
+                user.email = f"deleted+{user.pk}@example.invalid"
+                user.username = f"deleted_{user.pk}"
+
+                # si usas nombre/apellidos en algún sitio, límpialos
+                user.first_name = ""
+                user.last_name = ""
+
+                user.set_unusable_password()  # extra seguridad: no se puede loguear con esa cuenta
+                user.save(update_fields=[
+                    "is_active", "email", "username",
+                    "first_name", "last_name", "password"
+                ])
+
+                # 2) cerrar sesión
+                logout(request)
+
+            messages.success(request, "Tu cuenta ha sido desactivada y tus datos personales han sido eliminados.")
+            return redirect("accounts:login")
+    else:
+        form = DeleteAccountForm()
+
+    return render(request, "accounts/delete_account.html", {"form": form})
+
 

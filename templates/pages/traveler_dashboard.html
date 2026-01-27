@@ -108,9 +108,9 @@
                     {% elif s == "pending" %}
                       <span class="badge badge-status-pending">Pendiente</span>
                     {% elif s == "change_requested" %}
-                      <span class="badge badge-status-change">Cambio solicitado</span>
+                      <span class="badge badge-status-change_requested">Cambio solicitado</span>
                     {% elif s == "cancel_requested" %}
-                      <span class="badge badge-status-cancel">Cancelación solicitada</span>
+                      <span class="badge badge-status-cancel_requested">Cancelación solicitada</span>
                     {% elif s == "rejected" %}
                       <span class="badge badge-status-rejected">Rechazada</span>
                     {% elif s == "canceled" %}
@@ -259,7 +259,7 @@
             <div class="mt-4 flex flex-wrap gap-2" data-stagger>
               {% for c in categories %}
                 <a href="{% url 'experiences:list' %}?category={{ c.slug }}"
-                  class="badge hover:bg-slate-100"
+                  class="badge"
                   data-animate="fade-up">
                   {{ c.name }}
                 </a>

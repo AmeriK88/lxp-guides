@@ -18,7 +18,7 @@
 
   <!-- Body -->
   <div class="card-body flex flex-col flex-1">
-    <h3 class="text-lg font-semibold leading-tight text-slate-900 clamp-2">
+    <h3 class="h3-card-experience clamp-2">
       {{ experience.title }}
     </h3>
 
@@ -40,13 +40,13 @@
         {% endwith %}
 
         <div class="min-w-0">
-          <p class="text-sm font-semibold text-slate-900 truncate">
+          <p class="label-title truncate">
             {{ experience.guide.get_full_name|default:experience.guide.username }}
           </p>
           {% if experience.guide.is_guide and experience.guide.guide_profile.verification_status == "verified" %}
-            <p class="text-xs text-slate-500">Guía verificado ✅</p>
+            <p class="p-micro">Guía verificado ✅</p>
           {% else %}
-            <p class="text-xs text-slate-500">Guía local</p>
+            <p class="p-micro">Guía local</p>
           {% endif %}
         </div>
       </div>
@@ -54,17 +54,17 @@
 
     <div class="mt-3 flex flex-wrap gap-2 text-sm">
       {% if experience.location %}
-        <span class="badge">📍 {{ experience.location }}</span>
+        <span class="badge hover-lift">📍 {{ experience.location }}</span>
       {% endif %}
       {% if experience.duration_minutes %}
-        <span class="badge">⏱ {{ experience.duration_minutes }} min</span>
+        <span class="badge hover-lift">⏱ {{ experience.duration_minutes }} min</span>
       {% endif %}
     </div>
 
     <div class="mt-auto pt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex items-baseline gap-2">
         <span class="text-xl font-bold text-slate-900">{{ experience.price }} €</span>
-        <span class="text-xs text-slate-500">por adulto</span>
+        <span class="p-micro">por adulto</span>
       </div>
 
       <a href="{% url 'experiences:detail' experience.pk %}" class="btn btn-primary w-full sm:w-auto">

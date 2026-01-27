@@ -18,7 +18,7 @@
           + Nueva experiencia
         </a>
         <a href="{% url 'experiences:list' %}" class="btn btn-ghost">
-          Ver mis experiencias
+          Mis experiencias →
         </a>
       </div>
     </div>
@@ -106,9 +106,9 @@
             </p>
             <div class="mt-4 flex flex-col gap-2">
               <a href="{% url 'experiences:create' %}" class="btn btn-primary w-full">Crear experiencia</a>
-              <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias</a>
+              <a href="{% url 'experiences:list' %}" class="btn btn-ghost w-full">Gestionar experiencias →</a>
               <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost w-full flex items-center justify-between">
-                <span>Ver reservas recibidas</span>
+                <span>Ver reservas recibidas →</span>
 
                 {% if unseen_guide_bookings %}
                   <span class="notification-badge">
@@ -161,7 +161,7 @@
           <div class="card-body">
             <div class="flex items-center justify-between">
               <h2 class="h2-section">Reservas recientes</h2>
-              <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas</a>
+              <a href="{% url 'bookings:guide_list' %}" class="btn btn-ghost">Ver todas →</a>
             </div>
 
             <div class="mt-4 overflow-x-auto">
