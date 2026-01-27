@@ -5,8 +5,7 @@
   data-loader
 >
   <div class="loader-card" role="status" aria-live="polite" aria-label="Cargando">
-    <div class="orbital-loader"
-     style="--size: {{ size|default:'52px' }}; --radius: 24px;">
+    <div class="orbital-loader" style="--size: {{ size|default:'52px' }};">
       {% for _ in "12345678"|make_list %}
         <span class="dot"></span>
       {% endfor %}

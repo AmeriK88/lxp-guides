@@ -5,8 +5,8 @@
   <div class="flex flex-col gap-6">
     <!-- Header -->
     <div>
-      <h1 class="text-2xl font-semibold tracking-tight">Reservas Recibidas</h1>
-      <p class="mt-1 text-sm text-slate-600">
+      <h1 class="h1-page">Reservas Recibidas</h1>
+      <p class="mt-1 p-muted">
         Confirma o rechaza solicitudes y revisa los detalles de cada reserva.
       </p>
     </div>
@@ -19,7 +19,7 @@
               <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <!-- Left -->
                 <div class="min-w-0">
-                  <h2 class="text-base font-semibold">
+                  <h2 class="h2-section">
                     <a href="{% url 'experiences:detail' b.experience.pk %}" class="hover:underline">
                       {{ b.experience.title }}
                     </a>
@@ -64,17 +64,17 @@
                 <div class="flex flex-col items-start gap-2 sm:items-end">
                   {% with s=b.status|lower %}
                     {% if s == "accepted" %}
-                      <span class="badge-status-accepted">Aceptada</span>
+                      <span class="badge badge-status-accepted">Aceptada</span>
                     {% elif s == "pending" %}
-                      <span class="badge-status-pending">Pendiente</span>
-                    {% elif s == "change_requested" %}
-                      <span class="badge-status-change_requested">Cambio solicitado</span>
+                      <span class="badge badge-status-pending">Pendiente</span>
+                    {% elif s == "badge change_requested" %}
+                      <span class="badge badge-status-change_requested">Cambio solicitado</span>
                     {% elif s == "cancel_requested" %}
-                      <span class="badge-status-cancel_requested">Cancelación solicitada</span>
+                      <span class="badge badge-status-cancel_requested">Cancelación solicitada</span>
                     {% elif s == "rejected" %}
-                      <span class="badge-status-rejected">Rechazada</span>
+                      <span class="badge badge-status-rejected">Rechazada</span>
                     {% elif s == "canceled" %}
-                      <span class="badge-status-canceled">Cancelada</span>
+                      <span class="badge badge-status-canceled">Cancelada</span>
                     {% else %}
                       <span class="badge">{{ b.status }}</span>
                     {% endif %}
@@ -129,8 +129,8 @@
     {% else %}
       <div class="card">
         <div class="card-body">
-          <h2 class="text-base font-semibold">No tienes reservas todavía</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <h2 class="h2-section">No tienes reservas todavía</h2>
+          <p class="mt-1 p-muted">
             Cuando un viajero reserve una experiencia, aparecerá aquí para gestionarla.
           </p>
         </div>

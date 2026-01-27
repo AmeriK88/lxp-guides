@@ -15,14 +15,15 @@
 
       <div>
         <h1 class="text-3xl font-semibold tracking-tight">{{ exp.title }}</h1>
-        <p class="mt-1 text-sm text-slate-600">
+        <p class="mt-1 p-muted">
+
           📍 {{ exp.location }} · ⏱ {{ exp.duration_minutes }} min · 👥 máx. {{ exp.max_people }}
         </p>
       </div>
 
       <div class="card">
         <div class="card-body">
-          <h2 class="text-base font-semibold">Descripción</h2>
+          <h2 class="h2-section">Descripción</h2>
           <p class="mt-2 text-slate-700 leading-relaxed">{{ exp.description }}</p>
         </div>
       </div>
@@ -94,7 +95,7 @@
               Reservar ahora
             </a>
           {% else %}
-            <p class="text-sm text-slate-600">
+            <p class="p-muted">
               Inicia sesión como viajero para reservar.
             </p>
             <a href="{% url 'accounts:login' %}?next={% url 'experiences:detail' exp.pk %}"
@@ -111,14 +112,15 @@
             <div class="card-body">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <h2 class="text-base font-semibold">Reseñas</h2>
+                  <h2 class="h2-section">Reseñas</h2>
 
                   {% if review_stats.count %}
-                    <p class="mt-1 text-sm text-slate-600">
+                    <p class="mt-1 p-muted">                
                       ⭐ {{ review_stats.avg|floatformat:1 }} · {{ review_stats.count }} reseña{{ review_stats.count|pluralize:"s" }}
                     </p>
                   {% else %}
-                    <p class="mt-1 text-sm text-slate-600">Aún no hay reseñas.</p>
+                    <p class="mt-1 p-muted">
+                      Aún no hay reseñas.</p>
                   {% endif %}
                 </div>
 

@@ -4,20 +4,22 @@
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
 
-    <div class="flex items-end justify-between gap-4">
+    <div class="flex items-end justify-between gap-4" data-animate="fade-up">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Reseñas</h1>
-        <p class="mt-1 text-sm text-slate-600">Opiniones públicas sobre tus experiencias.</p>
+        <h1 class="h1-page">Reseñas</h1>
+        <p class="mt-1 p-muted">
+          Opiniones públicas sobre tus experiencias.
+        </p>
       </div>
       <a href="{% url 'pages:guide_dashboard' %}" class="btn btn-ghost">← Volver al panel</a>
     </div>
 
-    <div class="card">
+    <div class="card" data-animate="fade-up">
       <div class="card-body">
         {% if reviews %}
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-              <thead class="text-slate-500">
+              <thead class="p-micro">
                 <tr class="border-b border-slate-200">
                   <th class="py-2 pr-3 font-medium">Experiencia</th>
                   <th class="py-2 pr-3 font-medium">Traveler</th>
@@ -28,49 +30,53 @@
                 </tr>
               </thead>
 
-              <tbody class="text-slate-700">
+              <tbody class="p-body">
                 {% for r in reviews %}
-                  <tr class="border-b border-slate-100 align-top">
-                    <td class="py-3 pr-3 font-medium text-slate-900">
+                  <tr class="border-b border-slate-100 align-top hover:bg-slate-50/60 transition-colors">
+                    <td class="py-3 pr-3 p-secondary">
                       <span class="clamp-1">{{ r.experience.title }}</span>
                     </td>
-                    <td class="py-3 pr-3">{{ r.traveler.username }}</td>
+
+                    <td class="py-3 pr-3">
+                      {{ r.traveler.username }}
+                    </td>
 
                     <td class="py-3 pr-3">
                       <div class="flex flex-wrap items-center gap-2">
                         <span class="badge">{{ r.rating }}/5</span>
 
-                        {# Verificada = viene de booking aceptada #}
                         {% if r.booking and r.booking.status == "accepted" %}
-                          <span class="badge badge-green">
-                            ✓ Verificada
-                          </span>
+                          <span class="badge badge-emerald">Verificada</span>
                         {% endif %}
                       </div>
                     </td>
 
                     <td class="py-3 pr-3">
                       {% if r.status == "published" %}
-                        <span class="badge badge-green">Publicada</span>
+                        <span class="badge badge-emerald">Publicada</span>
                       {% elif r.status == "pending" %}
                         <span class="badge badge-amber">Pendiente</span>
                       {% elif r.status == "flagged" %}
-                        <span class="badge badge-red">Marcada</span>
-                        {% if r.flagged_reason %}
-                          <div class="mt-1 text-xs text-slate-500">{{ r.flagged_reason }}</div>
-                        {% endif %}
+                        <div class="space-y-1">
+                          <span class="badge badge-red">Marcada</span>
+                          {% if r.flagged_reason %}
+                            <p class="p-micro">{{ r.flagged_reason }}</p>
+                          {% endif %}
+                        </div>
                       {% else %}
                         <span class="badge">—</span>
                       {% endif %}
                     </td>
 
-                    {{ r.created_at|date:"d M Y" }}
+                    <td class="py-3 pr-3 p-muted whitespace-nowrap">
+                      {{ r.created_at|date:"d M Y" }}
+                    </td>
 
-                    <td class="py-3 pr-3">
+                    <td class="py-3 pr-3 min-w-65">
                       {% if r.comment %}
                         <p class="clamp-3 text-sm leading-relaxed">{{ r.comment }}</p>
                       {% else %}
-                        <span class="text-slate-400">—</span>
+                        <span class="p-micro">—</span>
                       {% endif %}
                     </td>
                   </tr>
@@ -80,7 +86,7 @@
             </table>
           </div>
         {% else %}
-          <p class="text-sm text-slate-600">Aún no tienes reseñas públicas.</p>
+          <p class="p-muted">Aún no tienes reseñas públicas.</p>
         {% endif %}
       </div>
     </div>

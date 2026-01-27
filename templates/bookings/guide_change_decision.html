@@ -4,14 +4,14 @@
 {% block dashboard_content %}
 <div class="flex flex-col gap-6">
   <div>
-    <h1 class="text-2xl font-semibold tracking-tight">Solicitud de cambio</h1>
-    <p class="mt-1 text-sm text-slate-600">Compara la reserva actual con la propuesta.</p>
+   <h1 class="h1-page">Solicitud de cambio</h1>
+    <p class="mt-1 p-muted">Compara la reserva actual con la propuesta.</p>
   </div>
 
   <div class="grid gap-6 lg:grid-cols-2">
     <div class="card">
       <div class="card-body">
-        <h2 class="text-base font-semibold">Reserva actual</h2>
+        <h2 class="h2-section">Reserva actual</h2>
         <div class="mt-3 flex flex-wrap gap-2">
           <span class="badge">📅 {{ booking.date }}</span>
           <span class="badge">👥 {{ booking.people }} pax</span>
@@ -23,7 +23,7 @@
 
     <div class="card">
       <div class="card-body">
-        <h2 class="text-base font-semibold">Cambio solicitado</h2>
+        <h2 class="h2-section">Cambio solicitado</h2>
         {% with cr=booking.extras.change_request %}
           <div class="mt-3 flex flex-wrap gap-2">
             <span class="badge">📅 {{ cr.date }}</span>

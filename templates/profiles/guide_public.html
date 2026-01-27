@@ -3,6 +3,7 @@
 
 {% block content %}
   <div class="flex flex-col gap-8">
+
     <!-- Header -->
     <div class="card">
       <div class="card-body relative">
@@ -18,21 +19,17 @@
 
         <div class="flex flex-col gap-3">
           <div>
-            <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight">
+            <h1 class="h1-page">
               {{ profile.display_name|default:guide_user.username }}
 
               {% if profile.verification_status == "verified" %}
-                <span class="ml-2 inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800 border border-emerald-200">
-                  ✔ Verificado
-                </span>
+                <span class="ml-2 badge-emerald">✔ Verificado</span>
               {% else %}
-                <span class="ml-2 inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 border border-amber-200">
-                  ⏳ En revisión
-                </span>
+                <span class="ml-2 badge-amber">⏳ En revisión</span>
               {% endif %}
             </h1>
 
-            <p class="mt-2 text-sm text-slate-600">
+            <p class="mt-2 p-muted">
               {% if profile.verification_status == "verified" %}
                 Guía verificado oficialmente
               {% else %}
@@ -50,8 +47,8 @@
 
         {% if profile.bio %}
           <div class="mt-4">
-            <h2 class="text-sm font-semibold text-slate-900">Sobre mí</h2>
-            <p class="mt-2 text-slate-700 leading-relaxed">
+            <h2 class="h2-section">Sobre mí</h2>
+            <p class="mt-2 p-body">
               {{ profile.bio }}
             </p>
           </div>
@@ -61,8 +58,9 @@
           {% if profile.languages %}
             <span class="badge">🗣 {{ profile.languages }}</span>
           {% endif %}
+
           {% if profile.website %}
-            <a class="badge hover:bg-slate-100" href="{{ profile.website }}" target="_blank" rel="noopener">
+            <a class="badge" href="{{ profile.website }}" target="_blank" rel="noopener">
               🔗 Web
             </a>
           {% endif %}
@@ -75,7 +73,7 @@
       <div class="flex items-end justify-between gap-4">
         <div>
           <h2 class="text-xl font-semibold tracking-tight">Experiencias activas</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <p class="mt-1 p-muted">
             Planes disponibles con este guía.
           </p>
         </div>
@@ -91,7 +89,7 @@
         <div class="mt-5 card">
           <div class="card-body">
             <h3 class="text-base font-semibold">Este guía aún no tiene experiencias activas</h3>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Vuelve más tarde o explora otras experiencias.
             </p>
             <div class="mt-4">
@@ -109,7 +107,7 @@
       <div class="flex items-end justify-between gap-4">
         <div>
           <h2 class="text-xl font-semibold tracking-tight">Reseñas</h2>
-          <p class="mt-1 text-sm text-slate-600">
+          <p class="mt-1 p-muted">
             Opiniones de viajeros que han reservado con este guía.
           </p>
         </div>
@@ -132,7 +130,7 @@
         <div class="mt-5 card">
           <div class="card-body">
             <h3 class="text-base font-semibold">Aún no hay reseñas</h3>
-            <p class="mt-1 text-sm text-slate-600">
+            <p class="mt-1 p-muted">
               Cuando los viajeros dejen reseñas, aparecerán aquí.
             </p>
           </div>
@@ -141,9 +139,10 @@
     </div>
 
     <div>
-      <a href="{% url 'experiences:list' %}" class="text-sm text-slate-600 hover:underline">
+      <a href="{% url 'experiences:list' %}" class="p-muted hover:underline">
         ← Volver a experiencias
       </a>
     </div>
+
   </div>
 {% endblock %}

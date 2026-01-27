@@ -4,12 +4,15 @@
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
-    <!-- Header -->
-    <div>
-      <h1 class="text-2xl font-semibold tracking-tight">Mi Perfil</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Actualiza tus datos. Estos se usarán para tus reservas y comunicaciones.
-      </p>
+
+    <!-- Header (opcional: en card para consistencia visual) -->
+    <div class="card">
+      <div class="card-body">
+        <h1 class="h1-page">Mi Perfil</h1>
+        <p class="mt-1 p-muted">
+          Actualiza tus datos. Estos se usarán para tus reservas y comunicaciones.
+        </p>
+      </div>
     </div>
 
     <div class="card">
@@ -18,7 +21,7 @@
           {% csrf_token %}
 
           {% if form.non_field_errors %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+            <div class="form-error">
               {{ form.non_field_errors }}
             </div>
           {% endif %}
@@ -26,12 +29,21 @@
           <div class="grid gap-4 sm:grid-cols-2">
             {% for field in form %}
               <div class="{% if field.field.widget.input_type == 'textarea' %}sm:col-span-2{% endif %}">
-                <label class="label">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
 
-                {% if field.field.widget.input_type == "textarea" %}
-                  {{ field|add_class:"input min-h-[120px]" }}
+                {% if forloop.first %}
+                  {# Autofocus opcional: si no te gusta, quita el "autofocus" #}
+                  {% if field.field.widget.input_type == "textarea" %}
+                    {{ field|add_class:"input min-h-[120px]" }}
+                  {% else %}
+                    {{ field|add_class:"input" }}
+                  {% endif %}
                 {% else %}
-                  {{ field|add_class:"input" }}
+                  {% if field.field.widget.input_type == "textarea" %}
+                    {{ field|add_class:"input min-h-[120px]" }}
+                  {% else %}
+                    {{ field|add_class:"input" }}
+                  {% endif %}
                 {% endif %}
 
                 {% if field.help_text %}
@@ -54,6 +66,31 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="h2-section">Zona de peligro</h2>
+
+        <div class="mt-3 alert alert-danger">
+          <p class="font-semibold">Esta acción es irreversible.</p>
+          <p class="mt-1">
+            Tu cuenta se desactivará definitivamente y no podrás volver a iniciar sesión.
+            Sin embargo, tus reservas realizadas y los registros exigidos por ley se conservarán.
+          </p>
+        </div>
+
+        <div class="mt-4">
+          <a href="{% url 'accounts:delete' %}" class="btn btn-danger">
+            Eliminar mi cuenta
+          </a>
+        </div>
+
+        <p class="mt-3 p-micro">
+          Si tienes dudas, contacta con soporte antes de continuar.
+        </p>
       </div>
     </div>
   </div>

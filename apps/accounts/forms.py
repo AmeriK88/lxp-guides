@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
+from django.core.exceptions import ValidationError
 
 
 class RegisterForm(UserCreationForm):
@@ -17,3 +18,23 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+DELETE_PHRASE = "ELIMINAR PERMANENTEMENTE"
+
+class DeleteAccountForm(forms.Form):
+    confirm = forms.BooleanField(
+        required=True,
+        label="Entiendo que esta acción es permanente y desactiva mi cuenta."
+    )
+    phrase = forms.CharField(
+        required=True,
+        label=f'Escribe "{DELETE_PHRASE}" para confirmar',
+        help_text="Esto evita eliminaciones accidentales.",
+        widget=forms.TextInput(attrs={"autocomplete": "off"})
+    )
+
+    def clean_phrase(self):
+        value = (self.cleaned_data.get("phrase") or "").strip().upper()
+        if value != DELETE_PHRASE:
+            raise ValidationError(f'Debes escribir exactamente: {DELETE_PHRASE}')
+        return value

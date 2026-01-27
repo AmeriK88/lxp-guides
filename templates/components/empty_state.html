@@ -1,7 +1,7 @@
 <div class="{{ wrapper_class|default:'mt-5 card' }}">
   <div class="card-body">
     {% if title %}<h3 class="text-base font-semibold">{{ title }}</h3>{% endif %}
-    {% if text %}<p class="mt-1 text-sm text-slate-600">{{ text }}</p>{% endif %}
+    {% if text %}<p class="mt-1 p-muted">{{ text }}</p>{% endif %}
 
     {% if cta_url and cta_label %}
       <div class="mt-4">

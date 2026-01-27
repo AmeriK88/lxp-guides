@@ -7,10 +7,10 @@
   <div class="mx-auto max-w-md" data-animate="fade-up">
     <div class="card">
       <div class="card-body">
-        <h1 class="text-2xl font-semibold tracking-tight">Crear cuenta</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Regístrate para explorar experiencias o convertirte en guía.
-        </p>
+        <h1 class="h1-page">Crear cuenta</h1>
+          <p class="mt-1 p-muted">
+            Regístrate para explorar experiencias o convertirte en guía.
+          </p>
 
         <form method="post" class="mt-6 space-y-4">
           {% csrf_token %}
@@ -34,8 +34,8 @@
         </form>
 
         <div class="mt-4 text-center text-sm">
-          <span class="text-slate-600">¿Ya tienes cuenta?</span>
-          <a href="{% url 'accounts:login' %}" class="ml-2 btn btn-ghost">
+          <span class="p-muted">¿Ya tienes cuenta?</span>
+          <a href="{% url 'accounts:login' %}" class="ml-2 account-input">
             Iniciar sesión
           </a>
         </div>

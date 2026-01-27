@@ -2,155 +2,221 @@
 {% block title %}Términos y Condiciones - LanzaXperience{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-8">
+<div class="max-w-4xl mx-auto px-4 py-10">
 
-  <!-- Header -->
-  <section class="card overflow-hidden relative">
-    <div class="card-body relative">
-      <div class="hero-top-glow"></div>
-
-      <div class="flex flex-col gap-4">
-        <div class="inline-flex flex-wrap items-center gap-2">
-          <span class="badge">📄 Legal</span>
-          <span class="badge">🇪🇸 España</span>
-          <span class="badge badge-blue">🔒 Transparencia</span>
-        </div>
-
-        <div>
-          <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-            Términos y Condiciones
-          </h1>
-          <p class="mt-2 text-slate-600">
-            Lo importante, explicado claro: cómo funciona LanzaXperience, qué puedes esperar y qué esperamos de ti.
-          </p>
-          <p class="mt-3 text-sm text-slate-500">
-            Última actualización: <span class="font-medium text-slate-900">{{ current_date|default:"22 de enero de 2026" }}</span>
-          </p>
-        </div>
-
-        <div class="cta-yes">
-         <div class="cta-yes-title">
-            <p class="cta-yes-text">
-                LanzaXperience actúa como intermediario entre viajeros y guías. Las experiencias las presta el guía.
-            </p>
-         </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick nav -->
-  <section class="mt-6 panel-soft">
-    <p class="text-sm font-semibold text-slate-900">Acceso rápido</p>
-    <p class="mt-1 text-sm text-slate-600">
-      Si vienes con prisa, aquí tienes los puntos clave:
-    </p>
-
-    <div class="mt-4 grid gap-3 sm:grid-cols-2">
-      <a href="#reservas" class="panel hover-lift soft-shadow">
-        <p class="text-sm font-semibold text-slate-900">🗓 Reservas</p>
-        <p class="mt-1 text-sm text-slate-600">Solicitud, confirmación y disponibilidad.</p>
-      </a>
-      <a href="#cancelaciones" class="panel hover-lift soft-shadow">
-        <p class="text-sm font-semibold text-slate-900">🧾 Cancelaciones</p>
-        <p class="mt-1 text-sm text-slate-600">Políticas y reembolsos.</p>
-      </a>
-      <a href="#responsabilidades" class="panel hover-lift soft-shadow">
-        <p class="text-sm font-semibold text-slate-900">🛡 Responsabilidades</p>
-        <p class="mt-1 text-sm text-slate-600">Guías, viajeros y plataforma.</p>
-      </a>
-      <a href="#contacto" class="panel hover-lift soft-shadow">
-        <p class="text-sm font-semibold text-slate-900">✉️ Contacto</p>
-        <p class="mt-1 text-sm text-slate-600">Dudas o soporte.</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- Content -->
-  <section class="mt-6 card">
-    <div class="card-body prose prose-slate max-w-none">
-
-      <h2 id="aceptacion">1. Aceptación de términos</h2>
-      <p>Al acceder y usar LanzaXperience, aceptas estos Términos y Condiciones. Si no estás de acuerdo, no uses la plataforma.</p>
-
-      <h2 id="servicio">2. Descripción del servicio</h2>
-      <p>LanzaXperience es una plataforma que conecta viajeros con guías locales para experiencias en Lanzarote. No somos responsables directos de las experiencias; facilitamos la conexión.</p>
-
-      <h2 id="cuentas">3. Cuentas de usuario</h2>
-      <ul class="list-bullets">
-        <li>Debes proporcionar información precisa y mantenerla actualizada.</li>
-        <li>Eres responsable de la seguridad de tu cuenta y contraseña.</li>
-        <li>Los guías deben ser verificados antes de ofrecer servicios.</li>
-      </ul>
-
-      <h2 id="reservas">4. Reservas y pagos</h2>
-      <ul class="list-bullets">
-        <li>Las reservas están sujetas a disponibilidad confirmada por el guía.</li>
-        <li>Los pagos se procesan de forma segura; no almacenamos datos de tarjetas.</li>
-        <li>Precios incluyen IVA y pueden variar; se confirman al momento de reserva.</li>
-      </ul>
-
-      <div class="alert-warn">
-        <p><strong>Nota:</strong> La solicitud de reserva no es una confirmación automática. El guía debe aceptarla según disponibilidad.</p>
+  <!-- Header (igual que Cookies) -->
+  <div class="card overflow-hidden">
+    <div class="card-body">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="badge">📄 Legal</span>
+        <span class="badge">🇪🇸 España</span>
+        <span class="badge badge-blue">🔒 Transparencia</span>
       </div>
 
-      <h2 id="cancelaciones">5. Cancelaciones y reembolsos</h2>
-      <ul class="list-bullets">
-        <li>Viajeros: Cancelación gratuita hasta 48 horas antes; después, según política del guía.</li>
-        <li>Guías: Pueden rechazar reservas sin penalización si no hay disponibilidad.</li>
-        <li>Reembolsos se procesan en 5-10 días hábiles.</li>
-      </ul>
+      <h1 class="h1-hero">Términos y Condiciones</h1>
 
-      <h2 id="responsabilidades">6. Responsabilidades</h2>
-      <ul class="list-bullets">
-        <li><strong>Guías:</strong> Deben proporcionar servicios seguros y de calidad. Son responsables de contar con los seguros, licencias y autorizaciones necesarias para la actividad que ofrecen.</li>
-        <li><strong>Viajeros:</strong> Deben respetar las normas de seguridad, las indicaciones del guía y mantener un comportamiento adecuado durante la experiencia.</li>
-        <li><strong>Plataforma:</strong> LanzaXperience actúa como intermediario entre viajeros y guías, y no es responsable directo de la ejecución de las experiencias.</li>
-      </ul>
+      <p class="mt-2 p-muted">
+        Lo importante, explicado claro: cómo funciona LanzaXperience, qué puedes esperar y qué esperamos de ti.
+      </p>
 
-      <h3 id="transporte">6.1 Transporte y desplazamientos</h3>
-      <ul class="list-bullets">
-        <li>LanzaXperience no presta servicios de transporte.</li>
-        <li>Salvo que se indique expresamente, las experiencias no incluyen transporte.</li>
-        <li>El desplazamiento hasta el punto de encuentro y durante la actividad se realiza por cuenta del viajero, ya sea en vehículo propio, de alquiler o transporte público.</li>
-        <li>Cuando el guía acompañe al viajero en su vehículo, lo hará únicamente como acompañante y responsable de la actividad, sin asumir la conducción ni responsabilidad sobre el vehículo.</li>
-        <li>El guía no ofrecerá transporte en su vehículo particular salvo que cuente con las licencias y seguros legalmente exigidos y se indique explícitamente en la descripción de la experiencia.</li>
-        <li>El viajero es responsable del estado, seguro y uso de su vehículo cuando este se utilice durante la experiencia.</li>
-      </ul>
-
-      <h2 id="contenido">7. Contenido y reseñas</h2>
-      <ul class="list-bullets">
-        <li>Los usuarios pueden publicar reseñas; deben ser honestas y respetuosas.</li>
-        <li>Nos reservamos el derecho a moderar o eliminar contenido inapropiado.</li>
-      </ul>
-
-      <h2 id="limitacion">8. Limitación de responsabilidad</h2>
-      <p>LanzaXperience no es responsable de daños indirectos, pérdidas económicas o lesiones derivadas del uso de la plataforma. Nuestra responsabilidad máxima es el importe pagado por la reserva.</p>
-
-      <h2 id="propiedad">9. Propiedad intelectual</h2>
-      <p>Todo el contenido de la plataforma (logos, textos, diseños) es propiedad de LanzaXperience. No puedes copiarlo sin permiso.</p>
-
-      <h2 id="terminacion">10. Terminación</h2>
-      <p>Podemos suspender tu cuenta por violación de términos. Puedes eliminar tu cuenta en cualquier momento.</p>
-
-      <h2 id="ley">11. Ley aplicable</h2>
-      <p>Estos términos se rigen por las leyes de España. Cualquier disputa se resolverá en los tribunales competentes.</p>
-
-      <h2 id="cambios">12. Cambios</h2>
-      <p>Podemos modificar estos términos; te notificaremos de cambios significativos.</p>
-
-      <h2 id="contacto">13. Contacto</h2>
-      <p>Para preguntas: <span class="badge">support@lanzaxperience.com</span></p>
-
-      <div class="mt-6 panel-soft">
-        <p class="text-sm font-semibold text-slate-900">Resumen rápido</p>
-        <p class="mt-1 text-sm text-slate-600">
-          Plataforma intermediaria, guías verificados, solicitud con confirmación, y reglas claras para evitar sorpresas.
+      <div class="mt-5 content-box-blue">
+        <p class="p-muted">
+          <span class="font-semibold text-slate-900">Última actualización:</span>
+          {{ current_date|default:"26 de enero de 2026" }}
         </p>
       </div>
 
+      <div class="mt-6">
+        <p class="label-title">Ir a sección</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <a href="#aceptacion" class="badge hover-lift">1. Aceptación</a>
+          <a href="#servicio" class="badge hover-lift">2. Servicio</a>
+          <a href="#cuentas" class="badge hover-lift">3. Cuentas</a>
+          <a href="#reservas" class="badge hover-lift">4. Reservas</a>
+          <a href="#cancelaciones" class="badge hover-lift">5. Cancelaciones</a>
+          <a href="#responsabilidades" class="badge hover-lift">6. Responsabilidades</a>
+          <a href="#contenido" class="badge hover-lift">7. Reseñas</a>
+          <a href="#limitacion" class="badge hover-lift">8. Limitación</a>
+          <a href="#propiedad" class="badge hover-lift">9. Propiedad</a>
+          <a href="#terminacion" class="badge hover-lift">10. Terminación</a>
+          <a href="#ley" class="badge hover-lift">11. Ley</a>
+          <a href="#cambios" class="badge hover-lift">12. Cambios</a>
+          <a href="#contacto" class="badge hover-lift">13. Contacto</a>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 
+  <!-- Content (cards por sección, igual que cookies) -->
+  <div class="mt-6 space-y-4">
+
+    <!-- 0: Nota clave (estilo cookies: caja azul) -->
+    <section class="card">
+      <div class="card-body">
+        <div class="content-box-blue">
+          <p class="p-blue">
+            <strong>LanzaXperience actúa como intermediario entre viajeros y guías.</strong>
+            Las experiencias las presta el guía.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="aceptacion" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">1. Aceptación de términos</h2>
+        <p class="mt-2 p-body">
+          Al acceder y usar LanzaXperience, aceptas estos Términos y Condiciones. Si no estás de acuerdo, no uses la plataforma.
+        </p>
+      </div>
+    </section>
+
+    <section id="servicio" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">2. Descripción del servicio</h2>
+        <p class="mt-2 p-body">
+          LanzaXperience conecta viajeros con guías locales. No somos responsables directos de las experiencias, solo facilitamos el contacto.
+        </p>
+      </div>
+    </section>
+
+    <section id="cuentas" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">3. Cuentas de usuario</h2>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li>Proporcionar información veraz y actualizada.</li>
+          <li>Mantener la seguridad de la cuenta.</li>
+          <li>Guías verificados antes de publicar.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="reservas" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">4. Reservas y pagos</h2>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li>Sujetas a confirmación del guía.</li>
+          <li>Pagos seguros sin almacenar tarjetas.</li>
+          <li>Precios con IVA confirmados al reservar.</li>
+        </ul>
+
+        <div class="mt-4 alert alert-warn">
+          <p class="p-body">
+            <strong>Nota:</strong> Solicitar no implica confirmación automática. El guía debe aceptarla.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="cancelaciones" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">5. Cancelaciones y reembolsos</h2>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li>Cancelación gratuita hasta 48h antes.</li>
+          <li>Rechazo por parte del guía sin penalización.</li>
+          <li>Reembolsos en 5–10 días hábiles.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="responsabilidades" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">6. Responsabilidades</h2>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li><strong>Guías:</strong> seguridad, licencias y seguros.</li>
+          <li><strong>Viajeros:</strong> respeto de normas e indicaciones.</li>
+          <li><strong>Plataforma:</strong> intermediación sin ejecución directa.</li>
+        </ul>
+
+        <h3 id="transporte" class="h3-card mt-4">6.1 Transporte y desplazamientos</h3>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li>No prestamos servicios de transporte.</li>
+          <li>El viajero es responsable de su desplazamiento.</li>
+          <li>El guía no conduce salvo autorización legal expresa.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contenido" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">7. Contenido y reseñas</h2>
+        <ul class="mt-3 space-y-2 p-body list-bullets">
+          <li>Reseñas honestas y respetuosas.</li>
+          <li>Moderación de contenido inapropiado.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="limitacion" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">8. Limitación de responsabilidad</h2>
+        <p class="mt-2 p-body">
+          Nuestra responsabilidad máxima es el importe pagado por la reserva.
+        </p>
+      </div>
+    </section>
+
+    <section id="propiedad" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">9. Propiedad intelectual</h2>
+        <p class="mt-2 p-body">
+          Todo el contenido pertenece a LanzaXperience.
+        </p>
+      </div>
+    </section>
+
+    <section id="terminacion" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">10. Terminación</h2>
+        <p class="mt-2 p-body">
+          Podemos suspender cuentas por incumplimiento.
+        </p>
+      </div>
+    </section>
+
+    <section id="ley" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">11. Ley aplicable</h2>
+        <p class="mt-2 p-body">
+          Legislación española y tribunales competentes.
+        </p>
+      </div>
+    </section>
+
+    <section id="cambios" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">12. Cambios</h2>
+        <p class="mt-2 p-body">
+          Los cambios relevantes serán notificados.
+        </p>
+      </div>
+    </section>
+
+    <section id="contacto" class="card">
+      <div class="card-body">
+        <h2 class="h2-section">13. Contacto</h2>
+        <p class="mt-2 p-body">
+          Si tienes dudas, escríbenos:
+        </p>
+
+        <div class="mt-4 contact-box">
+          <p class="p-body">
+            Email: <strong>support@lanzaxperience.com</strong>
+          </p>
+          <a href="mailto:support@lanzaxperience.com" class="btn btn-primary">
+            Contactar
+          </a>
+        </div>
+
+        <div class="mt-4 panel-soft">
+          <p class="label-title">Resumen rápido</p>
+          <p class="mt-1 p-muted">
+            Plataforma intermediaria, guías verificados y reglas claras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
 </div>
 {% endblock %}
