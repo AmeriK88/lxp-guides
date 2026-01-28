@@ -7,17 +7,15 @@
     <!-- Header -->
     <div data-animate="fade-up">
       <h1 class="h1-page">Mis Reservas</h1>
-        <p class="mt-1 p-muted">
-          Revisa el estado de tus reservas y accede a los detalles de cada reserva.
-        </p>
+      <p class="mt-1 p-muted">
+        Revisa el estado de tus reservas y accede a los detalles de cada reserva.
+      </p>
     </div>
 
     {% if bookings %}
-      <!-- Stagger container -->
       <div class="space-y-3" data-stagger>
         {% for b in bookings %}
 
-          {# Animamos el WRAPPER, no la card #}
           <div data-animate="scale-in">
             <div class="card">
               <div class="card-body">
@@ -43,6 +41,11 @@
                       {% if b.total_price %}
                         <span class="badge">💶 {{ b.total_price }}€</span>
                       {% endif %}
+
+                      {# ✅ Si hay override por rechazo de cambio, destacarlo #}
+                      {% if b.extras.free_cancel_override and b.extras.free_cancel_override.reason == "change_rejected" %}
+                        <span class="badge badge-status-cancel_requested">🆓 Cancelación gratis</span>
+                      {% endif %}
                     </div>
 
                     <div class="mt-2 flex flex-wrap gap-2">
@@ -62,6 +65,13 @@
                         <span class="badge">📍 {{ b.pickup_notes }}</span>
                       {% endif %}
                     </div>
+
+                    {# ✅ Mensajito corto si hay override (para no quedar mal) #}
+                    {% if b.extras.free_cancel_override and b.extras.free_cancel_override.reason == "change_rejected" %}
+                      <p class="mt-2 text-sm text-slate-600">
+                        ❌ El guía rechazó tu cambio. Puedes mantener la fecha original o cancelar gratis.
+                      </p>
+                    {% endif %}
                   </div>
 
                   <!-- Right -->
@@ -89,31 +99,52 @@
                         Ver reserva
                       </a>
 
-                      {% if b.status != "rejected" and b.status != "canceled" %}
-                        {% if b.status != "change_requested" and b.status != "cancel_requested" %}
-                          <a href="{% url 'bookings:request_change' b.pk %}" class="btn btn-primary">
-                            Solicitar cambio
-                          </a>
+                      {% with s=b.status|lower %}
+                        {% if s != "rejected" and s != "canceled" %}
+                          {# Si hay solicitud pendiente, mostramos aviso #}
+                          {% if s == "change_requested" or s == "cancel_requested" %}
+                            <span class="text-xs font-medium text-slate-600">
+                              ⏳ Tu solicitud está en revisión por el guía
+                            </span>
 
-                          <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-ghost">
-                            Solicitar cancelación
-                          </a>
-                        {% else %}
-                          <span class="text-xs font-medium text-slate-600">
-                            ⏳ Tu solicitud está en revisión por el guía
-                          </span>
+                          {% else %}
+                            {# ✅ Si hay override por cambio rechazado, priorizar "Cancelar gratis" #}
+                            {% if b.extras.free_cancel_override and b.extras.free_cancel_override.reason == "change_rejected" %}
+                              <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-primary">
+                                Cancelar gratis
+                              </a>
+                            {% else %}
+                              <a href="{% url 'bookings:request_change' b.pk %}" class="btn btn-primary">
+                                Solicitar cambio
+                              </a>
+
+                              <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-ghost">
+                                Solicitar cancelación
+                              </a>
+                            {% endif %}
+                          {% endif %}
                         {% endif %}
-                      {% endif %}
+                      {% endwith %}
                     </div>
 
                     {% if not b.seen_by_traveler %}
                       <span class="text-xs font-medium text-blue-700">● Actualización nueva</span>
 
-                      {% if b.extras.last_update.type == "change" %}
-                        {% if b.extras.last_update.decision == "accepted" %}
-                          <span class="update-decision-accepted">✅ Cambio aceptado</span>
-                        {% elif b.extras.last_update.decision == "rejected" %}
-                          <span class="update-decision-rejected">❌ Cambio rechazado</span>
+                      {% if b.extras.last_update %}
+                        {% if b.extras.last_update.type == "change" %}
+                          {% if b.extras.last_update.decision == "accepted" %}
+                            <span class="update-decision-accepted">✅ Cambio aceptado</span>
+                          {% elif b.extras.last_update.decision == "rejected" %}
+                            <span class="update-decision-rejected">❌ Cambio rechazado</span>
+                          {% endif %}
+                        {% endif %}
+
+                        {% if b.extras.last_update.type == "cancel" %}
+                          {% if b.extras.last_update.decision == "accepted" %}
+                            <span class="update-decision-accepted">✅ Cancelación aprobada</span>
+                          {% elif b.extras.last_update.decision == "rejected" %}
+                            <span class="update-decision-rejected">❌ Cancelación rechazada</span>
+                          {% endif %}
                         {% endif %}
                       {% endif %}
                     {% endif %}
@@ -128,7 +159,6 @@
       </div>
 
     {% else %}
-      {# Igual: animamos wrapper #}
       <div data-animate="scale-in">
         <div class="card">
           <div class="card-body">

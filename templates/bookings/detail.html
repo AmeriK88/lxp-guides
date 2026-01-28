@@ -67,7 +67,7 @@
         {% endif %}
       {% endwith %}
 
-      {# ✅ NUEVO: Banner de última actualización (solo útil para el viajero) #}
+      {# NUEVO: Banner de última actualización (solo útil para el viajero) #}
       {% if booking.extras.last_update and request.user == booking.traveler %}
         {% if booking.extras.last_update.type == "change" %}
           {% if booking.extras.last_update.decision == "accepted" %}
@@ -94,18 +94,41 @@
         {% endif %}
       {% endif %}
 
+      {# NUEVO: Si el guía rechazó un cambio, permitir cancelación gratis y guiar al viajero #}
+      {% if request.user == booking.traveler %}
+        {% if booking.extras.free_cancel_override and booking.extras.free_cancel_override.reason == "change_rejected" %}
+          <div class="status-banner status-banner-update-rejected">
+            ❌ El guía ha rechazado tu solicitud de cambio.
+            <div class="mt-2">
+              Puedes <strong>mantener la fecha original</strong> o <strong>cancelar gratis</strong> (aunque falten menos de 48h).
+            </div>
+
+            <div class="mt-3 flex flex-wrap gap-2">
+              <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-primary">
+                Cancelar gratis
+              </a>
+              <a href="{% url 'bookings:traveler_list' %}" class="btn btn-ghost">
+                Mantener reserva
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+
       {# Acciones del viajero (solo si no está cancelada/rechazada y no hay solicitud ya pendiente) #}
       {% if request.user == booking.traveler %}
         <div class="mt-4 flex flex-wrap gap-2">
           {% with s=booking.status|lower %}
             {% if s != "rejected" and s != "canceled" %}
               {% if s != "change_requested" and s != "cancel_requested" %}
-                <a href="{% url 'bookings:request_change' booking.pk %}" class="btn btn-primary">
-                  Solicitar cambio
-                </a>
-                <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-ghost">
-                  Solicitar cancelación
-                </a>
+                {% if not booking.extras.free_cancel_override %}
+                  <a href="{% url 'bookings:request_change' booking.pk %}" class="btn btn-primary">
+                    Solicitar cambio
+                  </a>
+                  <a href="{% url 'bookings:request_cancel' booking.pk %}" class="btn btn-ghost">
+                    Solicitar cancelación
+                  </a>
+                {% endif %}
               {% endif %}
             {% endif %}
           {% endwith %}
@@ -118,9 +141,9 @@
 
       {# Resumen del cambio solicitado (si existe) #}
       {% if booking.status|lower == "change_requested" and booking.extras.change_request %}
-        <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-          <h2 class="text-sm font-semibold text-slate-900">Cambio solicitado</h2>
-          <p class="mt-1 text-xs text-slate-500">
+        <div class="panel-detail">
+          <h2 class="label-title">Cambio solicitado</h2>
+          <p class="mt-1 text-xs p-micro">
             Esto es lo que has pedido cambiar (pendiente de revisión).
           </p>
 
@@ -140,8 +163,8 @@
             </div>
 
             {% if cr.notes %}
-              <p class="mt-3 text-sm text-slate-700 leading-relaxed">
-                <span class="text-slate-500">Notas:</span> {{ cr.notes }}
+              <p class="mt-3 p-body">
+                <span class="p-micro">Notas:</span> {{ cr.notes }}
               </p>
             {% endif %}
           {% endwith %}
@@ -149,32 +172,32 @@
       {% endif %}
 
       {# Resumen de cancelación solicitada (si quieres mostrar motivo) #}
-      {% if booking.status|lower == "cancel_requested" and booking.extras.cancel_reason %}
-        <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-          <h2 class="text-sm font-semibold text-slate-900">Cancelación solicitada</h2>
+      {% if booking.status|lower == "cancel_requested" and booking.extras.cancel_request.reason %}
+        <div class="panel-detail">
+          <h2 class="label-title">Cancelación solicitada</h2>
           <p class="mt-2 p-body">
-            <span class="text-slate-500">Motivo:</span> {{ booking.extras.cancel_reason }}
+            <span class="p-micro">Motivo:</span> {{ booking.extras.cancel_request.reason }}
           </p>
         </div>
       {% endif %}
 
       <!-- Tiempos -->
-      <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-        <h2 class="text-sm font-semibold text-slate-900">Tiempos</h2>
-        <p class="mt-1 text-xs text-slate-500">
+      <div class="panel-detail">
+        <h2 class="label-title">Tiempos</h2>
+        <p class="mt-1 text-xs p-micro">
           Referencia de cuándo se solicitó y cuándo se respondió.
         </p>
 
         <div class="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
           <p>
-            <span class="text-slate-500">Solicitud enviada:</span>
+            <span class="p-micro">Solicitud enviada:</span>
             <span class="p-secondary">
               {{ booking.created_at|date:"d/m/Y" }} · {{ booking.created_at|time:"H:i" }}
             </span>
           </p>
 
           <p>
-            <span class="text-slate-500">Respondida:</span>
+            <span class="p-micro">Respondida:</span>
             <span class="p-secondary">
               {% if booking.responded_at %}
                 {{ booking.responded_at|date:"d/m/Y" }} · {{ booking.responded_at|time:"H:i" }}
@@ -217,8 +240,8 @@
 
       <!-- Guía -->
       <div class="mt-5 border-t border-slate-200 pt-5">
-        <h2 class="text-sm font-semibold text-slate-900">Guía</h2>
-        <p class="mt-2 text-sm text-slate-700">
+        <h2 class="label-title">Guía</h2>
+        <p class="mt-2 p-body">
           <a href="{% url 'profiles:public_guide' booking.experience.guide.pk %}" class="font-medium hover:underline">
             Ver perfil público de {{ booking.experience.guide.username }}
           </a>
@@ -228,9 +251,9 @@
       <!-- Hora y punto (solo si está aceptada) -->
       {% with s=booking.status|lower %}
         {% if s == "accepted" %}
-          <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-            <h2 class="text-sm font-semibold text-slate-900">Hora y punto de encuentro</h2>
-            <p class="mt-1 text-xs text-slate-500">
+          <div class="panel-detail">
+            <h2 class="label-title">Hora y punto de encuentro</h2>
+            <p class="mt-1 text-xs p-micro">
               Información final confirmada por el guía.
             </p>
 
@@ -258,7 +281,7 @@
 
       <!-- Personas + Transporte -->
       <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-        <h2 class="text-sm font-semibold text-slate-900">Participantes y logística</h2>
+        <h2 class="label-title">Participantes y logística</h2>
 
         <div class="mt-3 flex flex-wrap gap-2">
           <span class="badge">👤 {{ booking.adults }} adultos</span>
@@ -279,24 +302,24 @@
         <div class="mt-4 grid gap-2 sm:grid-cols-2 text-sm">
           {% if booking.unit_price %}
             <p>
-              <span class="text-slate-500">Precio adulto:</span>
+              <span class="p-micro">Precio adulto:</span>
               <span class="p-secondary">{{ booking.unit_price }}€</span>
             </p>
           {% endif %}
 
           <p>
-            <span class="text-slate-500">Niño:</span>
+            <span class="p-micro">Niño:</span>
             <span class="p-secondary">50%</span>
           </p>
 
           <p>
-            <span class="text-slate-500">Bebé:</span>
+            <span class="p-micro">Bebé:</span>
             <span class="p-secondary">Gratis</span>
           </p>
 
           {% if booking.total_price %}
             <p>
-              <span class="text-slate-500">Total:</span>
+              <span class="p-micro">Total:</span>
               <span class="font-semibold text-slate-900">{{ booking.total_price }}€</span>
             </p>
           {% endif %}
@@ -305,7 +328,7 @@
 
       <!-- Mensajes -->
       <div class="mt-5 border-t border-slate-200 pt-5">
-        <h2 class="text-sm font-semibold text-slate-900">Tu mensaje al guía</h2>
+        <h2 class="label-title">Tu mensaje al guía</h2>
 
         <p class="mt-2 p-body">
           <strong>Idioma deseado:</strong> {{ booking.get_preferred_language_display }}
@@ -318,7 +341,7 @@
 
       {% if booking.guide_response %}
         <div class="mt-5 border-t border-slate-200 pt-5">
-          <h2 class="text-sm font-semibold text-slate-900">Respuesta del guía</h2>
+          <h2 class="label-title">Respuesta del guía</h2>
           <p class="mt-2 p-body">{{ booking.guide_response }}</p>
         </div>
       {% endif %}
