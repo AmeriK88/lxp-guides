@@ -100,6 +100,81 @@ def experience_list(request):
     }
     return render(request, "experiences/list.html", context)
 
+@guide_required
+def my_experiences(request):
+    experiences = (
+        Experience.objects.filter(guide=request.user)
+        .select_related("guide", "category")
+    )
+
+    categories = Category.objects.all()
+
+    # Filtros por querystring
+    q = request.GET.get("q", "").strip()
+    category_slug = request.GET.get("category", "").strip()
+    min_price = request.GET.get("min_price", "").strip()
+    max_price = request.GET.get("max_price", "").strip()
+    max_duration = request.GET.get("max_duration", "").strip()
+    sort = request.GET.get("sort", "recent").strip()
+
+    has_filters = any([q, category_slug, min_price, max_price, max_duration, sort != "recent"])
+
+    if q:
+        experiences = experiences.filter(
+            Q(title__icontains=q)
+            | Q(description__icontains=q)
+            | Q(location__icontains=q)
+            | Q(tags__icontains=q)
+        )
+
+    if category_slug:
+        experiences = experiences.filter(category__slug=category_slug)
+
+    if min_price:
+        try:
+            experiences = experiences.filter(price__gte=float(min_price))
+        except ValueError:
+            pass
+
+    if max_price:
+        try:
+            experiences = experiences.filter(price__lte=float(max_price))
+        except ValueError:
+            pass
+
+    if max_duration:
+        try:
+            experiences = experiences.filter(duration_minutes__lte=int(max_duration))
+        except ValueError:
+            pass
+
+    # Ordenación (igual estilo que list)
+    if sort == "price_asc":
+        experiences = experiences.order_by("price", "-created_at")
+    elif sort == "price_desc":
+        experiences = experiences.order_by("-price", "-created_at")
+    elif sort == "duration_asc":
+        experiences = experiences.order_by("duration_minutes", "-created_at")
+    elif sort == "duration_desc":
+        experiences = experiences.order_by("-duration_minutes", "-created_at")
+    else:
+        experiences = experiences.order_by("-created_at")
+
+    context = {
+        "experiences": experiences,
+        "categories": categories,
+        "has_filters": has_filters,
+        "filters": {
+            "q": q,
+            "category": category_slug,
+            "min_price": min_price,
+            "max_price": max_price,
+            "max_duration": max_duration,
+            "sort": sort,
+        },
+    }
+    return render(request, "experiences/my_list.html", context)
+
 
 @guide_required
 def experience_create(request):

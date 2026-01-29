@@ -1,10 +1,10 @@
 {% extends "layouts/dashboard_base.html" %}
-{% block title %}Experiencias{% endblock %}
+{% block title %}Mis Experiencias{% endblock %}
 
 {% block dashboard_content %}
   <div class="flex flex-col gap-6">
 
-    {% url 'experiences:list' as experiences_list_url %}
+    {% url 'experiences:mine' as experiences_list_url %}
 
     {% with create_experience_url="" %}
       {% if user.is_authenticated and user.is_guide and user.guide_profile.verification_status == "verified" %}
@@ -12,19 +12,17 @@
       {% endif %}
 
       <div data-animate="fade-up">
-        {% include "components/section_header.html" with title="Experiencias en Lanzarote" subtitle="Explora rutas, volcanes, calas y planes únicos con guías locales." cta_url=create_experience_url cta_label="+ Crear experiencia" %}
+        {% include "components/section_header.html" with title="Mis experiencias" subtitle="Gestiona, edita y filtra las experiencias que has creado." cta_url=create_experience_url cta_label="+ Crear experiencia" %}
       </div>
     {% endwith %}
 
-    <!-- Filters -->
+    <!-- Filters (igual que list) -->
     <div data-animate="fade-up">
       <div class="card">
         <div class="card-body">
           <div class="mb-4">
             <h2 class="h2-section">Buscar y filtrar</h2>
-              <p class="mt-1 p-muted">
-                Ajusta tu búsqueda y ordena resultados.
-              </p>
+            <p class="mt-1 p-muted">Encuentra rápidamente tus experiencias.</p>
           </div>
 
           <form method="get" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
@@ -64,7 +62,6 @@
               <label class="label">Ordenar</label>
               <select class="input" name="sort">
                 <option value="recent" {% if filters.sort == "recent" %}selected{% endif %}>Más recientes</option>
-                <option value="popular" {% if filters.sort == "popular" %}selected{% endif %}>Más populares</option>
                 <option value="price_asc" {% if filters.sort == "price_asc" %}selected{% endif %}>Precio: menor a mayor</option>
                 <option value="price_desc" {% if filters.sort == "price_desc" %}selected{% endif %}>Precio: mayor a menor</option>
                 <option value="duration_asc" {% if filters.sort == "duration_asc" %}selected{% endif %}>Duración: menor a mayor</option>
@@ -80,10 +77,12 @@
         </div>
       </div>
     </div>
+
+    {% if has_filters %}
+      {% include "components/experience_grid.html" with experiences=experiences empty_title="Ups… no encontramos nada 😅" empty_text="Prueba con otros términos o limpia los filtros." empty_cta_url=experiences_list_url empty_cta_label="Limpiar filtros" %}
+    {% else %}
+      {% include "components/experience_grid.html" with experiences=experiences empty_title="Aún no tienes experiencias" empty_text="Crea tu primera experiencia para empezar a recibir reservas." empty_cta_url=create_experience_url empty_cta_label="+ Crear experiencia" %}
+    {% endif %}
+
   </div>
-  {% if has_filters %}
-    {% include "components/experience_grid.html" with experiences=experiences empty_title="Ups… no encontramos nada 😅" empty_text="Prueba con otros términos o limpia los filtros." empty_cta_url=experiences_list_url empty_cta_label="Limpiar filtros" %}
-  {% else %}
-    {% include "components/experience_grid.html" with experiences=experiences empty_title="No hay experiencias activas todavía" empty_text="Vuelve más tarde o ajusta los filtros." empty_cta_url=experiences_list_url empty_cta_label="Ver experiencias" %}
-  {% endif %}
 {% endblock %}

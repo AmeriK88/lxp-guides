@@ -33,13 +33,13 @@
 
           {% if user.is_authenticated %}
             {% if user.is_guide %}
-              <a href="{% url 'experiences:list' %}"
-                 class="block rounded-lg px-3 py-2 font-medium
-                 {% if request.resolver_match.app_name == 'experiences' %}
-                   bg-blue-50 text-blue-700
-                 {% else %}
-                   text-slate-700 hover:bg-slate-100
-                 {% endif %}">
+              <a href="{% url 'experiences:mine' %}"
+                class="block rounded-lg px-3 py-2 font-medium
+                {% if request.resolver_match.app_name == 'experiences' and request.resolver_match.url_name == 'mine' %}
+                  bg-blue-50 text-blue-700
+                {% else %}
+                  text-slate-700 hover:bg-slate-100
+                {% endif %}">
                 Mis Experiencias
               </a>
 

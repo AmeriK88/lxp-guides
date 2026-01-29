@@ -2,6 +2,8 @@ from django import forms
 from apps.availability.services import is_date_available
 from .models import Booking
 from django.utils import timezone
+from datetime import timedelta
+
 
 
 class BookingForm(forms.ModelForm):
@@ -135,7 +137,6 @@ class BookingChangeRequestForm(forms.ModelForm):
     def clean(self):
         cleaned = super().clean()
 
-        # mismas validaciones que BookingForm
         adults = cleaned.get("adults") or 0
         children = cleaned.get("children") or 0
         infants = cleaned.get("infants") or 0
@@ -147,8 +148,18 @@ class BookingChangeRequestForm(forms.ModelForm):
             raise forms.ValidationError("Debes indicar al menos 1 persona.")
 
         date = cleaned.get("date")
-        if date and date < timezone.localdate():
-            self.add_error("date", "No puedes reservar en una fecha pasada.")
+        if date:
+            today = timezone.localdate()
+
+            if date < today:
+                self.add_error("date", "No puedes reservar en una fecha pasada.")
+
+            # Bloquear hoy y mañana (pasado mañana en adelante)
+            if date <= (today + timedelta(days=1)):
+                self.add_error(
+                    "date",
+                    "No se permiten cambios para hoy ni para mañana. Elige una fecha a partir de pasado mañana."
+                )
 
         # disponibilidad con exclude_booking_id
         if self.booking and date:
