@@ -1,0 +1,46 @@
+{% if in_hero %}
+  <div class="panel">
+    <p class="p-micro">Guías</p>
+    <p class="mt-0.5 label-title">Verificados</p>
+    <p class="mt-1 p-micro">Perfiles públicos y estado visible.</p>
+  </div>
+
+  <div class="panel">
+    <p class="p-micro">Disponibilidad</p>
+    <p class="mt-0.5 label-title">Calendario real</p>
+    <p class="mt-1 p-micro">Días sin plazas se deshabilitan solos.</p>
+  </div>
+
+  <div class="panel">
+    <p class="p-micro">Políticas</p>
+    <p class="mt-0.5 label-title">Sin letra pequeña</p>
+    <p class="mt-1 p-micro">Precio, plazas y condiciones claras.</p>
+  </div>
+
+{% else %}
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="panel">
+      <p class="p-micro">Guías</p>
+      <p class="mt-0.5 label-title">Verificados</p>
+      <p class="mt-1 p-micro">Perfiles públicos y estado visible.</p>
+    </div>
+
+    <div class="panel">
+      <p class="p-micro">Disponibilidad</p>
+      <p class="mt-0.5 label-title">Calendario real</p>
+      <p class="mt-1 p-micro">Días sin plazas se deshabilitan solos.</p>
+    </div>
+
+    <div class="panel">
+      <p class="p-micro">Políticas</p>
+      <p class="mt-0.5 label-title">Sin letra pequeña</p>
+      <p class="mt-1 p-micro">Precio, plazas y condiciones claras.</p>
+    </div>
+
+    <div class="panel">
+      <p class="p-micro">Avisos</p>
+      <p class="mt-0.5 label-title">Notificaciones</p>
+      <p class="mt-1 p-micro">Panel + emails con cada cambio.</p>
+    </div>
+  </div>
+{% endif %}

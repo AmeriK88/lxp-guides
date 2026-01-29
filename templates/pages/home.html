@@ -4,89 +4,76 @@
 {% block content %}
   {% url 'experiences:list' as experiences_list_url %}
 
-<!-- Hero -->
-<section data-animate="fade-up">
-  <div class="card overflow-hidden relative">
-    <div class="card-body relative">
-      <!-- Subtle top gradient -->
-      <div class="hero-top-glow"></div>
+  <!-- Hero -->
+  <section data-animate="fade-up">
+    <div class="card overflow-hidden relative">
+      <div class="card-body relative">
+        <!-- Subtle top gradient -->
+        <div class="hero-top-glow"></div>
 
-      <div class="grid gap-10 lg:grid-cols-2 lg:items-center" data-stagger>
-        <!-- Left -->
-        <div class="relative" data-animate="fade-up">
-          <div class="inline-flex flex-wrap items-center gap-2">
-            <span class="badge">📍 Lanzarote</span>
-            <span class="badge">✅ Guías verificados</span>
-            <span class="badge">🗓 Disponibilidad real</span>
-            <span class="badge badge-amber">🌋 Timanfaya vibes</span>
-          </div>
+        <div class="grid gap-10 lg:grid-cols-2 lg:items-center" data-stagger>
+          <!-- Left -->
+          <div class="relative" data-animate="fade-up">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="badge">📍 Lanzarote</span>
+              <span class="badge">✅ Guías verificados</span>
+              <span class="badge">🗓 Disponibilidad real</span>
+              <span class="badge badge-amber">🌋 Timanfaya vibes</span>
+            </div>
 
-          <h1 class="h1-hero">
-            Experiencias auténticas en Lanzarote,
-            <span class="blue-hero-span">con reserva sin sorpresas</span>
-          </h1>
+            <h1 class="h1-hero">
+              Experiencias auténticas en Lanzarote,
+              <span class="blue-hero-span">con reserva sin sorpresas</span>
+            </h1>
 
-          <p class="p-lead">
-            Aquí no hay “te confirmo por WhatsApp”.
-            Ves opciones claras, guías locales verificados y un calendario que
-            <span class="p-secondary">solo te deja reservar días disponibles</span>.
-          </p>
+            <p class="p-lead">
+              Aquí no hay “te confirmo por WhatsApp”.
+              Ves opciones claras, guías locales verificados y un calendario que
+              <span class="p-secondary">solo te deja reservar días disponibles</span>.
+            </p>
 
-          <div class="cta-actions">
-            <a href="{{ experiences_list_url }}" class="btn btn-primary">
-              Explorar experiencias
-            </a>
-
-            {% if not user.is_authenticated %}
-              <a href="{% url 'accounts:register' %}" class="btn btn-ghost">
-                Soy guía / Crear cuenta
+            <div class="cta-actions">
+              <a href="{{ experiences_list_url }}" class="btn btn-primary">
+                Explorar experiencias
               </a>
-            {% else %}
-              <a href="{% url 'pages:dashboard' %}" class="btn btn-ghost">
-                Ir a mi panel
-              </a>
-            {% endif %}
-          </div>
 
-          <!-- Trust strip -->
-          <div class="trust-strip">
-            <div class="panel">
-              <p class="p-micro">Pagos</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">100% seguros</p>
+              {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}" class="btn btn-ghost">
+                  Soy guía / Crear cuenta
+                </a>
+              {% else %}
+                <a href="{% url 'pages:dashboard' %}" class="btn btn-ghost">
+                  Ir a mi panel
+                </a>
+              {% endif %}
             </div>
 
-            <div class="panel">
-              <p class="p-micro">Cancelación</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">Gratis hasta 48h</p>
-            </div>
-
-            <div class="panel">
-              <p class="p-micro">Reserva</p>
-              <p class="mt-0.5 text-sm font-semibold text-slate-900">En pocos clicks</p>
+            <!-- Trust strip -->
+            <div class="trust-strip">
+              {% include "components/trust_tips.html" with in_hero=True %}
             </div>
           </div>
-        </div>
 
-        <!-- Right: Search card -->
-        <div class="relative" data-animate="fade-up">
-          {% with action_url=experiences_list_url %}
-            {% include "components/experience_search_card.html" %}
-          {% endwith %}
+          <!-- Right: Search card -->
+          <div class="relative" data-animate="fade-up">
+            {% with action_url=experiences_list_url %}
+              {% include "components/experience_search_card.html" %}
+            {% endwith %}
 
-          <!-- Small highlight -->
-          {% with title="🧠 Reserva inteligente" text="Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas)." %}
-            {% include "components/cta_yes.html" %}
-          {% endwith %}
+            <!-- Small highlight -->
+            {% with title="🧠 Reserva inteligente" text="Nuestro sistema deshabilita automáticamente los días no disponibles (reglas semanales, bloqueos y plazas)." %}
+              {% include "components/cta_yes.html" %}
+            {% endwith %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
   <!-- Value props -->
   <section class="mt-8" data-animate="fade-up">
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {% with title="Disponibilidad real" text="Solicitas tu plaza con fechas reales. El guía confirma y no pagas hasta que esté aceptada." %}
         {% include "components/info_card.html" %}
       {% endwith %}
@@ -96,6 +83,10 @@
       {% endwith %}
 
       {% with title="Condiciones claras" text="Duración, precio, plazas, punto de encuentro y políticas sin letra pequeña." %}
+        {% include "components/info_card.html" %}
+      {% endwith %}
+
+      {% with title="Notificaciones" text="Panel + emails cuando el guía acepta, rechaza, cambia o cancela. Cero incertidumbre." %}
         {% include "components/info_card.html" %}
       {% endwith %}
     </div>
