@@ -42,9 +42,7 @@ INSTALLED_APPS = [
     'apps.bookings.apps.BookingsConfig',
     'apps.availability.apps.AvailabilityConfig',
     'apps.reviews.apps.ReviewsConfig',
-
-
-
+    "apps.helpdesk.apps.HelpdeskConfig",
 ]
 
 MIDDLEWARE = [

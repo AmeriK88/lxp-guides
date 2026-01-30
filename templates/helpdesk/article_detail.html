@@ -1,0 +1,55 @@
+{% extends "layouts/base.html" %}
+{% block title %}{{ article.title }} - Centro de Ayuda{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10">
+
+  <div class="card">
+    <div class="card-body">
+
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="{% url 'helpdesk:helpdesk' %}" class="badge hover-lift">← Centro de ayuda</a>
+        <span class="badge">{{ article.category.name }}</span>
+        {% if article.is_featured %}
+          <span class="badge badge-blue">Destacado</span>
+        {% endif %}
+      </div>
+
+      <h1 class="h1-hero">{{ article.title }}</h1>
+
+      <div class="mt-5 p-body">
+        {{ article.content|linebreaks }}
+      </div>
+
+      {% if related %}
+        <div class="mt-8 panel-soft">
+          <p class="label-title">También te puede ayudar</p>
+
+          <ul class="mt-3 space-y-2">
+            {% for a in related %}
+              <li class="doc-item">
+                <div class="min-w-0">
+                  <a href="{% url 'helpdesk:article_detail' a.slug %}"
+                     class="p-secondary hover:text-slate-900 transition clamp-1">
+                    {{ a.title }}
+                  </a>
+                  <p class="p-micro mt-1">{{ a.category.name }}</p>
+                </div>
+                <span class="badge">→</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <div class="mt-6 alert alert-info">
+        <p class="p-body">
+          ¿No se resolvió? Escríbenos a <strong>support@lanzaxperience.com</strong>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

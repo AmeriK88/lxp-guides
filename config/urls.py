@@ -12,6 +12,7 @@ urlpatterns = [
     path("bookings/", include("apps.bookings.urls")),
     path("availability/", include("apps.availability.urls")),
     path("reviews/", include("apps.reviews.urls")),
+    path("help/", include("apps.helpdesk.urls")),
 ]
 
 if settings.DEBUG:
