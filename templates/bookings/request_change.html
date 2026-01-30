@@ -14,100 +14,99 @@
 
   <div class="card">
     <div class="card-body">
-        <form method="post" class="grid gap-4 sm:grid-cols-2">
+      <form method="post" class="grid gap-4 sm:grid-cols-2">
         {% csrf_token %}
+
+        {# Errores generales (non-field) también arriba #}
+        {% if form.non_field_errors %}
+          <div class="form-error sm:col-span-2" role="alert">
+            {{ form.non_field_errors|striptags }}
+          </div>
+        {% endif %}
 
         <!-- Fecha -->
         <div class="sm:col-span-2">
-            <label class="label">Fecha</label>
+          <label class="label">Fecha</label>
 
-            {{ form.date|add_class:"input js-booking-date" }}
+          {{ form.date|add_class:"input js-booking-date" }}
 
-            <div id="booking-calendar-config"
-                data-disabled-dates-url="{% url 'availability:experience_disabled_dates' booking.experience.id %}">
-            </div>
+          <div id="booking-calendar-config"
+               data-disabled-dates-url="{% url 'availability:experience_disabled_dates' booking.experience.id %}">
+          </div>
 
-            {% for e in form.date.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          {% if form.date.errors %}
+            <p class="field-error">{{ form.date.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Adultos -->
         <div>
-            <label class="label">Adultos</label>
-            {{ form.adults|add_class:"input" }}
-            {% for e in form.adults.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Adultos</label>
+          {{ form.adults|add_class:"input" }}
+          {% if form.adults.errors %}
+            <p class="field-error">{{ form.adults.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Niños -->
         <div>
-            <label class="label">Niños</label>
-            {{ form.children|add_class:"input" }}
-            {% for e in form.children.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Niños</label>
+          {{ form.children|add_class:"input" }}
+          {% if form.children.errors %}
+            <p class="field-error">{{ form.children.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Bebés -->
         <div>
-            <label class="label">Bebés</label>
-            {{ form.infants|add_class:"input" }}
-            {% for e in form.infants.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Bebés</label>
+          {{ form.infants|add_class:"input" }}
+          {% if form.infants.errors %}
+            <p class="field-error">{{ form.infants.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Transporte -->
         <div>
-            <label class="label">Transporte</label>
-            {{ form.transport_mode|add_class:"input" }}
-            {% for e in form.transport_mode.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Transporte</label>
+          {{ form.transport_mode|add_class:"input" }}
+          {% if form.transport_mode.errors %}
+            <p class="field-error">{{ form.transport_mode.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Recogida -->
         <div class="sm:col-span-2">
-            <label class="label">Lugar de encuentro / recogida</label>
-            {{ form.pickup_notes|add_class:"input" }}
-            {% for e in form.pickup_notes.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Lugar de encuentro / recogida</label>
+          {{ form.pickup_notes|add_class:"input" }}
+          {% if form.pickup_notes.errors %}
+            <p class="field-error">{{ form.pickup_notes.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Idioma -->
         <div class="sm:col-span-2">
-            <label class="label">Idioma preferido</label>
-            {{ form.preferred_language|add_class:"input" }}
-            {% for e in form.preferred_language.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Idioma preferido</label>
+          {{ form.preferred_language|add_class:"input" }}
+          {% if form.preferred_language.errors %}
+            <p class="field-error">{{ form.preferred_language.errors|striptags }}</p>
+          {% endif %}
         </div>
 
         <!-- Notas -->
         <div class="sm:col-span-2">
-            <label class="label">Notas</label>
-            {{ form.notes|add_class:"input" }}
-            {% for e in form.notes.errors %}
-            <p class="text-sm text-red-600 mt-1">{{ e }}</p>
-            {% endfor %}
+          <label class="label">Notas</label>
+          {{ form.notes|add_class:"input" }}
+          {% if form.notes.errors %}
+            <p class="field-error">{{ form.notes.errors|striptags }}</p>
+          {% endif %}
         </div>
-
-        {% if form.non_field_errors %}
-            <div class="sm:col-span-2">
-            {% for e in form.non_field_errors %}
-                <p class="text-sm text-red-600">{{ e }}</p>
-            {% endfor %}
-            </div>
-        {% endif %}
 
         <div class="sm:col-span-2 flex gap-2">
-            <button class="btn btn-primary" type="submit">Enviar solicitud</button>
-            <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
+          <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+          <a class="btn btn-ghost" href="{% url 'bookings:detail' booking.pk %}">Volver</a>
         </div>
-        </form>
+      </form>
     </div>
   </div>
 </div>

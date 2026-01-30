@@ -10,7 +10,7 @@ class BookingForm(forms.ModelForm):
     def __init__(self, *args, experience=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.experience = experience
-        self.fields["preferred_language"].choices = [("", "Selecciona un idioma")] + list(self.fields["preferred_language"].choices)
+        self.fields["preferred_language"].choices = list(self.fields["preferred_language"].choices)
         self.fields["preferred_language"].required = True
         self.fields["pickup_notes"].label = "Lugar de encuentro / recogida"
         self.fields["pickup_notes"].help_text = "Minibus: hotel/zona. Vehículo propio/a pie/bici: dónde quedas con el guía."
@@ -43,6 +43,13 @@ class BookingForm(forms.ModelForm):
                 today = timezone.localdate()
                 if date < today:
                     self.add_error("date", "No puedes reservar en una fecha pasada.")
+
+                # NO hoy ni mañana
+                if date <= today + timezone.timedelta(days=1):
+                    self.add_error(
+                        "date",
+                        "No se permiten reservas para hoy ni para mañana. Elige una fecha a partir de pasado mañana."
+                    )
                 
             if not cleaned.get("preferred_language"):
                 self.add_error("preferred_language", "Selecciona el idioma preferido para la experiencia.")
@@ -54,9 +61,6 @@ class BookingForm(forms.ModelForm):
                     self.add_error("date", msg)
 
             # Pickup requerido si necesita minibus
-            transport_mode = cleaned.get("transport_mode")
-            pickup_notes = (cleaned.get("pickup_notes") or "").strip()
-
             transport_mode = cleaned.get("transport_mode")
             pickup_notes = (cleaned.get("pickup_notes") or "").strip()
 
@@ -72,6 +76,8 @@ class BookingForm(forms.ModelForm):
                         "pickup_notes",
                         "Indica dónde quieres quedar con el guía (hotel, calle, punto exacto)."
                     )
+            if self.errors:
+                raise forms.ValidationError("Revisa el formulario: hay campos con errores.")
 
             return cleaned
 
@@ -171,6 +177,9 @@ class BookingChangeRequestForm(forms.ModelForm):
             )
             if not ok:
                 self.add_error("date", msg)
-
+        
+        # Mensaje global si hay cualquier error
+        if self.errors:
+            raise forms.ValidationError("Revisa el formulario: hay campos con errores.")
         return cleaned
 

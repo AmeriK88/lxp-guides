@@ -35,11 +35,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Reservas (30 días)</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Reservas (30 días)</p>
+            <p class="mt-2 p-large">
               {{ kpis.bookings_30d|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Hechas recientemente</p>
+            <p class="help">Hechas recientemente</p>
           </div>
         </div>
       </div>
@@ -47,11 +47,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Gastado (30 días)</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Gastado (30 días)</p>
+            <p class="mt-2 p-large">
               {{ kpis.spent_30d|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Total confirmado</p>
+            <p class="help">Total confirmado</p>
           </div>
         </div>
       </div>
@@ -59,11 +59,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Aceptadas</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Aceptadas</p>
+            <p class="mt-2 p-large">
               {{ kpis.accepted|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Histórico</p>
+            <p class="help">Histórico</p>
           </div>
         </div>
       </div>
@@ -71,11 +71,11 @@
       <div data-animate="fade-up">
         <div class="card">
           <div class="card-body">
-            <p class="text-sm text-slate-600">Rechazadas</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-900">
+            <p class="p-muted">Rechazadas</p>
+            <p class="mt-2 p-large">
               {{ kpis.rejected|default:"—" }}
             </p>
-            <p class="mt-1 text-xs text-slate-500">Histórico</p>
+            <p class="help">Histórico</p>
           </div>
         </div>
       </div>
@@ -93,11 +93,11 @@
               <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <div class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-sm text-slate-600">Experiencia</p>
+                    <p class="p-muted">Experiencia</p>
                     <p class="mt-1 text-sm font-semibold text-slate-900">
                       {{ next_booking.experience.title }}
                     </p>
-                    <p class="mt-2 text-sm text-slate-600">
+                    <p class="mt-2 p-muted">
                       {{ next_booking.date }} · {{ next_booking.people }} personas
                     </p>
                   </div>
@@ -114,7 +114,7 @@
                     {% elif s == "rejected" %}
                       <span class="badge badge-status-rejected">Rechazada</span>
                     {% elif s == "canceled" %}
-                      <span class="badge badge-status-canceled">Cancelada</span>
+                      <span class="badge status-banner-update-rejected ">Cancelada</span>
                     {% else %}
                       <span class="badge">{{ next_booking.status }}</span>
                     {% endif %}
@@ -204,7 +204,7 @@
                           {% elif s == "rejected" %}
                             <span class="badge badge-status-rejected">Rechazada</span>
                           {% elif s == "canceled" %}
-                            <span class="badge badge-status-canceled">Cancelada</span>
+                            <span class="badge status-banner-update-rejected ">Cancelada</span>
                           {% else %}
                             <span class="badge">{{ b.status }}</span>
                           {% endif %}
@@ -266,7 +266,7 @@
               {% endfor %}
             </div>
           {% else %}
-            <p class="mt-3 text-sm text-slate-600">Aún no hay categorías creadas.</p>
+            <p class="mt-3 p-muted">Aún no hay categorías creadas.</p>
           {% endif %}
         </div>
       </div>
