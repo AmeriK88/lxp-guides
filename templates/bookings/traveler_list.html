@@ -88,7 +88,7 @@
                       {% elif s == "rejected" %}
                         <span class="badge badge-status-rejected">Rechazada</span>
                       {% elif s == "canceled" %}
-                        <span class="badge badge-status-canceled">Cancelada</span>
+                        <span class="badge badge-red">Cancelada</span>
                       {% else %}
                         <span class="badge">{{ b.status }}</span>
                       {% endif %}
@@ -108,7 +108,7 @@
                             </span>
 
                           {% else %}
-                            {# ✅ Si hay override por cambio rechazado, priorizar "Cancelar gratis" #}
+                            {# Si hay override por cambio rechazado, priorizar "Cancelar gratis" #}
                             {% if b.extras.free_cancel_override and b.extras.free_cancel_override.reason == "change_rejected" %}
                               <a href="{% url 'bookings:request_cancel' b.pk %}" class="btn btn-primary">
                                 Cancelar gratis

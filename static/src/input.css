@@ -4,14 +4,15 @@
 /* Layout + UI */
 @import "./styles/layout.css";
 @import "./styles/ui.css";
-@import "./styles/motions.css";
 
 /* Features */
 @import "./styles/features/dropdowns.css";
 @import "./styles/features/cookies.css";
 @import "./styles/features/loader.css";
 @import "./styles/features/nav_bar.css";
-@import "./styles/features/loader.css";
+
+/* Motions (al final para que mande) */
+@import "./styles/motions.css";
 
 /* -----------------------------
    BASE
@@ -20,10 +21,20 @@
   html { @apply scroll-smooth; }
   body { @apply bg-slate-50 text-slate-800 antialiased font-sans; }
 
-  /* NO pongas color global a todos los links */
   a { @apply transition-colors; }
 
   :focus-visible {
     @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-slate-50;
+  }
+}
+
+/* Opcional: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
