@@ -1,15 +1,3 @@
-{# templates/components/auth_cta.html #}
-{# Params:
-  - primary_url
-  - primary_label
-  - secondary_url (optional)
-  - secondary_label (optional)
-  - authed_url (optional) default: pages:dashboard
-  - authed_label (optional) default: Ir a mi panel
-  - primary_class (optional) default: btn btn-primary
-  - secondary_class (optional) default: btn btn-ghost
-#}
-
 <div class="{{ wrapper_class|default:'mt-6 flex flex-col gap-2 sm:flex-row sm:items-center' }}">
   <a href="{{ primary_url }}" class="{{ primary_class|default:'btn btn-primary' }}">
     {{ primary_label }}

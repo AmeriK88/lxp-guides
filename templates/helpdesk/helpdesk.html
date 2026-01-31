@@ -8,7 +8,12 @@
     <div class="card-body">
       <div class="flex flex-wrap items-center gap-2">
         <span class="badge">📚 Centro de ayuda</span>
-        <span class="badge badge-blue">Respuestas rápidas</span>
+
+        {% if q %}
+          <a href="{% url 'helpdesk:helpdesk' %}" class="badge hover-lift">
+            ← Volver
+          </a>
+        {% endif %}
       </div>
 
       <h1 class="h1-hero">Centro de Ayuda</h1>
@@ -26,6 +31,18 @@
       </div>
 
       {# (Opcional) Buscador en siguiente paso #}
+      <div class="mt-6">
+        {% include "components/search_card.html" %}
+      </div>
+      {% if q and not categories %}
+        <div class="alert alert-warn mt-4">
+          <p class="p-body">
+            No encontré resultados para <strong>“{{ q }}”</strong>.
+            Prueba con otra palabra como “cancelación”, “cambio” o “reembolso”.
+          </p>
+        </div>
+      {% endif %}
+
     </div>
   </div>
 
@@ -41,13 +58,13 @@
               {% endif %}
             </div>
             <span class="badge">
-              {{ category.articles.count }} artículos
+              {{ category.filtered_articles|length }} artículos
             </span>
           </div>
 
           <div class="mt-4">
             <ul class="space-y-3">
-              {% for article in category.articles.all %}
+              {% for article in category.filtered_articles %}
                 {% if article.is_published %}
                   <li class="doc-item">
                     <div class="min-w-0">
@@ -67,7 +84,7 @@
                   </li>
                 {% endif %}
               {% empty %}
-                <li class="p-muted">No hay artículos todavía.</li>
+                <li class="p-muted">No se encontraron artículos para esta búsqueda.</li>
               {% endfor %}
             </ul>
           </div>

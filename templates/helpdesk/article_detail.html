@@ -6,10 +6,15 @@
 
   <div class="card">
     <div class="card-body">
-
       <div class="flex flex-wrap items-center gap-2">
-        <a href="{% url 'helpdesk:helpdesk' %}" class="badge hover-lift">← Centro de ayuda</a>
+        <span class="badge">📚 Centro de ayuda</span>
+
+        <a href="{% url 'helpdesk:helpdesk' %}" class="badge hover-lift">
+          ← Volver
+        </a>
+
         <span class="badge">{{ article.category.name }}</span>
+
         {% if article.is_featured %}
           <span class="badge badge-blue">Destacado</span>
         {% endif %}
@@ -30,11 +35,19 @@
               <li class="doc-item">
                 <div class="min-w-0">
                   <a href="{% url 'helpdesk:article_detail' a.slug %}"
-                     class="p-secondary hover:text-slate-900 transition clamp-1">
+                    class="p-secondary hover:text-slate-900 transition clamp-1">
                     {{ a.title }}
                   </a>
-                  <p class="p-micro mt-1">{{ a.category.name }}</p>
+
+                  <p class="p-micro mt-1">
+                    {% if a.is_featured %}
+                      <span class="badge badge-blue">Destacado</span>
+                    {% else %}
+                      {{ a.category.name }}
+                    {% endif %}
+                  </p>
                 </div>
+
                 <span class="badge">→</span>
               </li>
             {% endfor %}
